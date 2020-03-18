@@ -1,6 +1,6 @@
 # Bingo
 A Minecraft Plugin for Spigot.  
-Bingo is a survial game. You need to complete 5 out of 5x5=25 quests. And you need to complete them on a line.  
+Bingo is a survival game. You need to complete 5 out of 5x5=25 quests. And you need to complete them on a line.  
   
 ## Usage
 - `/bingo gui` Open the Bingo GUI for starting, setting etc.  
