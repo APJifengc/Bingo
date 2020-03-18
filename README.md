@@ -8,13 +8,22 @@ Bingo is a survial game. You need to complete 5 out of 5x5=25 quests. And you ne
 - `/bingo stop` Stop the current game.  
 - `/bingo setting <setting> <value>` Setting the game.  
 - `/bingo join` Join the current game.  
+- `/bingo leave` Leave the current game.  
 
 ## Config
-Look at the config files. You will figure it out.
+settings.yml
+```yml
+Config:
+- '我还没做'
+- '等着'
+```
 
 ## Permission
-- `bingo.gui` Run command /bingo gui
-- `bingo.start` Run command /bingo start
-- `bingo.stop` Run command /bingo stop
-- `bingo.setting` Run command /bingo setting
-- `bingo.join` Run command /bingo join
+- `bingo.admin` Allow you to run all the admin commands.
+  - `bingo.admin.gui` Allow you to run the command /bingo gui
+  - `bingo.admin.start` Allow you to run the command /bingo start
+  - `bingo.admin.stop` Allow you to run the command /bingo stop
+  - `bingo.admin.setting` Allow you to run the command /bingo setting
+- `bingo.use` Allow you to run all the normal commands.
+  - `bingo.use.join` Allow you to run the command /bingo join
+  - `bingo.use.leave` Allow you to run the command /bingo leave
