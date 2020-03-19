@@ -23,3 +23,8 @@ permissions:
       bingo.use.join: true
       bingo.use.leave: true
     default: true
+  bingo.dev:
+    description: Development commands.
+    children:
+      bingo.dev.debug: true
+    default: false

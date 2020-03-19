@@ -27,6 +27,8 @@ public class OnCommand implements TabExecutor {
 			} else {
 				if (args[0].equalsIgnoreCase("help")) {
 					new HelpCommand().onHelpCommand(sender);
+				} else if (args[0].equalsIgnoreCase("debug")) {
+					new DebugCommand().onDebugCommand(sender, args);
 				}
 			}
 		}

@@ -9,6 +9,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Bingo extends JavaPlugin {
 	
+	
+	
 	@Setter
 	@Getter
 	BingoGame currentGame;
@@ -17,6 +19,7 @@ public class Bingo extends JavaPlugin {
 	public void onEnable() {
 		getLogger().info("Bingooooooooo!");
 		this.getCommand("bingo").setExecutor(new OnCommand(this));
+		saveResource("tasks.yml", false);
 	}
 	
 	@Override
