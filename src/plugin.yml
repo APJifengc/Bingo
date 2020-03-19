@@ -8,7 +8,7 @@ commands:
   bingo:
     description: All of Bingo right here.
 
-permission:
+permissions:
   bingo.admin:
     description: Allows you to run all the admin commands.
     children:
@@ -17,8 +17,9 @@ permission:
       bingo.admin.setting: true
     default: op
   bingo.use:
-    description: Allows you to run all the normal commands.
+    description: Allows you to run all the player commands.
     children:
       bingo.use.gui: true
       bingo.use.join: true
       bingo.use.leave: true
+    default: true

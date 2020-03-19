@@ -10,36 +10,55 @@ import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class CommandMain implements CommandExecutor {
-    private final Bingo plugin;
+public class CommandMain implements TabExecutor {
 
-    public CommandMain(Bingo plugin) {
-        this.plugin = plugin;
-    }
+	private final Bingo plugin;
 
-    @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if(strings.length==0){
-            ArrayList usage = new ArrayList();
-            String fullUsage;
-            if(commandSender.hasPermission("bingo.use.gui")) usage.add(" §7/bingo gui §e- §6Open a GUI for Bingo.");
-            if(commandSender.hasPermission("bingo.use.join")) usage.add(" §7/bingo join §e- §6Join a Bingo game.");
-            if(commandSender.hasPermission("bingo.use.leave")) usage.add(" §7/bingo leave §e- §6Leave the Bingo game.");
-            if(commandSender.hasPermission("bingo.admin.start")) usage.add(" §7/bingo start §e- §6Start a Bingo game..");
-            if(commandSender.hasPermission("bingo.admin.stop")) usage.add(" §7/bingo stop §e- §6Stop the Bingo game.");
-            if(commandSender.hasPermission("bingo.admin.setting")) usage.add(" §7/bingo setting §e- §6Setting a Bingo game.");
-            if(usage.size()==0) commandSender.sendMessage("§9§l-==============§c§lBingo§9§l==============-\n §cYou don't have permission for this command.\n§9§l-=================================-");
-            else {
-                commandSender.sendMessage("§9§l-==============§c§lBingo§9§l==============-\n §eCommand usage:\n"+String.join("\n",usage)+"\n§9§l-=================================-");
-            }
-        }
-       /** if (commandSender.hasPermission("bingo.admin.start")) {
+	public CommandMain(Bingo plugin) {
+		this.plugin = plugin;
+	}
 
-        } else {
-            commandSender.sendMessage(ChatColor.DARK_RED + "You don't have permission to do that.");
-        }*/
-        return false;
-    }
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if (cmd.getName().equalsIgnoreCase("bingo")) {
+			if (args.length == 0) {
+				new Cmd_help().onHelpCommand(sender);
+			} else {
+				if (args[0].equalsIgnoreCase("help")) {
+					new Cmd_help().onHelpCommand(sender);
+				}
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		if (cmd.getName().equalsIgnoreCase("bingo")) {
+			if (args.length == 1) {
+				return getSubCommands(sender);
+			}
+		}
+		return Arrays.asList();
+	}
+
+	public List<String> getSubCommands(CommandSender sender) {
+		List<String> sub = new ArrayList<String>();
+		if (sender.hasPermission("bingo.use.gui"))
+			sub.add("gui");
+		if (sender.hasPermission("bingo.use.join"))
+			sub.add("join");
+		if (sender.hasPermission("bingo.use.leave"))
+			sub.add("leave");
+		if (sender.hasPermission("bingo.admin.start"))
+			sub.add("start");
+		if (sender.hasPermission("bingo.admin.stop"))
+			sub.add("stop");
+		if (sender.hasPermission("bingo.admin.setting"))
+			sub.add("setting");
+		return sub;
+	}
 }
-
