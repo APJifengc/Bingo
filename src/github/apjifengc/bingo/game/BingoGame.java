@@ -39,8 +39,10 @@ public class BingoGame {
 	 * @return 若移除成功则返回 true，移除失败（玩家不存在）则返回 false。
 	 */
 	public boolean removePlayer(Player player) {
-		if (getPlayer(player) != null) {
-			return true;
+		BingoPlayer bp = getPlayer(player);
+		if (bp != null) {
+			 players.remove(bp);
+			 return true;
 		}
 		return false;
 	}
