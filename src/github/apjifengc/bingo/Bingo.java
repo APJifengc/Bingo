@@ -1,6 +1,6 @@
 package github.apjifengc.bingo;
 
-import github.apjifengc.bingo.commands.CommandMain;
+import github.apjifengc.bingo.commands.OnCommand;
 import github.apjifengc.bingo.game.BingoGame;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +16,7 @@ public class Bingo extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		getLogger().info("Bingooooooooo!");
-		this.getCommand("bingo").setExecutor(new CommandMain(this));
+		this.getCommand("bingo").setExecutor(new OnCommand(this));
 	}
 	
 	@Override

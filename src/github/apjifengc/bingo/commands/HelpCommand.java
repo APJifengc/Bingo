@@ -2,7 +2,7 @@ package github.apjifengc.bingo.commands;
 
 import org.bukkit.command.CommandSender;
 
-public class Cmd_help {
+public class HelpCommand {
 
 	final String msg = "§9§l-==============  §c§lBingo§9§l  ==============-";
 

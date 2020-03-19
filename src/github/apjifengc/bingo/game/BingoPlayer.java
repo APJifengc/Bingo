@@ -33,12 +33,12 @@ public class BingoPlayer {
 		return finishedTasks[game.getTasks().indexOf(task)];
 	}
 
-	public void setFinished(int index, boolean bool) {
-		finishedTasks[index] = bool;
+	public void finishTask(int index) {
+		finishedTasks[index] = true;
 	}
-
-	public void setFinished(BingoTask task, boolean bool) {
-		finishedTasks[game.getTasks().indexOf(task)] = bool;
+	
+	public void finishTask(BingoTask task) {
+		finishedTasks[game.getTasks().indexOf(task)] = true;
 	}
 
 }

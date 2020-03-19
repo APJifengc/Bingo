@@ -14,11 +14,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CommandMain implements TabExecutor {
+public class OnCommand implements TabExecutor {
 
 	private final Bingo plugin;
 
-	public CommandMain(Bingo plugin) {
+	public OnCommand(Bingo plugin) {
 		this.plugin = plugin;
 	}
 
@@ -26,10 +26,10 @@ public class CommandMain implements TabExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("bingo")) {
 			if (args.length == 0) {
-				new Cmd_help().onHelpCommand(sender);
+				new HelpCommand().onHelpCommand(sender);
 			} else {
 				if (args[0].equalsIgnoreCase("help")) {
-					new Cmd_help().onHelpCommand(sender);
+					new HelpCommand().onHelpCommand(sender);
 				}
 			}
 		}
@@ -48,6 +48,7 @@ public class CommandMain implements TabExecutor {
 
 	public List<String> getSubCommands(CommandSender sender) {
 		List<String> sub = new ArrayList<String>();
+		sub.add("help");
 		if (sender.hasPermission("bingo.use.gui"))
 			sub.add("gui");
 		if (sender.hasPermission("bingo.use.join"))
