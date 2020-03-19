@@ -15,7 +15,7 @@ public class Cmd_help {
 		if (sender.hasPermission("bingo.use.leave"))
 			sb.append("\n §7/bingo leave §e- §6Leave the Bingo game.");
 		if (sender.hasPermission("bingo.admin.start"))
-			sb.append("\n §7/bingo start §e- §6Start a Bingo game..");
+			sb.append("\n §7/bingo start §e- §6Start a Bingo game.");
 		if (sender.hasPermission("bingo.admin.stop"))
 			sb.append("\n §7/bingo stop §e- §6Stop the Bingo game.");
 		if (sender.hasPermission("bingo.admin.setting"))

@@ -12,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CommandMain implements TabExecutor {
 
@@ -39,7 +40,7 @@ public class CommandMain implements TabExecutor {
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("bingo")) {
 			if (args.length == 1) {
-				return getSubCommands(sender);
+				return getSubCommands(sender).stream().filter(s -> s.startsWith(args[0])).collect(Collectors.toList());
 			}
 		}
 		return Arrays.asList();
