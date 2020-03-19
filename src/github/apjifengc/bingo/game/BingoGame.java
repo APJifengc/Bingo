@@ -36,7 +36,7 @@ public class BingoGame {
 	 * 为这个 Bingo 游戏移除一个玩家。
 	 * 
 	 * @param player 要移除的玩家
-	 * @return 若移除成功则返回 true，移除失败（玩家不存在）则返回 false
+	 * @return 若移除成功则返回 true，移除失败（玩家不存在）则返回 false。
 	 */
 	public boolean removePlayer(Player player) {
 		if (getPlayer(player) != null) {
@@ -49,7 +49,7 @@ public class BingoGame {
 	 * 根据 Player 获取 BingoPlayer。
 	 * 
 	 * @param player Player
-	 * @return 返回指定的 BingoPlayer，如果不存在则返回 null
+	 * @return 返回指定的 BingoPlayer，如果不存在则返回 null。
 	 */
 	@Nullable
 	public BingoPlayer getPlayer(Player player) {

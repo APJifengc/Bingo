@@ -1,14 +1,11 @@
 /**
- * Command /bingo start
+ * bingo 命令
  * @author APJifengc
  */
 package github.apjifengc.bingo.commands;
 
 import github.apjifengc.bingo.Bingo;
-import org.bukkit.ChatColor;
 import org.bukkit.command.*;
-import org.bukkit.plugin.Plugin;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
