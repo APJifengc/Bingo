@@ -1,4 +1,24 @@
 name: Bingo
 main: github.apjifengc.bingo.Bingo
 version: DEV-1.0.0
-author: [APJifengc,Yoooooory]
+authors: [APJifengc,Yoooooory]
+api-version: 1.14
+
+commands:
+  bingo:
+    description: All of Bingo right here.
+
+permission:
+  bingo.admin:
+    description: Allows you to run all the admin commands.
+    children:
+      bingo.admin.start: true
+      bingo.admin.stop: true
+      bingo.admin.setting: true
+    default: op
+  bingo.use:
+    description: Allows you to run all the normal commands.
+    children:
+      bingo.use.gui: true
+      bingo.use.join: true
+      bingo.use.leave: true
