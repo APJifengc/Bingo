@@ -58,8 +58,6 @@ public class OnCommand implements TabExecutor {
 			sub.add("start");
 		if (sender.hasPermission("bingo.admin.stop"))
 			sub.add("stop");
-		if (sender.hasPermission("bingo.admin.setting"))
-			sub.add("setting");
 		return sub;
 	}
 }

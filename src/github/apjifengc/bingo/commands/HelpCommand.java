@@ -18,8 +18,6 @@ public class HelpCommand {
 			sb.append("\n §7/bingo start §e- §6Start a Bingo game.");
 		if (sender.hasPermission("bingo.admin.stop"))
 			sb.append("\n §7/bingo stop §e- §6Stop the Bingo game.");
-		if (sender.hasPermission("bingo.admin.setting"))
-			sb.append("\n §7/bingo setting §e- §6Setting a Bingo game.");
 		if (sb.toString().equals(msg))
 			sb.append("\n   §cYou don't have any permission for commands.");
 		sb.append("\n§9§l-===================================-");
