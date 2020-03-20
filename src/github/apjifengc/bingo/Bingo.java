@@ -8,9 +8,7 @@ import lombok.Setter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Bingo extends JavaPlugin {
-	
-	
-	
+
 	@Setter
 	@Getter
 	BingoGame currentGame;
@@ -21,10 +19,14 @@ public class Bingo extends JavaPlugin {
 		this.getCommand("bingo").setExecutor(new OnCommand(this));
 		saveResource("tasks.yml", false);
 	}
-	
+
 	@Override
 	public void onDisable() {
 		getLogger().info("SAMPLE TEXT");
+	}
+
+	public boolean hasBingoGame() {
+		return currentGame != null;
 	}
 
 }
