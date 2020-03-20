@@ -1,0 +1,17 @@
+#%0$s %1$s %2$s
+test: "123(%0$s)456(%1$s)789(%2$s)"
+prefix: "§c§l Bingo §9§l▌ "
+
+title: "§9§l-==============  §c§lBingo§9§l  ==============-"
+commands:
+  help:
+    gui: "§7/bingo gui §e- §6Open a GUI for Bingo."
+    join: "§7/bingo join §e- §6Join a Bingo game."
+    leave: "§7/bingo leave §e- §6Leave the Bingo game."
+    start: "§7/bingo start §e- §6Start a Bingo game."
+    stop: "§7/bingo stop §e- §6Stop the Bingo game."
+    no-permission: "  §cYou don't have any permission for commands."
+  join:
+    success: "  §eYou have joined the Bingo game.\n  There is current §a%0$s/%1$s §e players in the game."
+  stop:
+    message: "  §cThe Bingo game has been stopped by an administer."

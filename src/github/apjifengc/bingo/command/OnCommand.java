@@ -5,6 +5,8 @@
 package github.apjifengc.bingo.command;
 
 import github.apjifengc.bingo.Bingo;
+import github.apjifengc.bingo.util.Message;
+
 import org.bukkit.command.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +39,8 @@ public class OnCommand implements TabExecutor {
 					new JoinCommand().onJoinCommand(sender, plugin);
 				} else if (args[0].equalsIgnoreCase("leave")) {
 					new LeaveCommand().onLeaveCommand(sender, plugin);
+				} else {
+					sender.sendMessage(Message.getMessage("prefix") + "");
 				}
 			}
 		}

@@ -1,6 +1,8 @@
 package github.apjifengc.bingo.command;
 
 import github.apjifengc.bingo.Bingo;
+import github.apjifengc.bingo.util.Message;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,18 +14,18 @@ public class LeaveCommand {
                 if (plugin.hasBingoGame()) {
                     if (plugin.getCurrentGame().getPlayer((Player)sender)!=null) {
                         plugin.getCurrentGame().removePlayer((Player) sender);
-                        Bukkit.broadcastMessage("§c§l Bingo §9§l▌ §eYou have quited the Bingo game just now.\n");
+                        Bukkit.broadcastMessage(Message.getMessage("prefix") + "§eYou have quited the Bingo game just now.\n");
                     } else {
-                        sender.sendMessage("§c§l Bingo §9§l▌ §cYou are not in the game!");
+                        sender.sendMessage(Message.getMessage("prefix") + "§cYou are not in the game!");
                     }
                 } else {
-                    sender.sendMessage("§c§l Bingo §9§l▌ §cThere is no game running!");
+                    sender.sendMessage(Message.getMessage("prefix") + "§cThere is no game running!");
                 }
             } else {
-                sender.sendMessage("§c§l Bingo §9§l▌ §cYou don't have the permission for this command.");
+                sender.sendMessage(Message.getMessage("prefix") + "§cYou don't have the permission for this command.");
             }
         } else {
-            sender.sendMessage("§c§l Bingo §9§l▌ §cThis command is only for players. You can't use it in the console.");
+            sender.sendMessage(Message.getMessage("prefix") + "§cThis command is only for players. You can't use it in the console.");
         }
     }
 }

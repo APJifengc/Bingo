@@ -2,9 +2,13 @@ package github.apjifengc.bingo;
 
 import github.apjifengc.bingo.command.OnCommand;
 import github.apjifengc.bingo.game.BingoGame;
+import github.apjifengc.bingo.util.Message;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.IOException;
+
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Bingo extends JavaPlugin {
@@ -18,6 +22,8 @@ public class Bingo extends JavaPlugin {
 		getLogger().info("Bingooooooooo!");
 		this.getCommand("bingo").setExecutor(new OnCommand(this));
 		saveResource("tasks.yml", false);
+		saveResource("messages.yml", false);
+		Message.loadConfig();
 	}
 
 	@Override

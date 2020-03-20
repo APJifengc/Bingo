@@ -2,6 +2,8 @@ package github.apjifengc.bingo.command;
 
 import org.bukkit.command.CommandSender;
 
+import github.apjifengc.bingo.util.Message;
+
 public class HelpCommand {
 
 	final String msg = "§9§l-==============  §c§lBingo§9§l  ==============-";
@@ -9,18 +11,17 @@ public class HelpCommand {
 	void onHelpCommand(CommandSender sender) {
 		StringBuilder sb = new StringBuilder(msg);
 		if (sender.hasPermission("bingo.use.gui"))
-			sb.append("\n §7/bingo gui §e- §6Open a GUI for Bingo.");
+			sb.append("\n " + Message.getMessage("commands.help.gui"));
 		if (sender.hasPermission("bingo.use.join"))
-			sb.append("\n §7/bingo join §e- §6Join a Bingo game.");
+			sb.append("\n " + Message.getMessage("commands.help.join"));
 		if (sender.hasPermission("bingo.use.leave"))
-			sb.append("\n §7/bingo leave §e- §6Leave the Bingo game.");
+			sb.append("\n " + Message.getMessage("commands.help.leave"));
 		if (sender.hasPermission("bingo.admin.start"))
-			sb.append("\n §7/bingo start §e- §6Start a Bingo game.");
+			sb.append("\n " + Message.getMessage("commands.help.start"));
 		if (sender.hasPermission("bingo.admin.stop"))
-			sb.append("\n §7/bingo stop §e- §6Stop the Bingo game.");
+			sb.append("\n " + Message.getMessage("commands.help.stop"));
 		if (sb.toString().equals(msg))
-			sb.append("\n   §cYou don't have any permission for commands.");
-		sb.append("\n\n");
+			sb.append("\n " + Message.getMessage("commands.help.no-permission"));
 		sender.sendMessage(sb.toString());
 	}
 
