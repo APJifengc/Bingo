@@ -31,7 +31,7 @@ public class BingoGame {
 	ArrayList<BingoTask> tasks = new ArrayList<BingoTask>(25);
 
 	@Getter
-	ArrayList<BingoPlayer> players;
+	ArrayList<BingoPlayer> players = new ArrayList<BingoPlayer>();
 
 	/**
 	 * 为这个 Bingo 游戏添加一个玩家。
