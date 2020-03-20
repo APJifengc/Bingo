@@ -18,17 +18,17 @@ public class JoinCommand {
 								Message.getMessage("title") + "\n" + Message.getMessage("commands.join.success",
 										String.valueOf(plugin.getCurrentGame().getPlayers().size()), "总人数，APJ还没做"));
 					} else {
-						sender.sendMessage(Message.getMessage("prefix") + "§cYou are already in the game!");
+						sender.sendMessage(Message.getMessage("prefix") + Message.getMessage("commands.join.already-in"));
 					}
 				} else {
-					sender.sendMessage(Message.getMessage("prefix") + "§cThere is no game running!");
+					sender.sendMessage(Message.getMessage("prefix") + Message.getMessage("commands.join.no-game"));
 				}
 			} else {
-				sender.sendMessage(Message.getMessage("prefix") + "§cYou don't have the permission for this command.");
+				sender.sendMessage(Message.getMessage("prefix") + Message.getMessage("commands.no-permission"));
 			}
 		} else {
 			sender.sendMessage(Message.getMessage("prefix")
-					+ "§cThis command is only for players. You can't use it in the console.");
+					+ Message.getMessage("commands.no-console"));
 		}
 	}
 }

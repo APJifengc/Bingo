@@ -14,18 +14,18 @@ public class LeaveCommand {
                 if (plugin.hasBingoGame()) {
                     if (plugin.getCurrentGame().getPlayer((Player)sender)!=null) {
                         plugin.getCurrentGame().removePlayer((Player) sender);
-                        Bukkit.broadcastMessage(Message.getMessage("prefix") + "§eYou have quited the Bingo game just now.\n");
+                        Bukkit.broadcastMessage(Message.getMessage("prefix") + Message.getMessage("commands.leave.success"));
                     } else {
-                        sender.sendMessage(Message.getMessage("prefix") + "§cYou are not in the game!");
+                        sender.sendMessage(Message.getMessage("prefix") + Message.getMessage("commands.leave.not-in"));
                     }
                 } else {
-                    sender.sendMessage(Message.getMessage("prefix") + "§cThere is no game running!");
+                    sender.sendMessage(Message.getMessage("prefix") + Message.getMessage("commands.leave.no-game"));
                 }
             } else {
-                sender.sendMessage(Message.getMessage("prefix") + "§cYou don't have the permission for this command.");
+                sender.sendMessage(Message.getMessage("prefix") + Message.getMessage("commands.no-permission"));
             }
         } else {
-            sender.sendMessage(Message.getMessage("prefix") + "§cThis command is only for players. You can't use it in the console.");
+            sender.sendMessage(Message.getMessage("prefix") + Message.getMessage("commands.no-console"));
         }
     }
 }

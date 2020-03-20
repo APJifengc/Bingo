@@ -14,10 +14,10 @@ public class StopCommand {
 				Bukkit.broadcastMessage(
 						Message.getMessage("title") + "\n" + Message.getMessage("commands.stop.message"));
 			} else {
-				sender.sendMessage(Message.getMessage("prefix") + "§cThere is no game running!");
+				sender.sendMessage(Message.getMessage("prefix") + Message.getMessage("commands.stop.no-game"));
 			}
 		} else {
-			sender.sendMessage(Message.getMessage("prefix") + "§cYou don't have the permission for this command.");
+			sender.sendMessage(Message.getMessage("prefix") + Message.getMessage("commands.no-permission"));
 		}
 	}
 }

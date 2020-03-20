@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import github.apjifengc.bingo.util.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -85,7 +86,7 @@ public class BingoGame {
 		List<String> items = taskYaml.getStringList("items");
 		// 任务数少于25个，不足一场游戏时抛出 BadTaskException
 		if (items.size() < 25) {
-			throw new BadTaskException("The total number of tasks is less than 25.");
+			throw new BadTaskException(Message.getMessage("errors.bad-task.number-less-than-25"));
 		}
 		Random random = new Random();
 		for (int i = 0; i < 25; i++) {
@@ -95,7 +96,7 @@ public class BingoGame {
 				tasks.add(new BingoItemTask(new ItemStack(m)));
 				items.remove(index);
 			} else {
-				throw new BadTaskException("Can't solve \"" + items.get(index) + "\".");
+				throw new BadTaskException(Message.getMessage("errors.bad-task.cant-solve",items.get(index)));
 			}
 		}
 	}
