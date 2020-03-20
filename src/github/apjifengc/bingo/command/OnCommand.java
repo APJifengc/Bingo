@@ -31,6 +31,12 @@ public class OnCommand implements TabExecutor {
 					new DebugCommand().onDebugCommand(sender, args);
 				} else if (args[0].equalsIgnoreCase("start")) {
 					new StartCommand().onStartCommand(sender, plugin);
+				} else if (args[0].equalsIgnoreCase("stop")) {
+					new StopCommand().onStopCommand(sender, plugin);
+				} else if (args[0].equalsIgnoreCase("join")) {
+					new JoinCommand().onJoinCommand(sender, plugin);
+				} else if (args[0].equalsIgnoreCase("leave")) {
+					new LeaveCommand().onLeaveCommand(sender, plugin);
 				}
 			}
 		}
