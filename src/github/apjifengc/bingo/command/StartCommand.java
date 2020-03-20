@@ -18,17 +18,17 @@ public class StartCommand {
 					game.generateTasks();
 				} catch (IOException | InvalidConfigurationException | BadTaskException e) {
 					e.printStackTrace();
-					sender.sendMessage("§cUnable to start a game: " + e.getMessage());
+					sender.sendMessage("§c§l Bingo §9§l▌ §cUnable to start a game: " + e.getMessage());
 					return;
 				}
 				plugin.setCurrentGame(game);
 				Bukkit.broadcastMessage(
 						"§9§l-==============  §c§lBingo§9§l  ==============-\n  §aA Bingo game has started!\n  §eUse command §7§n/bingo join§e to join the game!");
 			} else {
-				sender.sendMessage("§cThere is already a game running!");
+				sender.sendMessage("§c§l Bingo §9§l▌ §cThere is already a game running!");
 			}
 		} else {
-			sender.sendMessage("§cYou don't have the permission for this command.");
+			sender.sendMessage("§c§l Bingo §9§l▌ §cYou don't have the permission for this command.");
 		}
 	}
 }
