@@ -9,5 +9,4 @@ Bingo is a Minecraft survival game. When the game starts, you will get a 5*5 tas
 |/bingo join|Join a Bingo game.|bingo.use.join|
 |/bingo leave|Leave the Bingo game.|bingo.use.leave|
 |/bingo start|Start a Bingo game.|bingo.admin.start|
-|/bingo stop|Stop the Bingo game.|bingo.admin.stop|
-|/bingo setting|Setting a Bingo game.|bingo.admin.setting|
+|/bingo stop|Stop the Bingo game.|bingo.admin.stop|  
