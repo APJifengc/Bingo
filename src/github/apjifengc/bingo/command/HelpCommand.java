@@ -20,7 +20,7 @@ public class HelpCommand {
 			sb.append("\n §7/bingo stop §e- §6Stop the Bingo game.");
 		if (sb.toString().equals(msg))
 			sb.append("\n   §cYou don't have any permission for commands.");
-		sb.append("\n§9§l-===================================-");
+		sb.append("\n\n");
 		sender.sendMessage(sb.toString());
 	}
 
