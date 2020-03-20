@@ -14,7 +14,7 @@ commands:
     stop: "§7/bingo stop §e- §6Stop the Bingo game."
     no-permission: "  §cYou don't have any permission for commands."
   join:
-    success: "  §eYou have joined the Bingo game.\n  There is current §a%0$s/%1$s §e players in the game."
+    success: "  §eYou have joined the Bingo game.\n  There is current §a%0$s/%1$s §eplayers in the game."
     no-game: "§cThere is no game running!"
     already-in: "§cYou are already in the game!"
   leave:
