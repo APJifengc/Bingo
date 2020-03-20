@@ -2,7 +2,7 @@
  * bingo 命令
  * @author APJifengc
  */
-package github.apjifengc.bingo.commands;
+package github.apjifengc.bingo.command;
 
 import github.apjifengc.bingo.Bingo;
 import org.bukkit.command.*;

@@ -1,6 +1,6 @@
 package github.apjifengc.bingo;
 
-import github.apjifengc.bingo.commands.OnCommand;
+import github.apjifengc.bingo.command.OnCommand;
 import github.apjifengc.bingo.game.BingoGame;
 import lombok.Getter;
 import lombok.Setter;

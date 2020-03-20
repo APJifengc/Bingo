@@ -1,4 +1,4 @@
-package github.apjifengc.bingo.commands;
+package github.apjifengc.bingo.command;
 
 import org.bukkit.command.CommandSender;
 
