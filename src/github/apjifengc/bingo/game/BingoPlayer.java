@@ -27,9 +27,9 @@ public class BingoPlayer {
 	}
 
 	/**
-	 * 根据任务索引检查该玩家是否已完成该任务。
+	 * 根据任务索引检查该玩家是否已完成某任务。
 	 * 
-	 * @param index
+	 * @param index 要检查的任务的索引
 	 * @return 若玩家已完成该任务则返回 true，反之返回 false。
 	 */
 	public boolean hasFinished(int index) {
@@ -37,9 +37,9 @@ public class BingoPlayer {
 	}
 
 	/**
-	 * 根据任务检查该玩家是否已完成该任务。
+	 * 根据任务检查该玩家是否已完成某任务。
 	 * 
-	 * @param task
+	 * @param task 要检查的任务
 	 * @return 若玩家已完成该任务则返回 true，反之返回 false。
 	 */
 	public boolean hasFinished(BingoTask task) {
@@ -58,7 +58,7 @@ public class BingoPlayer {
 	/**
 	 * 使玩家完成一项任务。
 	 * 
-	 * @param index 要完成的任务
+	 * @param task 要完成的任务
 	 */
 	public void finishTask(BingoTask task) {
 		taskStatus[game.getTasks().indexOf(task)] = true;
