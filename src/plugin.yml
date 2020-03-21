@@ -14,11 +14,12 @@ permissions:
     children:
       bingo.admin.start: true
       bingo.admin.stop: true
+      bingo.admin.reload: true
     default: op
   bingo.use:
     description: Allows you to run all the player commands.
     children:
-      bingo.use.gui: true
+      bingo.use.quest: true
       bingo.use.join: true
       bingo.use.leave: true
     default: true

@@ -1,34 +1,79 @@
-#%0$s %1$s %2$s
-test: "123(%0$s)456(%1$s)789(%2$s)"
+############################
+#    Bingo Message File    #
+###############################################################$
+# This file contains all the texts in the Bingo game.          #
+# See more information at:                                     #
+# https://github.com/APJifengc/Bingo/tree/master/message_files #
+###############################################################$
 prefix: "§c§l Bingo §9§l▌ "
 
 title: "§9§l-==============  §c§lBingo§9§l  ==============-\n"
 commands:
   no-permission: "§cYou don't have the permission for this command."
   no-console: "§cThis command is only for players. You can't use it in the console."
+  unknown-command: "§cUnknown command. Please check is the command right."
   help:
     gui: "§7/bingo gui §e- §6Open a GUI for Bingo."
     join: "§7/bingo join §e- §6Join a Bingo game."
     leave: "§7/bingo leave §e- §6Leave the Bingo game."
     start: "§7/bingo start §e- §6Start a Bingo game."
     stop: "§7/bingo stop §e- §6Stop the Bingo game."
+    reload: "§7/bingo reload §e- §6Reload the Bingo game config files."
     no-permission: "  §cYou don't have any permission for commands."
   join:
     success: "  §eYou have joined the Bingo game.\n  There is current §a%0$s/%1$s §eplayers in the game."
     no-game: "§cThere is no game running!"
     already-in: "§cYou are already in the game!"
+    full-players: "§cThe game is full! Please wait for next game."
   leave:
     success: "§eYou have quited the Bingo game just now."
     no-game: "§cThere is no game running!"
     not-in: "§cYou are not in the game!"
   start:
-    success: "§aA Bingo game has started!\n  §eUse command §7§n/bingo join§e to join the game!"
+    success: "  §aA Bingo game has started!\n  §eUse command §7§n/bingo join§e to join the game!"
     already-running: "§cThere is already a game running!"
     unable-start: "§cUnable to start a game: "
   stop:
     message: "  §cThe Bingo game has been stopped by an administer."
     no-game: "§cThere is no game running!"
+  gui:
+    not-in: "§cYou are not in a Bingo game!"
+    no-game: "§cThere is no game running!"
 errors:
   bad-task:
     number-less-than-25: "The total number of tasks is less than 25."
     cant-solve: "Can't solve \"%0$s\"."
+gui:
+  title: "§c§lBingo §eTasks"
+  complete: "§aYou have completed this task!"
+  goal-title: "§a§lGOAL"
+  goal-lore: |
+    §c§l||§eBingo is a Minecraft survival game.
+    §c§l||§eWhen the game starts, you will get
+    §c§l||§ea 5*5 task panel. You need to com-
+    §c§l||§eplete the tasks inside as much as
+    §c§l||§epossible. Each time you complete a
+    §c§l||§etask, you will get a square of the
+    §c§l||§epanel. If you can get 5 in a row
+    §c§l||§eeither in a row, column, or diago-
+    §c§l||§enal, you win!
+task:
+  item-task:
+    title: "§bItem Task"
+    desc: |
+      §c§lBingo Item Task
+      §e§lType description:
+      §4 - Get a item to complete the task.
+      §e§lItem type:
+      §4 - %0$s
+scoreboard:
+  start-timer:
+    title: "§c§lBingo Game"
+    main: |
+      §3§l-=====+=====-
+      §e Bingo Game
+      §b Players:%0$s/%1$s
+      §a %2$s
+      §3§l-=====+=====-
+    wait-for-people: "Waiting the game start..."
+    starting-in: "Starting in %0$s seconds..."
