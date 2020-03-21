@@ -1,0 +1,51 @@
+###########################
+#    Bingo Game Config    #
+#########################################################
+# This file contains all the Bingo game configurations. #
+#########################################################
+room:
+  #This is the max player count of the Bingo game.
+  max-player: 8
+
+  #This is the min player count to start the game.
+  min-player: 4
+
+  #This is the time(seconds) between the first game ends and the second game creates.
+  #Keep it -1 if you don't want it to auto create new game.
+  new-game-delay: 60
+
+  #This is how many players complete needed to instantly end the game.
+  #Max values: the max players/4
+  winner-count: 2
+
+  #This is the time(seconds) to end the game if a player completed.
+  #Keep it -1 if you don't want it to end.
+  end-time: 300
+
+  #This is the time(seconds) to start the game when the players is enough.
+  #Example:
+  #start-time:
+  #  - "4|300"  -  When the player count is more than 4 (include 4), the game will start in 300 seconds
+  #  - "6|60"  -  When the player count is more than 6 (include 6), the game will start in 60 seconds
+  #  - "8|5"   -  When the player count is more than 8 (include 8), the game will start in 5 seconds
+  start-time:
+    - "4|300"
+    - "6|60"
+    - "8|5"
+
+chat:
+  #This is when a player complete a task, whether it will show in the chat or not.
+  #Availdable values: true / false
+  complete-task-show: true
+
+  #This is when a player complete the Bingo game, whether it will show in the chat or not.
+  #Availdable values: true / false
+  complete-game-show: true
+
+game:
+  #This is the no PVP time(seconds).
+  #Keep it -1 if you don't want to enable PVP.
+  no-pvp: 300
+
+  #This is how long the world border is. (Blocks)
+  world-border: 400
