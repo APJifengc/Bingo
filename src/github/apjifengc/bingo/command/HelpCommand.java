@@ -17,6 +17,8 @@ public class HelpCommand {
 			sb.append("\n " + Message.getMessage("commands.help.start"));
 		if (sender.hasPermission("bingo.admin.stop"))
 			sb.append("\n " + Message.getMessage("commands.help.stop"));
+		if (sender.hasPermission("bingo.admin.reload"))
+			sb.append("\n " + Message.getMessage("commands.help.reload"));
 		if (sb.toString().equals(Message.getMessage("title")))
 			sb.append("\n " + Message.getMessage("commands.help.no-permission"));
 		sender.sendMessage(sb.toString());

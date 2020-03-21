@@ -30,7 +30,7 @@ public class OnCommand implements TabExecutor {
 				if (args[0].equalsIgnoreCase("help")) {
 					new HelpCommand().onHelpCommand(sender);
 				} else if (args[0].equalsIgnoreCase("debug")) {
-					new DebugCommand().onDebugCommand(sender, args);
+					new DebugCommand().onDebugCommand(sender, args , plugin);
 				} else if (args[0].equalsIgnoreCase("start")) {
 					new StartCommand().onStartCommand(sender, plugin);
 				} else if (args[0].equalsIgnoreCase("stop")) {
@@ -39,8 +39,12 @@ public class OnCommand implements TabExecutor {
 					new JoinCommand().onJoinCommand(sender, plugin);
 				} else if (args[0].equalsIgnoreCase("leave")) {
 					new LeaveCommand().onLeaveCommand(sender, plugin);
+				} else if (args[0].equalsIgnoreCase("gui")) {
+					new GuiCommand().onGuiCommand(sender, plugin);
+				} else if (args[0].equalsIgnoreCase("reload")) {
+					new ReloadCommand().onReloadCommand(sender, plugin);
 				} else {
-					sender.sendMessage(Message.getMessage("prefix") + "");
+					sender.sendMessage(Message.getMessage("prefix") + Message.getMessage("commands.unknown-command"));
 				}
 			}
 		}
