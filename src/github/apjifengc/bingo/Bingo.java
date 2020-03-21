@@ -2,6 +2,7 @@ package github.apjifengc.bingo;
 
 import github.apjifengc.bingo.command.OnCommand;
 import github.apjifengc.bingo.game.BingoGame;
+import github.apjifengc.bingo.listener.ClickInventoryListener;
 import github.apjifengc.bingo.util.Message;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +21,9 @@ public class Bingo extends JavaPlugin {
 		this.getCommand("bingo").setExecutor(new OnCommand(this));
 		saveResource("tasks.yml", false);
 		saveResource("messages.yml", false);
-		Message.loadConfig();
+		saveResource("config.yml", false);
+		ConfigLoad.reloadConfig(this);
+		getServer().getPluginManager().registerEvents(new ClickInventoryListener(this),this);
 	}
 
 	@Override

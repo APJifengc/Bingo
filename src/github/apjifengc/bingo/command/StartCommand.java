@@ -18,7 +18,7 @@ public class StartCommand {
 				BingoGame game = new BingoGame();
 				try {
 					game.generateTasks();
-				} catch (IOException | InvalidConfigurationException | BadTaskException e) {
+				} catch (BadTaskException e) {
 					e.printStackTrace();
 					sender.sendMessage(Message.getMessage("prefix") + Message.getMessage("commands.start.unable-start") + e.getMessage());
 					return;

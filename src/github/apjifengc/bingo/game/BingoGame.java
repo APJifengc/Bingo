@@ -2,13 +2,15 @@ package github.apjifengc.bingo.game;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.sql.Time;
+import java.util.*;
 
+import github.apjifengc.bingo.Bingo;
+import github.apjifengc.bingo.ConfigLoad;
 import github.apjifengc.bingo.util.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -19,12 +21,15 @@ import com.sun.istack.internal.Nullable;
 import github.apjifengc.bingo.exception.BadTaskException;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Objective;
 
 /**
  * 代表一个 Bingo 游戏
  * 
  * @author Yoooooory
  */
+
 public class BingoGame {
 
 	@Setter
@@ -33,6 +38,10 @@ public class BingoGame {
 
 	@Getter
 	ArrayList<BingoPlayer> players = new ArrayList<BingoPlayer>();
+
+	int timeLeft;
+	int startTimer;
+
 
 	/**
 	 * 为这个 Bingo 游戏添加一个玩家。
@@ -80,10 +89,8 @@ public class BingoGame {
 	 * @throws InvalidConfigurationException
 	 * @throws BadTaskException
 	 */
-	public void generateTasks() throws IOException, InvalidConfigurationException, BadTaskException {
-		YamlConfiguration taskYaml = new YamlConfiguration();
-		taskYaml.load(new File(Bukkit.getPluginManager().getPlugin("Bingo").getDataFolder(), "tasks.yml"));
-		List<String> items = taskYaml.getStringList("items");
+	public void generateTasks() throws BadTaskException {
+		List<String> items = ConfigLoad.getTasksConfig().getStringList("items");
 		// 任务数少于25个，不足一场游戏时抛出 BadTaskException
 		if (items.size() < 25) {
 			throw new BadTaskException(Message.getMessage("errors.bad-task.number-less-than-25"));
@@ -100,5 +107,6 @@ public class BingoGame {
 			}
 		}
 	}
+
 
 }

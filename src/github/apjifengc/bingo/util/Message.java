@@ -6,15 +6,17 @@ import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
-import lombok.Getter;
 
 public class Message {
 
 	@Getter
+	@Setter
 	static YamlConfiguration config = new YamlConfiguration();
 
 	public static String getMessage(String path, String... args) {
@@ -22,29 +24,11 @@ public class Message {
 		if (src == null) {
 			return "§c§l[Unknown Message]";
 		}
+
 		for (int i = 0; i < args.length; i++) {
 			src = src.replace("%" + i + "$s", args[i]);
 		}
 		return src;
-	}
-
-	/**
-	 * 在插件启用时运行，初始化 Message 类。
-	 * 
-	 * @throws IOException
-	 * @throws InvalidConfigurationException
-	 */
-	public static void loadConfig() {
-		Plugin plugin = Bukkit.getPluginManager().getPlugin("Bingo");
-		File file = new File(plugin.getDataFolder(), "messages.yml");
-		try {
-			config.load(file);
-		} catch (IOException | InvalidConfigurationException e) {
-			e.printStackTrace();
-		}
-		YamlConfiguration defConfig = YamlConfiguration
-				.loadConfiguration(new InputStreamReader(plugin.getResource("messages.yml")));
-		config.setDefaults(defConfig);
 	}
 
 	/**
