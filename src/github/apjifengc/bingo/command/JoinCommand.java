@@ -1,6 +1,7 @@
 package github.apjifengc.bingo.command;
 
 import github.apjifengc.bingo.Bingo;
+import github.apjifengc.bingo.ConfigLoad;
 import github.apjifengc.bingo.util.Message;
 
 import org.bukkit.Bukkit;
@@ -13,10 +14,14 @@ public class JoinCommand {
 			if (sender.hasPermission("bingo.use.join")) {
 				if (plugin.hasBingoGame()) {
 					if (plugin.getCurrentGame().getPlayer((Player) sender) == null) {
-						plugin.getCurrentGame().addPlayer((Player) sender);
-						Bukkit.broadcastMessage(
-								Message.getMessage("title") + "\n" + Message.getMessage("commands.join.success",
-										String.valueOf(plugin.getCurrentGame().getPlayers().size()), "总人数，APJ还没做"));
+						if (plugin.getCurrentGame().getPlayers().size()==ConfigLoad.getMainConfig().getInt("room.max-player")){
+							plugin.getCurrentGame().addPlayer((Player) sender);
+							Bukkit.broadcastMessage(
+									Message.getMessage("title") + "\n" + Message.getMessage("commands.join.success",
+											String.valueOf(plugin.getCurrentGame().getPlayers().size()), String.valueOf(ConfigLoad.getMainConfig().getInt("room.max-player"))));
+						} else {
+							sender.sendMessage(Message.getMessage("prefix") + Message.getMessage("commands.join.full-players"));
+						}
 					} else {
 						sender.sendMessage(Message.getMessage("prefix") + Message.getMessage("commands.join.already-in"));
 					}
