@@ -2,7 +2,7 @@ package github.apjifengc.bingo.game;
 
 import org.bukkit.entity.Player;
 
-import github.apjifengc.bingo.util.BingoBroad;
+import github.apjifengc.bingo.util.BingoBoard;
 import lombok.Getter;
 
 /**
@@ -98,11 +98,11 @@ public class BingoPlayer {
 			if (taskStatus[4] && taskStatus[8] && taskStatus[12] && taskStatus[16] && taskStatus[20])
 				return true;
 		}
-		int row = BingoBroad.getX(index);
+		int row = BingoBoard.getX(index);
 		if (taskStatus[row] && taskStatus[row + 5] && taskStatus[row + 10] && taskStatus[row + 15]
 				&& taskStatus[row + 20])
 			return true;
-		int col = BingoBroad.getYFirst(BingoBroad.getY(index));
+		int col = BingoBoard.getYFirst(BingoBoard.getY(index));
 		if (taskStatus[col] && taskStatus[col + 1] && taskStatus[col + 2] && taskStatus[col + 3] && taskStatus[col + 4])
 			return true;
 		return false;
