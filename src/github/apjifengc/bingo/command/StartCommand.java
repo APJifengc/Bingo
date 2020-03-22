@@ -12,7 +12,7 @@ public class StartCommand {
 	void onStartCommand(CommandSender sender, Bingo plugin) {
 		if (sender.hasPermission("bingo.admin.start")) {
 			if (!plugin.hasBingoGame()) {
-				BingoGame game = new BingoGame();
+				BingoGame game = new BingoGame(plugin);
 				try {
 					game.generateTasks();
 				} catch (BadTaskException e) {

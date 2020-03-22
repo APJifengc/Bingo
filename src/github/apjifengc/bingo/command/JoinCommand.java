@@ -2,6 +2,7 @@ package github.apjifengc.bingo.command;
 
 import github.apjifengc.bingo.Bingo;
 import github.apjifengc.bingo.Configs;
+import github.apjifengc.bingo.game.BingoGameState;
 import github.apjifengc.bingo.util.Msg;
 
 import org.bukkit.Bukkit;
@@ -14,9 +15,9 @@ public class JoinCommand {
 			if (sender.hasPermission("bingo.use.join")) {
 				if (plugin.hasBingoGame()) {
 					if (plugin.getCurrentGame().getPlayer((Player) sender) == null) {
-						if (plugin.getCurrentGame().getPlayers().size()== Configs.getMainCfg().getInt("room.max-player")){
+						if (plugin.getCurrentGame().getPlayers().size() != Configs.getMainCfg().getInt("room.max-player")){
 							plugin.getCurrentGame().addPlayer((Player) sender);
-							Bukkit.broadcastMessage(
+							sender.sendMessage(
 									Msg.get("title") + "\n" + Msg.get("commands.join.success",
 											String.valueOf(plugin.getCurrentGame().getPlayers().size()), String.valueOf(Configs.getMainCfg().getInt("room.max-player"))));
 						} else {

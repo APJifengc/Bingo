@@ -14,7 +14,7 @@ public class LeaveCommand {
                 if (plugin.hasBingoGame()) {
                     if (plugin.getCurrentGame().getPlayer((Player)sender)!=null) {
                         plugin.getCurrentGame().removePlayer((Player) sender);
-                        Bukkit.broadcastMessage(Msg.get("prefix") + Msg.get("commands.leave.success"));
+                        sender.sendMessage(Msg.get("prefix") + Msg.get("commands.leave.success"));
                     } else {
                         sender.sendMessage(Msg.get("prefix") + Msg.get("commands.leave.not-in"));
                     }
