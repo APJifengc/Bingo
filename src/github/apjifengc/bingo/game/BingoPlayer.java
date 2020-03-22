@@ -1,9 +1,13 @@
 package github.apjifengc.bingo.game;
 
+import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import github.apjifengc.bingo.util.BingoBoard;
 import lombok.Getter;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
 
 /**
  * 代表一个在 Bingo 游戏中的玩家
@@ -18,6 +22,10 @@ public class BingoPlayer {
 
 	@Getter
 	BingoGame game;
+
+	@Getter
+	@Setter
+	Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
 	boolean[] taskStatus = new boolean[25];
 
@@ -53,6 +61,9 @@ public class BingoPlayer {
 	 */
 	public void finishTask(int index) {
 		taskStatus[index] = true;
+		if (checkVictory(index)){
+			game.completeBingo(this);
+		}
 	}
 
 	/**
@@ -62,6 +73,9 @@ public class BingoPlayer {
 	 */
 	public void finishTask(BingoTask task) {
 		taskStatus[game.getTasks().indexOf(task)] = true;
+		if (checkVictory(task)){
+			game.completeBingo(this);
+		}
 	}
 
 	/**
