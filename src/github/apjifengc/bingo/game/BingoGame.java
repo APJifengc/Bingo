@@ -1,18 +1,13 @@
 package github.apjifengc.bingo.game;
 
-import java.io.File;
 import java.io.IOException;
-import java.sql.Time;
 import java.util.*;
 
-import github.apjifengc.bingo.Bingo;
-import github.apjifengc.bingo.ConfigLoad;
-import github.apjifengc.bingo.util.Message;
+import github.apjifengc.bingo.Configs;
+import github.apjifengc.bingo.util.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -22,7 +17,10 @@ import github.apjifengc.bingo.exception.BadTaskException;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 
 /**
  * 代表一个 Bingo 游戏
@@ -42,6 +40,7 @@ public class BingoGame {
 	int timeLeft;
 	int startTimer;
 
+	BingoGameState state;
 
 	/**
 	 * 为这个 Bingo 游戏添加一个玩家。
@@ -90,10 +89,10 @@ public class BingoGame {
 	 * @throws BadTaskException
 	 */
 	public void generateTasks() throws BadTaskException {
-		List<String> items = ConfigLoad.getTasksConfig().getStringList("items");
+		List<String> items = Configs.getTaskCfg().getStringList("items");
 		// 任务数少于25个，不足一场游戏时抛出 BadTaskException
 		if (items.size() < 25) {
-			throw new BadTaskException(Message.getMessage("errors.bad-task.number-less-than-25"));
+			throw new BadTaskException(Msg.get("errors.bad-task.number-less-than-25"));
 		}
 		Random random = new Random();
 		for (int i = 0; i < 25; i++) {
@@ -103,7 +102,7 @@ public class BingoGame {
 				tasks.add(new BingoItemTask(new ItemStack(m)));
 				items.remove(index);
 			} else {
-				throw new BadTaskException(Message.getMessage("errors.bad-task.cant-solve",items.get(index)));
+				throw new BadTaskException(Msg.get("errors.bad-task.cant-solve",items.get(index)));
 			}
 		}
 	}
