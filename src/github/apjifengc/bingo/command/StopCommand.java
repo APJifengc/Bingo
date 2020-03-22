@@ -1,7 +1,7 @@
 package github.apjifengc.bingo.command;
 
 import github.apjifengc.bingo.Bingo;
-import github.apjifengc.bingo.util.Message;
+import github.apjifengc.bingo.util.Msg;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -12,12 +12,12 @@ public class StopCommand {
 			if (plugin.hasBingoGame()) {
 				plugin.setCurrentGame(null);
 				Bukkit.broadcastMessage(
-						Message.getMessage("title") + "\n" + Message.getMessage("commands.stop.message"));
+						Msg.get("title") + "\n" + Msg.get("commands.stop.message"));
 			} else {
-				sender.sendMessage(Message.getMessage("prefix") + Message.getMessage("commands.stop.no-game"));
+				sender.sendMessage(Msg.get("prefix") + Msg.get("commands.stop.no-game"));
 			}
 		} else {
-			sender.sendMessage(Message.getMessage("prefix") + Message.getMessage("commands.no-permission"));
+			sender.sendMessage(Msg.get("prefix") + Msg.get("commands.no-permission"));
 		}
 	}
 }

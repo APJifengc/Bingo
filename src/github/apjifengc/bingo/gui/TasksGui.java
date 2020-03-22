@@ -2,7 +2,7 @@ package github.apjifengc.bingo.gui;
 
 import github.apjifengc.bingo.Bingo;
 import github.apjifengc.bingo.util.BingoBoard;
-import github.apjifengc.bingo.util.Message;
+import github.apjifengc.bingo.util.Msg;
 import github.apjifengc.bingo.game.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class TasksGui {
     public Inventory getTaskGUI(Player player, Bingo plugin) {
-        Inventory inventory = Bukkit.createInventory((InventoryHolder)new GuiHolder(),54,Message.getMessage("gui.title"));
+        Inventory inventory = Bukkit.createInventory((InventoryHolder)new GuiHolder(),54,Msg.get("gui.title"));
         ItemStack itemStack = new ItemStack(Material.MAGENTA_STAINED_GLASS_PANE);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§1");
@@ -35,15 +35,15 @@ public class TasksGui {
         }
 
         itemStack.setType(Material.EMERALD);
-        itemMeta.setDisplayName(Message.getMessage("gui.goal-title"));
+        itemMeta.setDisplayName(Msg.get("gui.goal-title"));
         List<String> lore = new ArrayList<String>();
-        Collections.addAll(lore, Message.getMessage("gui.goal-lore").split("\n"));
+        Collections.addAll(lore, Msg.get("gui.goal-lore").split("\n"));
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         inventory.setItem(49,itemStack);
         ItemStack complete = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
         itemMeta = complete.getItemMeta();
-        itemMeta.setDisplayName(Message.getMessage("gui.complete"));
+        itemMeta.setDisplayName(Msg.get("gui.complete"));
         itemMeta.setLore(null);
         complete.setItemMeta(itemMeta);
         for(int i = 0;i<25;i++){
@@ -52,9 +52,9 @@ public class TasksGui {
             } else {
                 itemStack = plugin.getCurrentGame().getTasks().get(i).getShowItem();
                 if (plugin.getCurrentGame().getTasks().get(i) instanceof BingoItemTask) {
-                    itemMeta.setDisplayName(Message.getMessage("task.item-task.title"));
+                    itemMeta.setDisplayName(Msg.get("task.item-task.title"));
                     lore = new ArrayList<String>();
-                    Collections.addAll(lore, Message.getMessage("task.item-task.desc",itemStack.getType().name()).split("\n"));
+                    Collections.addAll(lore, Msg.get("task.item-task.desc",itemStack.getType().name()).split("\n"));
                     itemMeta.setLore(lore);
                 }
                 itemStack.setItemMeta(itemMeta);

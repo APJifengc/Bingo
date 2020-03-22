@@ -3,7 +3,7 @@ package github.apjifengc.bingo.command;
 import github.apjifengc.bingo.Bingo;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import github.apjifengc.bingo.util.Message;
+import github.apjifengc.bingo.util.Msg;
 import org.bukkit.entity.Player;
 
 public class DebugCommand {
