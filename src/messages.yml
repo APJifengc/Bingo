@@ -39,6 +39,7 @@ commands:
   gui:
     not-in: "§cYou are not in a Bingo game!"
     no-game: "§cThere is no game running!"
+    not-start: "§cThe game hasn't started yet!"
 errors:
   bad-task:
     number-less-than-25: "The total number of tasks is less than 25."
@@ -69,11 +70,35 @@ task:
 scoreboard:
   start-timer:
     title: "§c§lBingo Game"
+    #Please don't add more than two same lines.
     main: |
-      §3§l-=====+=====-
-      §e Bingo Game
-      §b Players:%0$s/%1$s
-      §a %2$s
-      §3§l-=====+=====-
-    wait-for-people: "Waiting the game start..."
+      §3
+      §bPlayers : §d%0$s/%1$s
+      §2
+      §a%2$s
+      §3
+      §7-----------
+      §eBingoMC.net
+    wait-for-people: "Waiting for more people..."
     starting-in: "Starting in %0$s seconds..."
+  in-game:
+    title: "§c§lBingo Game"
+    #Please don't add more than two same lines.
+    main: |
+      §1
+      §eYour tasks:
+      §1
+      §1   %0$s
+      §2   %1$s
+      §3   %2$s
+      §4   %3$s
+      §5   %4$s
+      §2
+      §7-----------
+      §eBingoMC.net
+    completed: "§a█"
+    uncompleted: "§c█"
+chat:
+  join: "§a%0$s joined the game! §d(%1$s/%2$s)"
+  leave: "§a%0$s left the game! §d(%1$s/%2$s)"
+  task: "§a%0$s completed the %1$s task!"

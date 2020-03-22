@@ -28,6 +28,7 @@ room:
   #  - "4|300"  -  When the player count is more than 4 (include 4), the game will start in 300 seconds
   #  - "6|60"  -  When the player count is more than 6 (include 6), the game will start in 60 seconds
   #  - "8|5"   -  When the player count is more than 8 (include 8), the game will start in 5 seconds
+  # * You need to write at least the min-player time.
   start-time:
     - "4|300"
     - "6|60"
