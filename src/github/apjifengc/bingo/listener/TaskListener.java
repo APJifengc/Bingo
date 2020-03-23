@@ -1,8 +1,6 @@
 package github.apjifengc.bingo.listener;
 
 import github.apjifengc.bingo.Bingo;
-import javafx.concurrent.Task;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public class TaskListener implements Listener {

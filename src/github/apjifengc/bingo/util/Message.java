@@ -1,32 +1,20 @@
 package github.apjifengc.bingo.util;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import github.apjifengc.bingo.Configs;
-import lombok.Getter;
-import lombok.Setter;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
+public class Message {
 
-public class Msg {
-
-	public static String get(String path, String... args) {
+	public static String get(String path, Object... args) {
 
 		String src = Configs.getMsgCfg().getString(path);
 		if (src == null) {
 			return "§c§l[Unknown Message]";
 		}
-
 		for (int i = 0; i < args.length; i++) {
-			src = src.replace("%" + i + "$s", args[i]);
+			src = src.replace("%" + i + "$s", args[i].toString());
 		}
-		return src;
+		return src.replaceAll("\\\\{0}&(.)", "§$1");
 	}
 
 	/**

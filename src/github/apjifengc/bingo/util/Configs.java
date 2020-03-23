@@ -1,9 +1,10 @@
-package github.apjifengc.bingo;
+package github.apjifengc.bingo.util;
 
-import github.apjifengc.bingo.util.Msg;
 import lombok.Getter;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import github.apjifengc.bingo.Bingo;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,8 +20,6 @@ public class Configs {
 
     @Getter
     static YamlConfiguration mainCfg = new YamlConfiguration();
-
-
 
     public static void reloadConfig(Bingo plugin) {
         File file = new File(plugin.getDataFolder(), "messages.yml");

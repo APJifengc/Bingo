@@ -1,9 +1,8 @@
 package github.apjifengc.bingo.command;
 
 import github.apjifengc.bingo.Bingo;
-import github.apjifengc.bingo.util.Msg;
+import github.apjifengc.bingo.util.Message;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -14,18 +13,18 @@ public class LeaveCommand {
                 if (plugin.hasBingoGame()) {
                     if (plugin.getCurrentGame().getPlayer((Player)sender)!=null) {
                         plugin.getCurrentGame().removePlayer((Player) sender);
-                        sender.sendMessage(Msg.get("prefix") + Msg.get("commands.leave.success"));
+                        sender.sendMessage(Message.get("prefix") + Message.get("commands.leave.success"));
                     } else {
-                        sender.sendMessage(Msg.get("prefix") + Msg.get("commands.leave.not-in"));
+                        sender.sendMessage(Message.get("prefix") + Message.get("commands.leave.not-in"));
                     }
                 } else {
-                    sender.sendMessage(Msg.get("prefix") + Msg.get("commands.leave.no-game"));
+                    sender.sendMessage(Message.get("prefix") + Message.get("commands.leave.no-game"));
                 }
             } else {
-                sender.sendMessage(Msg.get("prefix") + Msg.get("commands.no-permission"));
+                sender.sendMessage(Message.get("prefix") + Message.get("commands.no-permission"));
             }
         } else {
-            sender.sendMessage(Msg.get("prefix") + Msg.get("commands.no-console"));
+            sender.sendMessage(Message.get("prefix") + Message.get("commands.no-console"));
         }
     }
 }

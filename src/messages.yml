@@ -5,100 +5,103 @@
 # See more information at:                                     #
 # https://github.com/APJifengc/Bingo/tree/master/message_files #
 ###############################################################$
-prefix: "§c§l Bingo §9§l▌ "
+prefix: "&c&l Bingo &9&l▌ "
 
-title: "§9§l-==============  §c§lBingo§9§l  ==============-\n"
+title: "&9&l-==============  &c&lBingo&9&l  ==============-\n"
 commands:
-  no-permission: "§cYou don't have the permission for this command."
-  no-console: "§cThis command is only for players. You can't use it in the console."
-  unknown-command: "§cUnknown command. Please check is the command right."
+  no-permission: "&cYou don't have the permission for this command."
+  no-console: "&cThis command is only for players. You can't use it in the console."
+  unknown-command: "&cUnknown command. Please check is the command right."
   help:
-    gui: "§7/bingo gui §e- §6Open a GUI for Bingo."
-    join: "§7/bingo join §e- §6Join a Bingo game."
-    leave: "§7/bingo leave §e- §6Leave the Bingo game."
-    start: "§7/bingo start §e- §6Start a Bingo game."
-    stop: "§7/bingo stop §e- §6Stop the Bingo game."
-    reload: "§7/bingo reload §e- §6Reload the Bingo game config files."
-    no-permission: "  §cYou don't have any permission for commands."
+    gui: "&7/bingo gui &e- &6Open a GUI for Bingo."
+    join: "&7/bingo join &e- &6Join a Bingo game."
+    leave: "&7/bingo leave &e- &6Leave the Bingo game."
+    start: "&7/bingo start &e- &6Start a Bingo game."
+    stop: "&7/bingo stop &e- &6Stop the Bingo game."
+    reload: "&7/bingo reload &e- &6Reload the Bingo game config files."
+    no-permission: "  &cYou don't have any permission for commands."
   join:
-    success: "  §eYou have joined the Bingo game.\n  There is current §a%0$s/%1$s §eplayers in the game."
-    no-game: "§cThere is no game running!"
-    already-in: "§cYou are already in the game!"
-    full-players: "§cThe game is full! Please wait for next game."
+    success: "  &eYou have joined the Bingo game.\n  There is current &a%0$s/%1$s &eplayers in the game."
+    no-game: "&cThere is no game running!"
+    already-in: "&cYou are already in the game!"
+    full-players: "&cThe game is full! Please wait for next game."
+    disallow-join: "&cThe game are still running. Please wait for next game."
   leave:
-    success: "§eYou have quited the Bingo game just now."
-    no-game: "§cThere is no game running!"
-    not-in: "§cYou are not in the game!"
+    success: "&eYou have quited the Bingo game just now."
+    no-game: "&cThere is no game running!"
+    not-in: "&cYou are not in the game!"
   start:
-    success: "  §aA Bingo game has started!\n  §eUse command §7§n/bingo join§e to join the game!"
-    already-running: "§cThere is already a game running!"
-    unable-start: "§cUnable to start a game: "
+    success: "  &aA Bingo game has started!\n  &eUse command &7&n/bingo join&e to join the game!"
+    already-running: "&cThere is already a game running!"
+    unable-start: "&cUnable to start a game: "
   stop:
-    message: "  §cThe Bingo game has been stopped by an administer."
-    no-game: "§cThere is no game running!"
+    message: "  &cThe Bingo game has been stopped by an administer."
+    no-game: "&cThere is no game running!"
   gui:
-    not-in: "§cYou are not in a Bingo game!"
-    no-game: "§cThere is no game running!"
-    not-start: "§cThe game hasn't started yet!"
+    not-in: "&cYou are not in a Bingo game!"
+    no-game: "&cThere is no game running!"
+    not-start: "&cThe game hasn't started yet!"
 errors:
   bad-task:
-    number-less-than-25: "The total number of tasks is less than 25."
-    cant-solve: "Can't solve \"%0$s\"."
+    number-less-than-25: "The total number of tasks is less than 25"
+    cant-solve: "Can't solve \"%0$s\""
 gui:
-  title: "§c§lBingo §eTasks"
-  complete: "§aYou have completed this task!"
-  goal-title: "§a§lGOAL"
+  title: "&c&lBingo &eTasks"
+  complete: "&aYou have completed this task!"
+  goal-title: "&a&lGOAL"
   goal-lore: |
-    §c§l||§eBingo is a Minecraft survival game.
-    §c§l||§eWhen the game starts, you will get
-    §c§l||§ea 5*5 task panel. You need to com-
-    §c§l||§eplete the tasks inside as much as
-    §c§l||§epossible. Each time you complete a
-    §c§l||§etask, you will get a square of the
-    §c§l||§epanel. If you can get 5 in a row
-    §c§l||§eeither in a row, column, or diago-
-    §c§l||§enal, you win!
+    &c&l||&eBingo is a Minecraft survival game.
+    &c&l||&eWhen the game starts, you will get
+    &c&l||&ea 5*5 task panel. You need to com-
+    &c&l||&eplete the tasks inside as much as
+    &c&l||&epossible. Each time you complete a
+    &c&l||&etask, you will get a square of the
+    &c&l||&epanel. If you can get 5 in a row
+    &c&l||&eeither in a row, column, or diago-
+    &c&l||&enal, you win!
 task:
   item-task:
-    title: "§bItem Task"
+    title: "&bItem Task"
     desc: |
-      §c§lBingo Item Task
-      §e§lType description:
-      §4 - Get a item to complete the task.
-      §e§lItem type:
-      §4 - %0$s
+      &c&lBingo Item Task
+      &e&lType description:
+      &4 - Get a item to complete the task.
+      &e&lItem type:
+      &4 - %0$s
 scoreboard:
   start-timer:
-    title: "§c§lBingo Game"
+    title: "&c&lBingo Game"
     #Please don't add more than two same lines.
     main: |
-      §3
-      §bPlayers : §d%0$s/%1$s
-      §2
-      §a%2$s
-      §3
-      §7-----------
-      §eBingoMC.net
+      &3
+      &bPlayers : &d%0$s/%1$s
+      &2
+      &a%2$s
+      &3
+      &7-----------
+      &eBingoMC.net
     wait-for-people: "Waiting for more people..."
     starting-in: "Starting in %0$s seconds..."
   in-game:
-    title: "§c§lBingo Game"
+    title: "&c&lBingo Game"
     #Please don't add more than two same lines.
     main: |
-      §1
-      §eYour tasks:
-      §1
-      §1   %0$s
-      §2   %1$s
-      §3   %2$s
-      §4   %3$s
-      §5   %4$s
-      §2
-      §7-----------
-      §eBingoMC.net
-    completed: "§a█"
-    uncompleted: "§c█"
+      &1
+      &eYour tasks:
+      &1
+      &1   %0$s
+      &2   %1$s
+      &3   %2$s
+      &4   %3$s
+      &5   %4$s
+      &2
+      &7-----------
+      &eBingoMC.net
+    completed: "&a█"
+    uncompleted: "&c█"
 chat:
-  join: "§a%0$s joined the game! §d(%1$s/%2$s)"
-  leave: "§a%0$s left the game! §d(%1$s/%2$s)"
-  task: "§a%0$s completed the %1$s task!"
+  join: "&a%0$s joined the game! &d(%1$s/%2$s)"
+  leave: "&a%0$s left the game! &d(%1$s/%2$s)"
+  task: "&a%0$s completed the %1$s task!"
+  back: "&aWelcome back to Bingo."
+  not-enough-player: "&cWaiting for more players!"

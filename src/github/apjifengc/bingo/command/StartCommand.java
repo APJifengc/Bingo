@@ -3,7 +3,7 @@ package github.apjifengc.bingo.command;
 import github.apjifengc.bingo.Bingo;
 import github.apjifengc.bingo.exception.BadTaskException;
 import github.apjifengc.bingo.game.BingoGame;
-import github.apjifengc.bingo.util.Msg;
+import github.apjifengc.bingo.util.Message;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
@@ -17,17 +17,17 @@ public class StartCommand {
 					game.generateTasks();
 				} catch (BadTaskException e) {
 					e.printStackTrace();
-					sender.sendMessage(Msg.get("prefix") + Msg.get("commands.start.unable-start") + e.getMessage());
+					sender.sendMessage(Message.get("prefix") + Message.get("commands.start.unable-start") + e.getMessage());
 					return;
 				}
 				plugin.setCurrentGame(game);
 				Bukkit.broadcastMessage(
-						Msg.get("title")+ Msg.get("commands.start.success"));
+						Message.get("title")+ Message.get("commands.start.success"));
 			} else {
-				sender.sendMessage(Msg.get("prefix") + Msg.get("commands.start.already-running"));
+				sender.sendMessage(Message.get("prefix") + Message.get("commands.start.already-running"));
 			}
 		} else {
-			sender.sendMessage(Msg.get("prefix") + Msg.get("commands.no-permission"));
+			sender.sendMessage(Message.get("prefix") + Message.get("commands.no-permission"));
 		}
 	}
 }

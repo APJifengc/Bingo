@@ -5,7 +5,7 @@
 package github.apjifengc.bingo.command;
 
 import github.apjifengc.bingo.Bingo;
-import github.apjifengc.bingo.util.Msg;
+import github.apjifengc.bingo.util.Message;
 
 import org.bukkit.command.*;
 import java.util.ArrayList;
@@ -19,6 +19,7 @@ public class OnCommand implements TabExecutor {
 
 	public OnCommand(Bingo plugin) {
 		this.plugin = plugin;
+		plugin.getCommand("bingo").setExecutor(this);
 	}
 
 	@Override
@@ -44,7 +45,7 @@ public class OnCommand implements TabExecutor {
 				} else if (args[0].equalsIgnoreCase("reload")) {
 					new ReloadCommand().onReloadCommand(sender, plugin);
 				} else {
-					sender.sendMessage(Msg.get("prefix") + Msg.get("commands.unknown-command"));
+					sender.sendMessage(Message.get("prefix") + Message.get("commands.unknown-command"));
 				}
 			}
 		}
