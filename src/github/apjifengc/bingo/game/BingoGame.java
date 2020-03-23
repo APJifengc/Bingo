@@ -8,6 +8,7 @@ import github.apjifengc.bingo.util.Configs;
 import github.apjifengc.bingo.util.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -35,6 +36,8 @@ public class BingoGame {
 
 	@Getter
 	ArrayList<BingoPlayer> players = new ArrayList<BingoPlayer>();
+
+	ArrayList<BukkitTask> eventTasks = new ArrayList<BukkitTask>();
 
 	int startTimer;
 
@@ -76,6 +79,7 @@ public class BingoGame {
 	public boolean removePlayer(Player player) {
 		BingoPlayer bp = getPlayer(player);
 		if (bp != null) {
+			bp.clearScoreboard();
 			players.remove(bp);
 			for (BingoPlayer p : players) {
 				p.getPlayer().sendMessage(Message.get("chat.leave", player.getName(), players.size(),
@@ -84,7 +88,6 @@ public class BingoGame {
 			if (state == BingoGameState.WAITING) {
 				updateStartTime();
 			}
-			bp.clearScoreboard();
 			return true;
 		}
 		return false;
@@ -150,7 +153,7 @@ public class BingoGame {
 				e.printStackTrace();
 			}
 		}
-		new BukkitRunnable() {
+		eventTasks.add(new BukkitRunnable() {
 			@Override
 			public void run() {
 				if (startTimer != -1) {
@@ -162,7 +165,7 @@ public class BingoGame {
 				}
 				updateScoreboard();
 			}
-		}.runTaskTimer(plugin, 0L, 20L);
+		}.runTaskTimer(plugin, 0L, 20L));
 
 	}
 
@@ -193,6 +196,19 @@ public class BingoGame {
 					score.setScore(i);
 				}
 			}
+			if (startTimer > 1 && startTimer < 5) {
+				for (BingoPlayer bp : players) {
+					Player p = bp.getPlayer();
+					p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 2048.0f, 1.0f);
+					p.sendTitle("§6" + String.valueOf(startTimer), "", 0, 50, 10);
+				}
+			} else if (startTimer == 1) {
+				for (BingoPlayer bp : players) {
+					Player p = bp.getPlayer();
+					p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 2048.0f, 1.0f);
+					p.sendTitle("§4" + String.valueOf(startTimer), "", 0, 50, 10);
+				}
+			}
 		} else if (this.state == BingoGameState.STOPPED) {
 			// TODO 游戏结束的计分板 显示胜利玩家
 		}
@@ -210,6 +226,7 @@ public class BingoGame {
 			startTimer = -1;
 			for (BingoPlayer bp : players) {
 				Player p = bp.getPlayer();
+				p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 2048.0f, 1.0f);
 				p.sendTitle("", Message.get("chat.not-enough-player"), 0, 55, 5);
 			}
 		}
@@ -217,13 +234,18 @@ public class BingoGame {
 	}
 
 	public void start() {
+		for (BingoPlayer bp : players) {
+			Player p = bp.getPlayer();
+			p.sendTitle("§e这里应该有一句文案", "或者这里也行吧", 0, 55, 5);
+			p.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_AMBIENT, 2048.0f, 1.0f);
+		}
 		this.state = BingoGameState.RUNNING;
 		scoreboard.getObjective("bingo").unregister();
 		for (BingoPlayer player : players) {
 			// 初始化
 			player.showScoreboard();
 		}
-		new BukkitRunnable() {
+		eventTasks.add(new BukkitRunnable() {
 			@Override
 			public void run() {
 				updateScoreboard();
@@ -231,7 +253,7 @@ public class BingoGame {
 					this.cancel();
 				}
 			}
-		}.runTaskTimer(plugin, 0L, 5L);
+		}.runTaskTimer(plugin, 0L, 5L));
 	}
 
 	public void completeBingo(BingoPlayer player) {
@@ -239,6 +261,11 @@ public class BingoGame {
 	}
 
 	public void stop() {
-		// TODO 游戏结束后代码
+		for (BukkitTask task : eventTasks) {
+			task.cancel();
+		}
+		for (BingoPlayer bp : players) {
+			bp.clearScoreboard();
+		}
 	}
 }

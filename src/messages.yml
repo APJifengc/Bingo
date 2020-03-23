@@ -97,8 +97,8 @@ scoreboard:
       &2
       &7-----------
       &eBingoMC.net
-    completed: "&a█"
-    uncompleted: "&c█"
+    completed: "&a\u2588"
+    uncompleted: "&c\u2588"
 chat:
   join: "&a%0$s joined the game! &d(%1$s/%2$s)"
   leave: "&a%0$s left the game! &d(%1$s/%2$s)"

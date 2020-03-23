@@ -1,7 +1,5 @@
 package github.apjifengc.bingo.game;
 
-import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +19,6 @@ import lombok.Getter;
 
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
 /**
@@ -186,7 +183,7 @@ public class BingoPlayer {
 				is = game.getTasks().get(i).getShowItem();
 				if (game.getTasks().get(i) instanceof BingoItemTask) {
 					im.setDisplayName(Message.get("task.item-task.title"));
-					lore = Arrays.asList(Message.get("task.item-task.desc", is.getType().name()).split("\n"));
+					lore = Arrays.asList(Message.get("task.item-task.desc", is.getI18NDisplayName()).split("\n"));
 					im.setLore(lore);
 				}
 				is.setItemMeta(im);
@@ -201,8 +198,13 @@ public class BingoPlayer {
 	 * 给玩家显示计分板。
 	 */
 	public void showScoreboard() {
-		Objective obj = scoreboard.registerNewObjective("bingoInfo", "dummy",
-				Message.get("scoreboard.in-game.title"));
+		Objective obj;
+		try {
+			obj = scoreboard.registerNewObjective("bingoInfo", "dummy",
+					Message.get("scoreboard.in-game.title"));
+		} catch (Exception ignored) {
+			obj=scoreboard.getObjective("bingoInfo");
+		}
 		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 		player.setScoreboard(scoreboard);
 		updateScoreboard();
@@ -211,7 +213,7 @@ public class BingoPlayer {
 	public void clearScoreboard() {
 		player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
 	}
-	
+
 	/**
 	 * 更新玩家的记分板。
 	 */
