@@ -18,6 +18,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,6 +29,9 @@ import github.apjifengc.bingo.game.tasks.BingoImpossibleTask;
 import github.apjifengc.bingo.game.tasks.BingoItemTask;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.server.v1_14_R1.PacketPlayInClientCommand;
+import net.minecraft.server.v1_14_R1.PacketPlayInClientCommand.EnumClientCommand;
+
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.*;
@@ -285,8 +289,9 @@ public class BingoGame {
 		for (BingoPlayer player : players) {
 			Player p = player.getPlayer();
 			p.resetTitle();
+			// 神奇代码 勿动
 			if (p.isDead()) {
-				p.spigot().respawn();
+				((CraftPlayer) p).getHandle().playerConnection.a(new PacketPlayInClientCommand(EnumClientCommand.PERFORM_RESPAWN));
 			}
 			p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 			p.setFoodLevel(20);
