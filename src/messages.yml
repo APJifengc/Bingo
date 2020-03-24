@@ -7,8 +7,11 @@
 ###############################################################$
 prefix: "&c&l Bingo &9&l▌ "
 
+world-name: "&3Bingo"
 title: "&9&l-==============  &c&lBingo&9&l  ==============-\n"
 commands:
+  too-many-arguments: "&cToo many arguments!"
+  too-less-arguments: "&cToo less arguments!"
   no-permission: "&cYou don't have the permission for this command."
   no-console: "&cThis command is only for players. You can't use it in the console."
   unknown-command: "&cUnknown command. Please check is the command right."

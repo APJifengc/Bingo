@@ -37,6 +37,11 @@ room:
   # Allows player join the game while game are running.
   join-while-game: true
 
+  # This is the Bingo game's world name. PLEASE check this before you start the game.
+  world-name: bingo
+
+  # This is when the Bingo game ends or someone leaves the game, the world that players will go.
+  main-world: world
 chat:
   # This is when a player complete a task, whether it will show in the chat or not.
   # Availdable values: true / false

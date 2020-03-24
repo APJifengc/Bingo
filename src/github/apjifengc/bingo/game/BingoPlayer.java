@@ -183,7 +183,7 @@ public class BingoPlayer {
 				is = game.getTasks().get(i).getShowItem();
 				if (game.getTasks().get(i) instanceof BingoItemTask) {
 					im.setDisplayName(Message.get("task.item-task.title"));
-					lore = Arrays.asList(Message.get("task.item-task.desc", is.getI18NDisplayName()).split("\n"));
+					lore = Arrays.asList(Message.get("task.item-task.desc", is.getItemMeta().getDisplayName()).split("\n"));
 					im.setLore(lore);
 				}
 				is.setItemMeta(im);

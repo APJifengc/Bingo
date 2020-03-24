@@ -3,12 +3,17 @@ package github.apjifengc.bingo.game;
 import java.io.IOException;
 import java.util.*;
 
+import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.onarandombox.MultiverseCore.api.MVDestination;
+import com.onarandombox.MultiverseCore.api.MVWorldManager;
+import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+import com.onarandombox.MultiverseCore.api.Teleporter;
+import com.onarandombox.MultiverseCore.destination.DestinationFactory;
 import github.apjifengc.bingo.Bingo;
 import github.apjifengc.bingo.util.Configs;
 import github.apjifengc.bingo.util.Message;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -18,6 +23,7 @@ import com.sun.istack.internal.Nullable;
 import github.apjifengc.bingo.exception.BadTaskException;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.*;
@@ -51,6 +57,12 @@ public class BingoGame {
 
 	Bingo plugin;
 
+	MultiverseCore multiverseCore;
+	MVWorldManager mvWorldManager;
+    MultiverseWorld world;
+
+    DestinationFactory df;
+    MVDestination d;
 	/**
 	 * 为这个 Bingo 游戏添加一个玩家。
 	 * 
@@ -68,6 +80,8 @@ public class BingoGame {
 		} else if (state == BingoGameState.RUNNING) {
 			p.showScoreboard();
 		}
+        Teleporter teleporter = multiverseCore.getSafeTTeleporter();
+		teleporter.teleport(plugin.getServer().getConsoleSender(),player,d);
 	}
 
 	/**
@@ -136,7 +150,34 @@ public class BingoGame {
 	}
 
 	public BingoGame(Bingo plugin) {
-		this.plugin = plugin;
+        this.plugin = plugin;
+        multiverseCore = plugin.getMultiverseCore();
+        mvWorldManager = multiverseCore.getMVWorldManager();
+        df = multiverseCore.getDestFactory();
+
+        d = df.getDestination(Configs.getMainCfg().getString("room.world-name"));
+
+	    //Regen the world.
+        Random random = new Random();
+        world = mvWorldManager.getMVWorld(Configs.getMainCfg().getString("room.world-name"));
+        if (world == null) {
+            mvWorldManager.addWorld(
+                    Configs.getMainCfg().getString("room.world-name"),
+                    World.Environment.NORMAL,
+                    String.valueOf(random.nextLong()),
+                    WorldType.NORMAL,
+                    true,
+                    null);
+            world = mvWorldManager.getMVWorld(Configs.getMainCfg().getString("room.world-name"));
+        } else {
+            mvWorldManager.regenWorld(
+                            Configs.getMainCfg().getString("room.world-name"),
+                            true,
+                            true,
+                            String.valueOf(random.nextLong())
+                    );
+        }
+        //Start the timer.
 		scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 		Objective objective = scoreboard.registerNewObjective("bingo", "dummy",
 				Message.get("scoreboard.start-timer.title"));

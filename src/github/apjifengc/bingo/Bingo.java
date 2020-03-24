@@ -9,7 +9,9 @@ import github.apjifengc.bingo.listener.TaskListener;
 import github.apjifengc.bingo.util.Configs;
 import lombok.Getter;
 import lombok.Setter;
+import com.onarandombox.MultiverseCore.*;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Bingo extends JavaPlugin {
@@ -18,8 +20,12 @@ public class Bingo extends JavaPlugin {
 	@Getter
 	BingoGame currentGame;
 
+	@Getter
+	MultiverseCore multiverseCore;
+
 	@Override
 	public void onEnable() {
+		multiverseCore = ((MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core"));
 		getLogger().info("Bingooooooooo!");
 		new OnCommand(this);
 		new InventoryListener(this);

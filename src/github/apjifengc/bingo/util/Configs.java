@@ -18,6 +18,7 @@ public class Configs {
     @Getter
     static YamlConfiguration taskCfg = new YamlConfiguration();
 
+
     @Getter
     static YamlConfiguration mainCfg = new YamlConfiguration();
 

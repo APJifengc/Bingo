@@ -83,7 +83,7 @@ public class TaskListener implements Listener {
 		if (finished) {
 			if (Configs.getMainCfg().getBoolean("chat.complete-task-show")) {
 				Bukkit.broadcastMessage(
-						Message.get("chat.task", player.getPlayer().getName(), is.getI18NDisplayName()));
+						Message.get("chat.task", player.getPlayer().getName(), is.getItemMeta().getDisplayName()));
 			}
 			player.updateScoreboard();
 		}
