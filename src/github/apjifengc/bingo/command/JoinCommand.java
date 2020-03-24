@@ -22,17 +22,21 @@ public class JoinCommand {
 					if (plugin.getCurrentGame().getPlayer((Player) sender) == null) {
 						if (plugin.getCurrentGame().getPlayers().size() != Configs.getMainCfg()
 								.getInt("room.max-player")) {
-							Player player = (Player) sender;
-							BingoGame game = plugin.getCurrentGame();
-							game.addPlayer(player);
-							if (game.getState() == BingoGameState.WAITING) {
-								player.setScoreboard(game.getScoreboard());
-							} else if (game.getState() == BingoGameState.RUNNING) {
-								game.getPlayer(player).showScoreboard();
+							if (plugin.getCurrentGame().getState() != BingoGameState.LOADING) {
+								Player player = (Player) sender;
+								BingoGame game = plugin.getCurrentGame();
+								game.addPlayer(player);
+								if (game.getState() == BingoGameState.WAITING) {
+									player.setScoreboard(game.getScoreboard());
+								} else if (game.getState() == BingoGameState.RUNNING) {
+									game.getPlayer(player).showScoreboard();
+								}
+								sender.sendMessage(Message.get("title") + "\n" + Message.get("commands.join.success",
+										game.getPlayers().size(), Configs.getMainCfg().getInt("room.max-player")));
+								player.getInventory().clear();
+							} else {
+								sender.sendMessage(Message.get("prefix") + Message.get("commands.leave.game-loading"));
 							}
-							sender.sendMessage(Message.get("title") + "\n" + Message.get("commands.join.success",
-									game.getPlayers().size(), Configs.getMainCfg().getInt("room.max-player")));
-							player.getInventory().clear();
 						} else {
 							sender.sendMessage(Message.get("prefix") + Message.get("commands.join.full-players"));
 						}

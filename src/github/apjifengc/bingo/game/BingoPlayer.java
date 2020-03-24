@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import github.apjifengc.bingo.inventory.BingoGuiInventory;
-import github.apjifengc.bingo.util.BingoBoard;
+import github.apjifengc.bingo.util.BingoUtil;
 import github.apjifengc.bingo.util.Message;
 import lombok.Getter;
 
@@ -123,11 +123,11 @@ public class BingoPlayer {
 			if (taskStatus[4] && taskStatus[8] && taskStatus[12] && taskStatus[16] && taskStatus[20])
 				return true;
 		}
-		int row = BingoBoard.getX(index);
+		int row = BingoUtil.getBoardX(index);
 		if (taskStatus[row] && taskStatus[row + 5] && taskStatus[row + 10] && taskStatus[row + 15]
 				&& taskStatus[row + 20])
 			return true;
-		int col = BingoBoard.getYFirst(BingoBoard.getY(index));
+		int col = BingoUtil.getBoardYFirst(BingoUtil.getBoardY(index));
 		if (taskStatus[col] && taskStatus[col + 1] && taskStatus[col + 2] && taskStatus[col + 3] && taskStatus[col + 4])
 			return true;
 		return false;
@@ -181,15 +181,8 @@ public class BingoPlayer {
 				is = complete;
 			} else {
 				is = game.getTasks().get(i).getShowItem();
-				if (game.getTasks().get(i) instanceof BingoItemTask) {
-					im.setDisplayName(Message.get("task.item-task.title"));
-					lore = Arrays.asList(Message.get("task.item-task.desc", is.getItemMeta().getDisplayName()).split("\n"));
-					im.setLore(lore);
-				}
-				is.setItemMeta(im);
 			}
-
-			inv.setItem(BingoBoard.getX(i) + BingoBoard.getY(i) * 9 + 2, is);
+			inv.setItem(BingoUtil.getBoardX(i) + BingoUtil.getBoardY(i) * 9 + 2, is);
 		}
 		return inv;
 	}

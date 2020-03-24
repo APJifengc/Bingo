@@ -7,13 +7,13 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVDestination;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-import com.onarandombox.MultiverseCore.api.Teleporter;
 import com.onarandombox.MultiverseCore.destination.DestinationFactory;
 import github.apjifengc.bingo.Bingo;
+import github.apjifengc.bingo.util.BingoUtil;
 import github.apjifengc.bingo.util.Configs;
 import github.apjifengc.bingo.util.Message;
 import org.bukkit.*;
-import org.bukkit.command.CommandSender;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -21,9 +21,10 @@ import org.bukkit.inventory.ItemStack;
 import com.sun.istack.internal.Nullable;
 
 import github.apjifengc.bingo.exception.BadTaskException;
+import github.apjifengc.bingo.game.tasks.BingoImpossibleTask;
+import github.apjifengc.bingo.game.tasks.BingoItemTask;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.*;
@@ -43,7 +44,10 @@ public class BingoGame {
 	@Getter
 	ArrayList<BingoPlayer> players = new ArrayList<BingoPlayer>();
 
-	ArrayList<BukkitTask> eventTasks = new ArrayList<BukkitTask>();
+	/*
+	 * 通过数字 id 区分各个 BukkitTask 0.世界生成器 1. 开始游戏倒计时 2. PVP保护结束
+	 */
+	Map<Integer, BukkitTask> eventTasks = new HashMap<Integer, BukkitTask>();
 
 	int startTimer;
 
@@ -57,12 +61,13 @@ public class BingoGame {
 
 	Bingo plugin;
 
-	MultiverseCore multiverseCore;
-	MVWorldManager mvWorldManager;
-    MultiverseWorld world;
+	MultiverseCore mvCore;
+	MVWorldManager mvWM;
+	MultiverseWorld world;
 
-    DestinationFactory df;
-    MVDestination d;
+	DestinationFactory df;
+	MVDestination d;
+
 	/**
 	 * 为这个 Bingo 游戏添加一个玩家。
 	 * 
@@ -71,17 +76,14 @@ public class BingoGame {
 	public void addPlayer(Player player) {
 		BingoPlayer p = new BingoPlayer(player, this);
 		players.add(p);
-		for (BingoPlayer bp : players) {
-			bp.getPlayer().sendMessage(Message.get("chat.join", player.getName(), players.size(),
-					Configs.getMainCfg().getInt("room.max-player")));
-		}
+		BingoUtil.sendMessage(players, Message.get("chat.join", player.getName(), players.size(),
+				Configs.getMainCfg().getInt("room.max-player")));
 		if (state == BingoGameState.WAITING) {
 			updateStartTime();
 		} else if (state == BingoGameState.RUNNING) {
 			p.showScoreboard();
+			mvCore.getSafeTTeleporter().safelyTeleport(plugin.getServer().getConsoleSender(), player, d);
 		}
-        Teleporter teleporter = multiverseCore.getSafeTTeleporter();
-		teleporter.teleport(plugin.getServer().getConsoleSender(),player,d);
 	}
 
 	/**
@@ -95,10 +97,8 @@ public class BingoGame {
 		if (bp != null) {
 			bp.clearScoreboard();
 			players.remove(bp);
-			for (BingoPlayer p : players) {
-				p.getPlayer().sendMessage(Message.get("chat.leave", player.getName(), players.size(),
-						Configs.getMainCfg().getInt("room.max-player")));
-			}
+			BingoUtil.sendMessage(players, Message.get("chat.leave", player.getName(), players.size(),
+					Configs.getMainCfg().getInt("room.max-player")));
 			if (state == BingoGameState.WAITING) {
 				updateStartTime();
 			}
@@ -139,45 +139,27 @@ public class BingoGame {
 		Random random = new Random();
 		for (int i = 0; i < 25; i++) {
 			int index = random.nextInt(items.size());
-			Material m = Material.getMaterial(items.get(index));
-			if (m != null) {
-				tasks.add(new BingoItemTask(new ItemStack(m)));
-				items.remove(index);
+			String task = items.get(index);
+			if (task.equalsIgnoreCase("IMPOSSIBLE")) {
+				tasks.add(new BingoImpossibleTask());
 			} else {
-				throw new BadTaskException(Message.get("errors.bad-task.cant-solve", items.get(index)));
+				Material m = Material.getMaterial(items.get(index));
+				if (m != null) {
+					tasks.add(new BingoItemTask(new ItemStack(m)));
+				} else {
+					throw new BadTaskException(Message.get("errors.bad-task.cant-solve", items.get(index)));
+				}
 			}
+			items.remove(index);
 		}
 	}
 
 	public BingoGame(Bingo plugin) {
-        this.plugin = plugin;
-        multiverseCore = plugin.getMultiverseCore();
-        mvWorldManager = multiverseCore.getMVWorldManager();
-        df = multiverseCore.getDestFactory();
-
-        d = df.getDestination(Configs.getMainCfg().getString("room.world-name"));
-
-	    //Regen the world.
-        Random random = new Random();
-        world = mvWorldManager.getMVWorld(Configs.getMainCfg().getString("room.world-name"));
-        if (world == null) {
-            mvWorldManager.addWorld(
-                    Configs.getMainCfg().getString("room.world-name"),
-                    World.Environment.NORMAL,
-                    String.valueOf(random.nextLong()),
-                    WorldType.NORMAL,
-                    true,
-                    null);
-            world = mvWorldManager.getMVWorld(Configs.getMainCfg().getString("room.world-name"));
-        } else {
-            mvWorldManager.regenWorld(
-                            Configs.getMainCfg().getString("room.world-name"),
-                            true,
-                            true,
-                            String.valueOf(random.nextLong())
-                    );
-        }
-        //Start the timer.
+		this.plugin = plugin;
+		mvCore = plugin.getMultiverseCore();
+		mvWM = mvCore.getMVWorldManager();
+		df = mvCore.getDestFactory();
+		// Start the timer.
 		scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 		Objective objective = scoreboard.registerNewObjective("bingo", "dummy",
 				Message.get("scoreboard.start-timer.title"));
@@ -194,17 +176,17 @@ public class BingoGame {
 				e.printStackTrace();
 			}
 		}
-		eventTasks.add(new BukkitRunnable() {
+		eventTasks.put(1, new BukkitRunnable() {
 			@Override
 			public void run() {
 				if (startTimer != -1) {
 					startTimer--;
 				}
+				updateScoreboard();
 				if (startTimer == 0) {
 					this.cancel();
 					start();
 				}
-				updateScoreboard();
 			}
 		}.runTaskTimer(plugin, 0L, 20L));
 
@@ -214,12 +196,14 @@ public class BingoGame {
 		int i = 10;
 		List<String> stringList = new ArrayList<String>();
 		// 如果游戏正在等待玩家加入
-		if (this.state == BingoGameState.WAITING) {
+		if (this.state == BingoGameState.WAITING || state == BingoGameState.LOADING) {
 			Objective obj = scoreboard.getObjective("bingo");
 			scoreboard.getEntries().forEach((s) -> scoreboard.resetScores(s));
 			String timeString;
 			if (startTimer == -1) {
 				timeString = Message.get("scoreboard.start-timer.wait-for-people");
+			} else if (state == BingoGameState.LOADING) {
+				timeString = Message.get("chat.wait-for-world");
 			} else {
 				timeString = Message.get("scoreboard.start-timer.starting-in", startTimer);
 			}
@@ -275,6 +259,50 @@ public class BingoGame {
 	}
 
 	public void start() {
+		// Gener world.
+		for (BingoPlayer player : players) {
+			player.getPlayer().sendTitle("", Message.get("chat.wait-for-world"), 0, 400, 5);
+		}
+		state = BingoGameState.LOADING;
+		updateScoreboard();
+		Random random = new Random();
+		String worldName = Configs.getMainCfg().getString("room.world-name");
+		if (mvWM.getMVWorld(worldName) != null) {
+			mvWM.deleteWorld(worldName, true);
+		}
+		mvWM.addWorld(worldName, World.Environment.NORMAL, String.valueOf(random.nextLong()), WorldType.NORMAL, true,
+				null);
+		world = mvWM.getMVWorld(worldName);
+		d = df.getDestination(Configs.getMainCfg().getString("room.world-name"));
+		for (BingoPlayer player : players) {
+			Player p = player.getPlayer();
+			p.resetTitle();
+			if (p.isDead()) {
+				p.spigot().respawn();
+			}
+			p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+			p.setFoodLevel(20);
+			p.sendMessage(Message.get("chat.world-gened"));
+			mvCore.getSafeTTeleporter().safelyTeleport(plugin.getServer().getConsoleSender(), p, d);
+		}
+		if (Configs.getMainCfg().getInt("game.world-border") > 0) {
+			world.getCBWorld().getWorldBorder().setSize(Configs.getMainCfg().getInt("game.world-border"));
+		}
+		if (Configs.getMainCfg().getInt("game.no-pvp") > 0) {
+			world.setPVPMode(false);
+			BingoUtil.sendMessage(players,
+					Message.get("chat.pvp-timer", Configs.getMainCfg().getInt("game.no-pvp") / 20));
+			eventTasks.put(2, new BukkitRunnable() {
+
+				@Override
+				public void run() {
+					world.setPVPMode(true);
+					BingoUtil.sendMessage(players, Message.get("chat.pvp-enabled"));
+				}
+
+			}.runTaskLater(plugin, Configs.getMainCfg().getInt("game.no-pvp")));
+		}
+		// ..
 		for (BingoPlayer bp : players) {
 			Player p = bp.getPlayer();
 			p.sendTitle("§e这里应该有一句文案", "或者这里也行吧", 0, 55, 5);
@@ -286,15 +314,6 @@ public class BingoGame {
 			// 初始化
 			player.showScoreboard();
 		}
-		eventTasks.add(new BukkitRunnable() {
-			@Override
-			public void run() {
-				updateScoreboard();
-				if (state == BingoGameState.STOPPED) {
-					this.cancel();
-				}
-			}
-		}.runTaskTimer(plugin, 0L, 5L));
 	}
 
 	public void completeBingo(BingoPlayer player) {
@@ -302,11 +321,12 @@ public class BingoGame {
 	}
 
 	public void stop() {
-		for (BukkitTask task : eventTasks) {
-			task.cancel();
-		}
+		eventTasks.forEach((i, s) -> s.cancel());
 		for (BingoPlayer bp : players) {
 			bp.clearScoreboard();
+		}
+		if (mvWM.getMVWorld(Configs.getMainCfg().getString("room.world-name")) != null) {
+			mvWM.deleteWorld(Configs.getMainCfg().getString("room.world-name"), true);
 		}
 	}
 }

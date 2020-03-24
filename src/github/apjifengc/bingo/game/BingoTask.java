@@ -12,6 +12,6 @@ import lombok.Getter;
 public abstract class BingoTask {
 
 	@Getter
-	ItemStack showItem;
+	public ItemStack showItem;
 
 }

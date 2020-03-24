@@ -52,9 +52,10 @@ chat:
   complete-game-show: true
 
 game:
-  # This is the no PVP time(seconds).
+  # This is the no PVP time(ticks).
   # Keep it -1 if you don't want to enable PVP.
-  no-pvp: 300
+  no-pvp: 6000
 
   # This is how long the world border is. (Blocks)
-  world-border: 400
+  # -1 for disable
+  world-border: 800

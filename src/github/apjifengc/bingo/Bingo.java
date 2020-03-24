@@ -2,7 +2,6 @@ package github.apjifengc.bingo;
 
 import github.apjifengc.bingo.command.OnCommand;
 import github.apjifengc.bingo.game.BingoGame;
-import github.apjifengc.bingo.game.BingoPlayer;
 import github.apjifengc.bingo.listener.InventoryListener;
 import github.apjifengc.bingo.listener.OtherListener;
 import github.apjifengc.bingo.listener.TaskListener;
@@ -45,9 +44,7 @@ public class Bingo extends JavaPlugin {
 	public void onDisable() {
 		getLogger().info("SAMPLE TEXT");
 		if(hasBingoGame()) {
-			for (BingoPlayer bp : currentGame.getPlayers()) {
-				bp.clearScoreboard();
-			}
+			currentGame.stop();
 		}
 		
 	}

@@ -59,7 +59,6 @@ items:
   - "CHISELED_STONE_BRICKS"
   - "COMPOSTER"
   - "GRINDSTONE"
-  - "ANVIL"
   - "BARREL"
   - "JACK_O_LANTERN"
   - "GREEN_BANNER"
@@ -70,6 +69,7 @@ items:
   - "NOTE_BLOCK"
   - "ACACIA_SAPLING"
   - "EXPERIENCE_BOTTLE"
+# - "IMPOSSIBLE"
 
 tasks:
   #Future feature
