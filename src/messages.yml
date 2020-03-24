@@ -111,8 +111,8 @@ scoreboard:
     completed: "&a\u2588"
     uncompleted: "&c\u2588"
 bossbar:
-  pvp-timer: "&aEnable PVP - %0$s"
-  pvp-enabled: "Time for Bingo!"
+  pvp-timer: "&aEnable PVP - %0$ss later"
+  normal: "&aTime for Bingo!"
 chat:
   join: "&a%0$s joined the game! &d(%1$s/%2$s)"
   leave: "&a%0$s left the game! &d(%1$s/%2$s)"

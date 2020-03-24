@@ -54,10 +54,8 @@ public class BingoUtil {
 				.getText();
 	}
 
-	public static void sendMessage(ArrayList<BingoPlayer> bingoPlayer,String msg) {
-		for(BingoPlayer bp:bingoPlayer) {
-			bp.getPlayer().sendMessage(msg);
-		}
+	public static void sendMessage(ArrayList<BingoPlayer> bingoPlayer, String msg) {
+		bingoPlayer.forEach((s) -> s.getPlayer().sendMessage(msg));
 	}
-	
+
 }
