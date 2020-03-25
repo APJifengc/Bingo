@@ -19,8 +19,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class TaskListener implements Listener {
@@ -31,7 +32,7 @@ public class TaskListener implements Listener {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	void onPickupItem(EntityPickupItemEvent event) {
 		if (event.getEntity() instanceof Player) {
 			if (plugin.hasBingoGame()) {
@@ -48,19 +49,32 @@ public class TaskListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	void onClickInventory(InventoryClickEvent event) {
-		if (event.getClickedInventory() != null
-				&& (event.getClick().isLeftClick() || event.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD
-						|| event.getAction() == InventoryAction.HOTBAR_SWAP)) {
-			if (event.getRawSlot() == event.getSlot() && event.getResult() == Result.ALLOW
-					&& event.getWhoClicked() instanceof Player) {
+		if (event.getClickedInventory() != null && event.getResult() == Result.ALLOW
+				&& event.getWhoClicked() instanceof Player) {
+			if (event.getRawSlot() == event.getSlot()) {
 				if (plugin.hasBingoGame()) {
 					BingoGame game = plugin.getCurrentGame();
 					if (game.getState() == BingoGameState.RUNNING) {
 						BingoPlayer player = game.getPlayer((Player) event.getWhoClicked());
-						if (player != null) {
+						if (player != null && event.getInventory().getItem(event.getRawSlot()) != null) {
 							getItem(player, event.getInventory().getItem(event.getRawSlot()));
 						}
 					}
+				}
+			} else if (event.getClickedInventory().getType() == InventoryType.PLAYER && event.getSlot() == 8) {
+				event.setCancelled(true);
+			}
+		}
+	}
+
+	@EventHandler(ignoreCancelled = true)
+	void onUseBucket(PlayerBucketFillEvent event) {
+		if (plugin.hasBingoGame()) {
+			BingoGame game = plugin.getCurrentGame();
+			if (game.getState() == BingoGameState.RUNNING) {
+				BingoPlayer player = game.getPlayer(event.getPlayer());
+				if (player != null) {
+					getItem(player, event.getItemStack());
 				}
 			}
 		}
@@ -71,15 +85,16 @@ public class TaskListener implements Listener {
 			return;
 		}
 		BingoGame game = plugin.getCurrentGame();
-		boolean finished = false;
-		boolean win = false;
+		boolean finished = false, win = false;
 		for (int i = 0; i < 25; i++) {
 			BingoTask tas = game.getTasks().get(i);
 			if (tas instanceof BingoItemTask) {
 				BingoItemTask task = (BingoItemTask) tas;
 				if (task.getTarget().getType() == is.getType() && !player.hasFinished(i)) {
 					player.finishTask(i);
-					win = player.checkBingo(i);
+					if (!win) {
+						win = player.checkBingo(i);
+					}
 					finished = true;
 				}
 			}
@@ -95,7 +110,7 @@ public class TaskListener implements Listener {
 			p.spawnParticle(Particle.VILLAGER_HAPPY, p.getLocation().add(0, 0.5, 0), 50, 0.3, 0.3, 0.3);
 		}
 		if (win) {
-			Bukkit.broadcastMessage(player.getPlayer().getName() + " 赢了，太牛逼了！");
+			game.completeBingo(player);
 		}
 	}
 

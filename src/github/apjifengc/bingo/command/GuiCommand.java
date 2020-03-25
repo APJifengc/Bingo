@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class GuiCommand {
-	void onGuiCommand(CommandSender sender, Bingo plugin) {
+	public void onGuiCommand(CommandSender sender, Bingo plugin) {
 		if (sender instanceof Player) {
 			if (sender.hasPermission("bingo.use.gui")) {
 				if (plugin.hasBingoGame()) {

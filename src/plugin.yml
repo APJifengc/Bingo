@@ -20,7 +20,7 @@ permissions:
   bingo.use:
     description: Allows you to run all the player commands.
     children:
-      bingo.use.quest: true
+      bingo.use.gui: true
       bingo.use.join: true
       bingo.use.leave: true
     default: true

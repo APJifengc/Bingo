@@ -51,13 +51,16 @@ public class BingoGame {
 	@Getter
 	ArrayList<BingoPlayer> players = new ArrayList<BingoPlayer>();
 
+	@Getter
+	ArrayList<BingoPlayer> winners = new ArrayList<BingoPlayer>();
+
 	/*
-	 * 通过数字 id 区分各个 BukkitTask 0.世界生成器 1. 开始游戏倒计时 2. Bossbar（含 PVP 保护）
+	 * 通过数字 id 区分各个 BukkitTask 0.世界生成器 1. 开始游戏倒计时 2. PVP 保护 3. 游戏结束倒计时 4.游戏结束延迟 5.
+	 * Bossbar更新器
 	 */
 	Map<Integer, BukkitTask> eventTasks = new HashMap<Integer, BukkitTask>();
 
-	int timer;
-
+	int timer, pvpTimer, endTimer;
 	@Getter
 	BingoGameState state;
 
@@ -69,7 +72,7 @@ public class BingoGame {
 	Bingo plugin;
 
 	@Getter
-	BossBar bossbar;
+	BossBar bossbar = Bukkit.createBossBar(Message.get("bossbar.normal"), BarColor.YELLOW, BarStyle.SEGMENTED_10);
 
 	MultiverseCore mvCore;
 	MVWorldManager mvWM;
@@ -92,6 +95,7 @@ public class BingoGame {
 			updateStartTime();
 		} else if (state == BingoGameState.RUNNING) {
 			p.showScoreboard();
+			p.giveGuiItem();
 			bossbar.addPlayer(player);
 			mvCore.getSafeTTeleporter().safelyTeleport(plugin.getServer().getConsoleSender(), player, d);
 		}
@@ -289,16 +293,15 @@ public class BingoGame {
 		for (BingoPlayer player : players) {
 			Player p = player.getPlayer();
 			p.resetTitle();
-			// 神奇代码 勿动
 			if (p.isDead()) {
-				((CraftPlayer) p).getHandle().playerConnection.a(new PacketPlayInClientCommand(EnumClientCommand.PERFORM_RESPAWN));
+				((CraftPlayer) p).getHandle().playerConnection
+						.a(new PacketPlayInClientCommand(EnumClientCommand.PERFORM_RESPAWN));
 			}
 			p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 			p.setFoodLevel(20);
 			p.sendMessage(Message.get("chat.world-gened"));
 			mvCore.getSafeTTeleporter().safelyTeleport(plugin.getServer().getConsoleSender(), p, d);
 		}
-		bossbar = Bukkit.createBossBar(Message.get("bossbar.normal"), BarColor.YELLOW, BarStyle.SEGMENTED_10);
 		players.forEach((s) -> bossbar.addPlayer(s.getPlayer()));
 		if (Configs.getMainCfg().getInt("game.world-border") > 0) {
 			world.getCBWorld().getWorldBorder().setSize(Configs.getMainCfg().getInt("game.world-border"));
@@ -310,23 +313,46 @@ public class BingoGame {
 			bossbar.setProgress(0);
 			world.setPVPMode(false);
 			BingoUtil.sendMessage(players, Message.get("chat.pvp-timer", pvpTime));
+			pvpTimer = pvpTime;
 			eventTasks.put(2, new BukkitRunnable() {
 
 				@Override
 				public void run() {
-					if (timer >= Configs.getMainCfg().getInt("game.no-pvp")) {
-						world.setPVPMode(true);
-						BingoUtil.sendMessage(players, Message.get("chat.pvp-enabled"));
-						bossbar.setProgress(1);
-						bossbar.setTitle(Message.get("bossbar.normal"));
-						bossbar.setColor(BarColor.RED);
-						bossbar.setStyle(BarStyle.SOLID);
-						players.forEach((s)->s.getPlayer().playSound(s.getPlayer().getLocation(), Sound.ENTITY_WITHER_SPAWN, 2048.0f, 1.0f));
-						this.cancel();
+					resetBossbar();
+					world.setPVPMode(true);
+					BingoUtil.sendMessage(players, Message.get("chat.pvp-enabled"));
+					for (BingoPlayer bp : players) {
+						Player p = bp.getPlayer();
+						p.sendTitle(Message.get("title.pvp-enabled-title"), Message.get("title.pvp-enabled-subtitle"),
+								0, 55, 5);
+						p.playSound(p.getLocation(), Sound.ENTITY_WITHER_SPAWN, 2048.0f, 1.0f);
 					}
-					bossbar.setProgress((double)timer / (double)pvpTime);
-					bossbar.setTitle(Message.get("bossbar.pvp-timer", pvpTime - timer));
-					timer++;
+					this.cancel();
+				}
+
+			}.runTaskLater(plugin, pvpTime * 20));
+			eventTasks.put(5, new BukkitRunnable() {
+
+				@Override
+				public void run() {
+					if (state == BingoGameState.STOPPED) {
+						endBossbar();
+					} else if (pvpTimer > 0 || endTimer > 0) {
+						if (pvpTimer > endTimer) {
+							bossbar.setProgress(1 - (double) pvpTimer / (double) pvpTime);
+							bossbar.setTitle(Message.get("bossbar.pvp-timer", pvpTimer));
+						} else {
+							bossbar.setProgress(
+									1 - (double) endTimer / (double) Configs.getMainCfg().getInt("room.end-time"));
+							bossbar.setTitle(Message.get("bossbar.end-timer", endTimer));
+						}
+						if (pvpTimer > 0) {
+							pvpTimer--;
+						}
+						if (endTimer > 0) {
+							endTimer--;
+						}
+					}
 				}
 
 			}.runTaskTimer(plugin, 0, 20));
@@ -334,7 +360,8 @@ public class BingoGame {
 		// ..
 		for (BingoPlayer bp : players) {
 			Player p = bp.getPlayer();
-			p.sendTitle("§e这里应该有一句文案", "或者这里也行吧", 0, 55, 5);
+			bp.giveGuiItem();
+			p.sendTitle(Message.get("title.game-start-title"), Message.get("title.game-start-subtitle"), 0, 55, 5);
 			p.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_AMBIENT, 2048.0f, 1.0f);
 		}
 		this.state = BingoGameState.RUNNING;
@@ -345,13 +372,71 @@ public class BingoGame {
 		}
 	}
 
+	public void resetBossbar() {
+		bossbar.setProgress(1);
+		bossbar.setTitle(Message.get("bossbar.normal"));
+		bossbar.setColor(BarColor.RED);
+		bossbar.setStyle(BarStyle.SOLID);
+	}
+
+	public void endBossbar() {
+		bossbar.setProgress(1);
+		bossbar.setTitle(Message.get("bossbar.gameover"));
+		bossbar.setColor(BarColor.PINK);
+		bossbar.setStyle(BarStyle.SOLID);
+	}
+
 	public void completeBingo(BingoPlayer player) {
-		// TODO 当一个玩家完成Bingo后 (注：Config中有设定当多少玩家完成后结束)
+		winners.add(player);
+		Player p = player.getPlayer();
+		BingoUtil.sendMessage(players, Message.get("chat.win", winners.size(), p.getName(), player.getFinishedCount()));
+		p.sendTitle(Message.get("title.win-bingo-title"), Message.get("title.win-bingo-subtitle"), 0, 85, 5);
+		p.sendMessage(Message.get("chat.win-tellraw"));
+		p.setGameMode(GameMode.SPECTATOR);
+		if (winners.size() >= Configs.getMainCfg().getInt("room.winner-count") || winners.size() >= players.size()) {
+			endGame();
+		} else if (winners.size() == 1 && Configs.getMainCfg().getInt("room.end-time") > 0) {
+			// 启动游戏结束倒计时
+			endTimer = Configs.getMainCfg().getInt("room.end-time");
+			eventTasks.put(3, new BukkitRunnable() {
+
+				@Override
+				public void run() {
+					endGame();
+				}
+
+			}.runTaskLater(plugin, Configs.getMainCfg().getInt("room.end-time") * 20));
+		}
+	}
+
+	public void endGame() {
+		state = BingoGameState.STOPPED;
+		updateScoreboard();
+		if (winners.size() >= 1) {
+			players.forEach((p) -> p.getPlayer().sendTitle(Message.get("title.gameover-title"),
+					Message.get("title.gameover-subtitle", winners.get(0).getPlayer().getName()), 10, 190, 5));
+		} else {
+			players.forEach((p) -> p.getPlayer().sendTitle(Message.get("title.gameover-title"),
+					Message.get("title.gameover-nowinner-subtitle"), 10, 190, 5));
+		}
+		players.forEach((p) -> p.getPlayer().playSound(p.getPlayer().getLocation(), Sound.ENTITY_ENDER_DRAGON_AMBIENT,
+				2048.0f, 1.0f));
+		eventTasks.put(4, new BukkitRunnable() {
+
+			@Override
+			public void run() {
+				stop();
+				plugin.setCurrentGame(null);
+				this.cancel();
+			}
+
+		}.runTaskLater(plugin, 200));
 	}
 
 	public void stop() {
 		eventTasks.forEach((i, s) -> s.cancel());
 		for (BingoPlayer bp : players) {
+			bp.getPlayer().getInventory().clear();
 			bp.clearScoreboard();
 			bossbar.removePlayer(bp.getPlayer());
 		}

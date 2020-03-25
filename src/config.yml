@@ -15,11 +15,11 @@ room:
   new-game-delay: 60
 
   # This is how many players complete needed to instantly end the game.
-  # Max values: the max players/4
+  # Suggest value: the max players / 4
   winner-count: 2
 
   # This is the time(seconds) to end the game if a player completed.
-  # Keep it -1 if you don't want it to end.
+  # lower than 1 to disable it.
   end-time: 300
 
   # This is the time(seconds) to start the game when the players is enough.
@@ -53,9 +53,9 @@ chat:
 
 game:
   # This is the no PVP time(second).
-  # Keep it -1 if you don't want to enable PVP.
+  # lower than 1 to disable it.
   no-pvp: 300
 
   # This is how long the world border is. (Blocks)
-  # -1 for disable
+  # lower than 1 to disable it.
   world-border: 800

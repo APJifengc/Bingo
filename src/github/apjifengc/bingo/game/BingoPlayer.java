@@ -72,9 +72,6 @@ public class BingoPlayer {
 	 */
 	public void finishTask(int index) {
 		taskStatus[index] = true;
-		if (checkBingo(index)) {
-			game.completeBingo(this);
-		}
 	}
 
 	/**
@@ -84,9 +81,21 @@ public class BingoPlayer {
 	 */
 	public void finishTask(BingoTask task) {
 		taskStatus[game.getTasks().indexOf(task)] = true;
-		if (checkBingo(task)) {
-			game.completeBingo(this);
+	}
+
+	/**
+	 * 获取玩家完成任务的数量。
+	 * 
+	 * @return 玩家完成任务的数量。
+	 */
+	public int getFinishedCount() {
+		int i = 0;
+		for (boolean b : taskStatus) {
+			if (b) {
+				i++;
+			}
 		}
+		return i;
 	}
 
 	/**
@@ -167,8 +176,7 @@ public class BingoPlayer {
 		}
 		is.setType(Material.EMERALD);
 		im.setDisplayName(Message.get("gui.goal-title"));
-		List<String> lore = Arrays.asList(Message.get("gui.goal-lore").split("\n"));
-		im.setLore(lore);
+		im.setLore(Arrays.asList(Message.get("gui.goal-lore").split("\n")));
 		is.setItemMeta(im);
 		inv.setItem(49, is);
 		ItemStack complete = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
@@ -193,10 +201,9 @@ public class BingoPlayer {
 	public void showScoreboard() {
 		Objective obj;
 		try {
-			obj = scoreboard.registerNewObjective("bingoInfo", "dummy",
-					Message.get("scoreboard.in-game.title"));
+			obj = scoreboard.registerNewObjective("bingoInfo", "dummy", Message.get("scoreboard.in-game.title"));
 		} catch (Exception ignored) {
-			obj=scoreboard.getObjective("bingoInfo");
+			obj = scoreboard.getObjective("bingoInfo");
 		}
 		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 		player.setScoreboard(scoreboard);
@@ -235,6 +242,18 @@ public class BingoPlayer {
 				obj.getScore(str).setScore(i);
 			}
 		}
+	}
+
+	/**
+	 * 给予玩家打开 GUI 的物品（即物品栏最后一格）
+	 */
+	public void giveGuiItem() {
+		ItemStack is = new ItemStack(Material.PAPER);
+		ItemMeta im = is.getItemMeta();
+		im.setDisplayName(Message.get("item.goal.name"));
+		im.setLore(Arrays.asList(Message.get("item.goal.lore").split("\n")));
+		is.setItemMeta(im);
+		player.getInventory().setItem(8, is);
 	}
 
 }
