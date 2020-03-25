@@ -2,13 +2,11 @@
 #    Bingo Message File    #
 ###############################################################$
 # This file contains all the texts in the Bingo game.          #
-# See more information at:                                     #
-# https://github.com/APJifengc/Bingo/tree/master/message_files #
 ###############################################################$
 prefix: "&c&l Bingo &9&l▌ "
 
 world-name: "&3Bingo"
-title: "&9&l-==============  &c&lBingo&9&l  ==============-\n"
+title-text: "&9&l-==============  &c&lBingo&9&l  ==============-\n"
 commands:
   too-many-arguments: "&cToo many arguments!"
   too-less-arguments: "&cToo less arguments!"
@@ -90,7 +88,7 @@ scoreboard:
       &a%2$s
       &3
       &7-----------
-      &8&m127.0.0.1
+      &8&mlocalhost
     wait-for-people: "Waiting for more people..."
     starting-in: "Starting in %0$s seconds..."
   in-game:
@@ -107,9 +105,21 @@ scoreboard:
       &5   %4$s
       &2
       &7-----------
-      &eBingoMC.net
+      &8&mlocalhost
     completed: "&a\u2588"
     uncompleted: "&c\u2588"
+  end:
+    title: "&c&lBingo Game"
+    #Please don't add more than two same lines.
+    main: |
+      &7
+      &d&lGame over!
+      &2
+      %0$s
+      &3
+      &7-----------
+      &8&mlocalhost
+    player: "&e#%0$s &5%1$s"
 bossbar:
   pvp-timer: "&aEnable PVP - %0$ss later"
   end-timer: "&cEnd Game - %0$ss later"

@@ -6,7 +6,7 @@ import github.apjifengc.bingo.util.Message;
 
 public class HelpCommand {
 	void onHelpCommand(CommandSender sender) {
-		StringBuilder sb = new StringBuilder(Message.get("title"));
+		StringBuilder sb = new StringBuilder(Message.get("title-text"));
 		if (sender.hasPermission("bingo.use.gui"))
 			sb.append("\n " + Message.get("commands.help.gui"));
 		if (sender.hasPermission("bingo.use.join"))
@@ -19,7 +19,7 @@ public class HelpCommand {
 			sb.append("\n " + Message.get("commands.help.stop"));
 		if (sender.hasPermission("bingo.admin.reload"))
 			sb.append("\n " + Message.get("commands.help.reload"));
-		if (sb.toString().equals(Message.get("title")))
+		if (sb.toString().equals(Message.get("title-text")))
 			sb.append("\n " + Message.get("commands.help.no-permission"));
 		sender.sendMessage(sb.toString());
 	}

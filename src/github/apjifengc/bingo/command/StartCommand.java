@@ -22,7 +22,7 @@ public class StartCommand {
 				}
 				plugin.setCurrentGame(game);
 				Bukkit.broadcastMessage(
-						Message.get("title")+ Message.get("commands.start.success"));
+						Message.get("title-text")+ Message.get("commands.start.success"));
 			} else {
 				sender.sendMessage(Message.get("prefix") + Message.get("commands.start.already-running"));
 			}

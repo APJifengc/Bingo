@@ -31,7 +31,7 @@ public class JoinCommand {
 								} else if (game.getState() == BingoGameState.RUNNING) {
 									game.getPlayer(player).showScoreboard();
 								}
-								sender.sendMessage(Message.get("title") + "\n" + Message.get("commands.join.success",
+								sender.sendMessage(Message.get("title-text") + "\n" + Message.get("commands.join.success",
 										game.getPlayers().size(), Configs.getMainCfg().getInt("room.max-player")));
 								player.getInventory().clear();
 							} else {
