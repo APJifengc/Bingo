@@ -324,6 +324,7 @@ public class BingoGame {
 			p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 			p.setFoodLevel(20);
 			p.getActivePotionEffects().forEach((s) -> p.removePotionEffect(s.getType()));
+			p.getInventory().clear();
 		}
 		players.forEach((s) -> bossbar.addPlayer(s.getPlayer()));
 		if (Configs.getMainCfg().getInt("game.world-border") > 0) {
