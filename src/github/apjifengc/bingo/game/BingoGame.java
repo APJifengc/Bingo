@@ -177,9 +177,10 @@ public class BingoGame {
 		df = mvCore.getDestFactory();
 		// Start the timer.
 		scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-		Objective objective = scoreboard.registerNewObjective("bingo", "dummy",
-				Message.get("scoreboard.start-timer.title"));
-		objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+		scoreboard.registerNewObjective("bingo", "dummy",
+				Message.get("scoreboard.start-timer.title")).setDisplaySlot(DisplaySlot.SIDEBAR);
+		scoreboard.registerNewObjective("bingo-end", "dummy",
+				Message.get("scoreboard.end.title"));
 		List<String> TimeList = Configs.getMainCfg().getStringList("room.start-time");
 		this.state = BingoGameState.WAITING;
 		timer = -1;
@@ -252,6 +253,24 @@ public class BingoGame {
 			}
 		} else if (this.state == BingoGameState.STOPPED) {
 			// TODO 游戏结束的计分板 显示胜利玩家
+			players.forEach((p) -> p.getPlayer().setScoreboard(scoreboard));
+			Objective endObjective = scoreboard.getObjective("bingo-end");
+			int order = 0;
+			i = 10;
+			endObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
+			List<String> winnerText = new ArrayList<String>();
+			for (BingoPlayer winner : winners) {
+				order++;
+				winnerText.add(Message.get("scoreboard.end.player", order, winner.getPlayer().getName()));
+			}
+			String[] strs =
+					Message.get("scoreboard.end.main",String.join("\n",winnerText)).split("\n");
+			for (String str : strs) {
+				i--;
+				order++;
+				Score score = endObjective.getScore(str);
+				score.setScore(i);
+			}
 		}
 	}
 
@@ -438,7 +457,9 @@ public class BingoGame {
 		for (BingoPlayer bp : players) {
 			bp.getPlayer().getInventory().clear();
 			bp.clearScoreboard();
-			bossbar.removePlayer(bp.getPlayer());
+			if (this.state == BingoGameState.RUNNING) {
+                bossbar.removePlayer(bp.getPlayer());
+            }
 		}
 		if (mvWM.getMVWorld(Configs.getMainCfg().getString("room.world-name")) != null) {
 			mvWM.deleteWorld(Configs.getMainCfg().getString("room.world-name"), true);
