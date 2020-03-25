@@ -6,9 +6,11 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -16,7 +18,6 @@ import github.apjifengc.bingo.inventory.BingoGuiInventory;
 import github.apjifengc.bingo.util.BingoUtil;
 import github.apjifengc.bingo.util.Message;
 import lombok.Getter;
-
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -43,6 +44,15 @@ public class BingoPlayer {
 	public BingoPlayer(Player player, BingoGame game) {
 		this.player = player;
 		this.game = game;
+	}
+
+	public boolean updatePlayer() {
+		Player p = Bukkit.getPlayer(player.getUniqueId());
+		if(player==null||p==null) {
+			return false;
+		}
+		player = p;
+		return true;
 	}
 
 	/**
@@ -252,7 +262,11 @@ public class BingoPlayer {
 		ItemMeta im = is.getItemMeta();
 		im.setDisplayName(Message.get("item.goal.name"));
 		im.setLore(Arrays.asList(Message.get("item.goal.lore").split("\n")));
+		// 消失诅咒
+		im.addEnchant(Enchantment.VANISHING_CURSE, 1, false);
+		im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		is.setItemMeta(im);
+		System.out.println("123");
 		player.getInventory().setItem(8, is);
 	}
 

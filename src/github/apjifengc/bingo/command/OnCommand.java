@@ -67,7 +67,6 @@ public class OnCommand implements TabExecutor {
 
 	public List<String> getSubCommands(CommandSender sender) {
 		List<String> sub = new ArrayList<String>();
-		sub.add("help");
 		if (sender instanceof Player) {
 			// 玩家专属命令
 			if (sender.hasPermission("bingo.use.gui"))
@@ -83,12 +82,15 @@ public class OnCommand implements TabExecutor {
 			sub.add("stop");
 		if (sender.hasPermission("bingo.admin.reload"))
 			sub.add("reload");
-		if (plugin.hasBingoGame() && plugin.getCurrentGame().getState() == BingoGameState.RUNNING) {
+		if (plugin.hasBingoGame()) {
 			// 游戏正在运行，不允许开始游戏
 			sub.remove("start");
 			if (sender instanceof Player && plugin.getCurrentGame().getPlayer((Player) sender) != null) {
 				// 在游戏中的玩家，不允许加入游戏
 				sub.remove("join");
+				if (plugin.getCurrentGame().getState() != BingoGameState.RUNNING) {
+					sub.remove("gui");
+				}
 			} else {
 				// 不在游戏中的玩家或控制台，不允许离开游戏和打开 GUI
 				sub.remove("gui");

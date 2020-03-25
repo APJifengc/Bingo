@@ -93,11 +93,16 @@ public class BingoGame {
 				Configs.getMainCfg().getInt("room.max-player")));
 		if (state == BingoGameState.WAITING) {
 			updateStartTime();
+			player.setScoreboard(scoreboard);
 		} else if (state == BingoGameState.RUNNING) {
 			p.showScoreboard();
+			player.getInventory().clear();
 			p.giveGuiItem();
 			bossbar.addPlayer(player);
 			mvCore.getSafeTTeleporter().safelyTeleport(plugin.getServer().getConsoleSender(), player, d);
+			player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+			player.setFoodLevel(20);
+			player.getActivePotionEffects().forEach((s) -> player.removePotionEffect(s.getType()));
 		}
 	}
 
@@ -110,6 +115,7 @@ public class BingoGame {
 	public boolean removePlayer(Player player) {
 		BingoPlayer bp = getPlayer(player);
 		if (bp != null) {
+			bp.getInventory().clear();
 			bp.clearScoreboard();
 			bossbar.removePlayer(player);
 			players.remove(bp);
@@ -177,10 +183,9 @@ public class BingoGame {
 		df = mvCore.getDestFactory();
 		// Start the timer.
 		scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-		scoreboard.registerNewObjective("bingo", "dummy",
-				Message.get("scoreboard.start-timer.title")).setDisplaySlot(DisplaySlot.SIDEBAR);
-		scoreboard.registerNewObjective("bingo-end", "dummy",
-				Message.get("scoreboard.end.title"));
+		scoreboard.registerNewObjective("bingo", "dummy", Message.get("scoreboard.start-timer.title"))
+				.setDisplaySlot(DisplaySlot.SIDEBAR);
+		scoreboard.registerNewObjective("bingo-end", "dummy", Message.get("scoreboard.end.title"));
 		List<String> TimeList = Configs.getMainCfg().getStringList("room.start-time");
 		this.state = BingoGameState.WAITING;
 		timer = -1;
@@ -252,7 +257,6 @@ public class BingoGame {
 				}
 			}
 		} else if (this.state == BingoGameState.STOPPED) {
-			// TODO 游戏结束的计分板 显示胜利玩家
 			players.forEach((p) -> p.getPlayer().setScoreboard(scoreboard));
 			Objective endObjective = scoreboard.getObjective("bingo-end");
 			int order = 0;
@@ -263,8 +267,7 @@ public class BingoGame {
 				order++;
 				winnerText.add(Message.get("scoreboard.end.player", order, winner.getPlayer().getName()));
 			}
-			String[] strs =
-					Message.get("scoreboard.end.main",String.join("\n",winnerText)).split("\n");
+			String[] strs = Message.get("scoreboard.end.main", String.join("\n", winnerText)).split("\n");
 			for (String str : strs) {
 				i--;
 				order++;
@@ -316,10 +319,11 @@ public class BingoGame {
 				((CraftPlayer) p).getHandle().playerConnection
 						.a(new PacketPlayInClientCommand(EnumClientCommand.PERFORM_RESPAWN));
 			}
-			p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-			p.setFoodLevel(20);
 			p.sendMessage(Message.get("chat.world-gened"));
 			mvCore.getSafeTTeleporter().safelyTeleport(plugin.getServer().getConsoleSender(), p, d);
+			p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+			p.setFoodLevel(20);
+			p.getActivePotionEffects().forEach((s) -> p.removePotionEffect(s.getType()));
 		}
 		players.forEach((s) -> bossbar.addPlayer(s.getPlayer()));
 		if (Configs.getMainCfg().getInt("game.world-border") > 0) {
@@ -457,9 +461,7 @@ public class BingoGame {
 		for (BingoPlayer bp : players) {
 			bp.getPlayer().getInventory().clear();
 			bp.clearScoreboard();
-			if (this.state == BingoGameState.RUNNING) {
-                bossbar.removePlayer(bp.getPlayer());
-            }
+			bossbar.removePlayer(bp.getPlayer());
 		}
 		if (mvWM.getMVWorld(Configs.getMainCfg().getString("room.world-name")) != null) {
 			mvWM.deleteWorld(Configs.getMainCfg().getString("room.world-name"), true);

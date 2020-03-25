@@ -51,18 +51,20 @@ public class TaskListener implements Listener {
 	void onClickInventory(InventoryClickEvent event) {
 		if (event.getClickedInventory() != null && event.getResult() == Result.ALLOW
 				&& event.getWhoClicked() instanceof Player) {
-			if (event.getRawSlot() == event.getSlot()) {
-				if (plugin.hasBingoGame()) {
-					BingoGame game = plugin.getCurrentGame();
-					if (game.getState() == BingoGameState.RUNNING) {
+			if (plugin.hasBingoGame()) {
+				BingoGame game = plugin.getCurrentGame();
+				if (game.getState() == BingoGameState.RUNNING) {
+					if (event.getRawSlot() == event.getSlot()) {
 						BingoPlayer player = game.getPlayer((Player) event.getWhoClicked());
 						if (player != null && event.getInventory().getItem(event.getRawSlot()) != null) {
 							getItem(player, event.getInventory().getItem(event.getRawSlot()));
 						}
+					} else if (game.getPlayer((Player) event.getWhoClicked()) != null
+							&& event.getClickedInventory().getType() == InventoryType.PLAYER
+							&& (event.getSlot() == 8 || event.getHotbarButton() == 8)) {
+						event.setCancelled(true);
 					}
 				}
-			} else if (event.getClickedInventory().getType() == InventoryType.PLAYER && event.getSlot() == 8) {
-				event.setCancelled(true);
 			}
 		}
 	}
