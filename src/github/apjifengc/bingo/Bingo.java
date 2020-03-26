@@ -28,7 +28,7 @@ public class Bingo extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		if (!loadNMS()) {
-			getLogger().warning("Can't use Bingo plugin in this server.");
+			getLogger().warning("Oops..!! Can't use Bingo plugin in this version.");
 			getPluginLoader().disablePlugin(this);
 		} else {
 			multiverseCore = ((MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core"));
