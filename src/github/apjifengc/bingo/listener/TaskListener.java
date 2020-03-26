@@ -86,32 +86,14 @@ public class TaskListener implements Listener {
 			return;
 		}
 		BingoGame game = plugin.getCurrentGame();
-		boolean finished = false, win = false;
 		for (int i = 0; i < 25; i++) {
-			BingoTask tas = game.getTasks().get(i);
-			if (tas instanceof BingoItemTask) {
-				BingoItemTask task = (BingoItemTask) tas;
-				if (task.getTarget().getType() == is.getType() && !player.hasFinished(i)) {
+			BingoTask task = game.getTasks().get(i);
+			if (task instanceof BingoItemTask) {
+				BingoItemTask itemTask = (BingoItemTask) task;
+				if (itemTask.getTarget().getType() == is.getType() && !player.hasFinished(i)) {
 					player.finishTask(i);
-					if (!win) {
-						win = player.checkBingo(i);
-					}
-					finished = true;
 				}
 			}
-		}
-		if (finished) {
-			if (Configs.getMainCfg().getBoolean("chat.complete-task-show")) {
-				Bukkit.broadcastMessage(
-						Message.get("chat.task", player.getPlayer().getName(), Bingo.NMS.getItemName(is)));
-			}
-			player.updateScoreboard();
-			Player p = player.getPlayer();
-			p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 2048.0f, 1.0f);
-			p.spawnParticle(Particle.VILLAGER_HAPPY, p.getLocation().add(0, 0.5, 0), 50, 0.3, 0.3, 0.3);
-		}
-		if (win) {
-			game.completeBingo(player);
 		}
 	}
 

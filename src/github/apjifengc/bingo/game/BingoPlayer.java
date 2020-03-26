@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import github.apjifengc.bingo.util.Configs;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -81,7 +84,7 @@ public class BingoPlayer {
 	 * @param index 要完成的任务的索引
 	 */
 	public void finishTask(int index) {
-		taskStatus[index] = true;
+		this.finishTask(game.getTasks().get(index));
 	}
 
 	/**
@@ -91,6 +94,17 @@ public class BingoPlayer {
 	 */
 	public void finishTask(BingoTask task) {
 		taskStatus[game.getTasks().indexOf(task)] = true;
+		if (Configs.getMainCfg().getBoolean("chat.complete-task-show")) {
+			Bukkit.broadcastMessage(
+					Message.get("chat.task", this.getPlayer().getName(), task.taskName));
+		}
+		this.updateScoreboard();
+		Player p = this.getPlayer();
+		p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 2048.0f, 1.0f);
+		p.spawnParticle(Particle.VILLAGER_HAPPY, p.getLocation().add(0, 0.5, 0), 50, 0.3, 0.3, 0.3);
+		if (checkBingo(task)) {
+			game.completeBingo(this);
+		}
 	}
 
 	/**

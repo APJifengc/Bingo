@@ -37,6 +37,7 @@ public class BingoItemTask extends BingoTask {
 		im.setLore(lore);
 		target.setItemMeta(im);
 		this.showItem = target;
+		this.taskName = Bingo.NMS.getItemName(target);
 	}
 
 }

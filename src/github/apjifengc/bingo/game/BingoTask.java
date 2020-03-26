@@ -14,4 +14,7 @@ public abstract class BingoTask {
 	@Getter
 	public ItemStack showItem;
 
+	@Getter
+	public String taskName;
+
 }
