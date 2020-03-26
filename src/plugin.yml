@@ -1,6 +1,6 @@
 name: Bingo
 main: github.apjifengc.bingo.Bingo
-version: Alpha-1.0.1
+version: Alpha-1.0.2
 authors: [APJifengc,Yoooooory]
 api-version: 1.14
 depend: [Multiverse-Core]

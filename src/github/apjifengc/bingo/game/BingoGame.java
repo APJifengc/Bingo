@@ -18,7 +18,6 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -29,9 +28,6 @@ import github.apjifengc.bingo.game.tasks.BingoImpossibleTask;
 import github.apjifengc.bingo.game.tasks.BingoItemTask;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.server.v1_14_R1.PacketPlayInClientCommand;
-import net.minecraft.server.v1_14_R1.PacketPlayInClientCommand.EnumClientCommand;
-
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.*;
@@ -315,10 +311,7 @@ public class BingoGame {
 		for (BingoPlayer player : players) {
 			Player p = player.getPlayer();
 			p.resetTitle();
-			if (p.isDead()) {
-				((CraftPlayer) p).getHandle().playerConnection
-						.a(new PacketPlayInClientCommand(EnumClientCommand.PERFORM_RESPAWN));
-			}
+			Bingo.NMS.respawnPlayer(p);
 			p.sendMessage(Message.get("chat.world-gened"));
 			mvCore.getSafeTTeleporter().safelyTeleport(plugin.getServer().getConsoleSender(), p, d);
 			p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
@@ -413,7 +406,10 @@ public class BingoGame {
 	public void completeBingo(BingoPlayer player) {
 		winners.add(player);
 		Player p = player.getPlayer();
-		BingoUtil.sendMessage(players, Message.get("chat.win", winners.size(), p.getName(), player.getFinishedCount()));
+		if (Configs.getMainCfg().getBoolean("chat.complete-task-show")) {
+			BingoUtil.sendMessage(players,
+					Message.get("chat.win", winners.size(), p.getName(), player.getFinishedCount()));
+		}
 		p.sendTitle(Message.get("title.win-bingo-title"), Message.get("title.win-bingo-subtitle"), 0, 85, 5);
 		p.sendMessage(Message.get("chat.win-tellraw"));
 		p.setGameMode(GameMode.SPECTATOR);

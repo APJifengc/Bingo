@@ -6,7 +6,6 @@ import github.apjifengc.bingo.game.BingoGameState;
 import github.apjifengc.bingo.game.BingoPlayer;
 import github.apjifengc.bingo.game.BingoTask;
 import github.apjifengc.bingo.game.tasks.BingoItemTask;
-import github.apjifengc.bingo.util.BingoUtil;
 import github.apjifengc.bingo.util.Configs;
 import github.apjifengc.bingo.util.Message;
 
@@ -104,7 +103,7 @@ public class TaskListener implements Listener {
 		if (finished) {
 			if (Configs.getMainCfg().getBoolean("chat.complete-task-show")) {
 				Bukkit.broadcastMessage(
-						Message.get("chat.task", player.getPlayer().getName(), BingoUtil.getItemName(is)));
+						Message.get("chat.task", player.getPlayer().getName(), Bingo.NMS.getItemName(is)));
 			}
 			player.updateScoreboard();
 			Player p = player.getPlayer();

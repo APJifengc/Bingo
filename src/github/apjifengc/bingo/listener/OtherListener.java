@@ -5,6 +5,7 @@ import github.apjifengc.bingo.command.GuiCommand;
 import github.apjifengc.bingo.game.BingoGame;
 import github.apjifengc.bingo.game.BingoGameState;
 import github.apjifengc.bingo.game.BingoPlayer;
+import github.apjifengc.bingo.util.Configs;
 import github.apjifengc.bingo.util.Message;
 
 import org.bukkit.Bukkit;
@@ -39,8 +40,8 @@ public class OtherListener implements Listener {
 			} else if (game.getState() == BingoGameState.RUNNING) {
 				player.getInventory().setItem(8, new ItemStack(Material.AIR));
 			}
-			game.getBossbar().removePlayer(player);
 			player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+			game.getBossbar().removePlayer(player);
 		}
 	}
 
@@ -55,6 +56,11 @@ public class OtherListener implements Listener {
 				bplayer.giveGuiItem();
 				player.setScoreboard(bplayer.getScoreboard());
 				game.getBossbar().addPlayer(player);
+				if (!player.getWorld().getName().equals(Configs.getMainCfg().getString("room.world-name"))) {
+					plugin.getMultiverseCore().getSafeTTeleporter().safelyTeleport(
+							plugin.getServer().getConsoleSender(), player, plugin.getMultiverseCore().getDestFactory()
+									.getDestination(Configs.getMainCfg().getString("room.world-name")));
+				}
 				player.sendMessage(Message.get("chat.back"));
 			}
 		}

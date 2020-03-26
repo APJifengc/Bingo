@@ -266,7 +266,6 @@ public class BingoPlayer {
 		im.addEnchant(Enchantment.VANISHING_CURSE, 1, false);
 		im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		is.setItemMeta(im);
-		System.out.println("123");
 		player.getInventory().setItem(8, is);
 	}
 

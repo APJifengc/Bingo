@@ -20,7 +20,7 @@ public class JoinCommand {
 						return;
 					}
 					if (plugin.getCurrentGame().getPlayer((Player) sender) == null) {
-						if (plugin.getCurrentGame().getPlayers().size() != Configs.getMainCfg()
+						if (plugin.getCurrentGame().getPlayers().size() < Configs.getMainCfg()
 								.getInt("room.max-player")) {
 							if (plugin.getCurrentGame().getState() != BingoGameState.LOADING) {
 								Player player = (Player) sender;

@@ -6,8 +6,8 @@ import java.util.List;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import github.apjifengc.bingo.Bingo;
 import github.apjifengc.bingo.game.BingoTask;
-import github.apjifengc.bingo.util.BingoUtil;
 import github.apjifengc.bingo.util.Message;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,8 +33,7 @@ public class BingoItemTask extends BingoTask {
 		this.target = target;
 		ItemMeta im = target.getItemMeta();
 		im.setDisplayName(Message.get("task.item-task.title"));
-		List<String> lore = Arrays
-				.asList(Message.get("task.item-task.desc", BingoUtil.getItemName(target)).split("\n"));
+		List<String> lore = Arrays.asList(Message.get("task.item-task.desc", Bingo.NMS.getItemName(target)).split("\\n"));
 		im.setLore(lore);
 		target.setItemMeta(im);
 		this.showItem = target;

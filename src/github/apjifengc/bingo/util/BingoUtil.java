@@ -2,10 +2,7 @@ package github.apjifengc.bingo.util;
 
 import java.util.ArrayList;
 
-import org.bukkit.inventory.ItemStack;
-
 import github.apjifengc.bingo.game.BingoPlayer;
-import net.minecraft.server.v1_14_R1.IChatBaseComponent.ChatSerializer;
 
 /**
  * Bingo 游戏盘工具类
@@ -46,12 +43,6 @@ public class BingoUtil {
 	 */
 	public static int getBoardYFirst(int y) {
 		return 5 * y;
-	}
-
-	public static String getItemName(ItemStack is) {
-		return ChatSerializer.a("{\"translate\":\""
-				+ org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack.asNMSCopy(is).getItem().getName() + "\"}")
-				.getText();
 	}
 
 	public static void sendMessage(ArrayList<BingoPlayer> bingoPlayer, String msg) {
