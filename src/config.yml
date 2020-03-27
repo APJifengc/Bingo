@@ -46,11 +46,11 @@ room:
   main-world: world
 chat:
   # This is when a player complete a task, whether it will show in the chat or not.
-  # Availdable values: true / false
+  # Available values: true / false
   complete-task-show: true
 
   # This is when a player complete the Bingo game, whether it will show in the chat or not.
-  # Availdable values: true / false
+  # Available values: true / false
   complete-game-show: true
 
 game:

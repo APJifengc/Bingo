@@ -48,6 +48,7 @@ errors:
   bad-task:
     number-less-than-25: "The total number of tasks is less than 25"
     cant-solve: "Can't solve \"%0$s\""
+    too-less-args: "Too less arguments for a task"
 gui:
   title: "&c&lBingo &eTasks"
   complete: "&aYou have completed this task!"
@@ -138,7 +139,7 @@ title:
 item:
   goal:
     name: "&aTasks List"
-    lore: "&7爱拍疾风西来写"
+    lore: "&7Right click to open the list."
 chat:
   join: "&a%0$s joined the game! &d(%1$s/%2$s)"
   leave: "&a%0$s left the game! &d(%1$s/%2$s)"

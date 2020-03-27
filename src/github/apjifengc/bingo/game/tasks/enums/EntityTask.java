@@ -6,7 +6,5 @@ public enum EntityTask {
     DAMAGE_ENTITY,
     ENTITY_DROP_ITEM,
     TAME_ENTITY,
-    HORSE_JUMP,
-    PIG_ZOMBIE_ANGER,
     CREATURE_SPAWN;
 }

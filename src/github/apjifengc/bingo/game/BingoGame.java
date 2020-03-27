@@ -133,6 +133,7 @@ public class BingoGame {
 	 */
 	@Nullable
 	public BingoPlayer getPlayer(Player player) {
+		if (player == null) return null;
 		for (BingoPlayer bp : players) {
 			if (bp.getPlayer().getUniqueId().equals(player.getUniqueId())) {
 				return bp;
@@ -149,26 +150,22 @@ public class BingoGame {
 	 * @throws BadTaskException
 	 */
 	public void generateTasks() throws BadTaskException {
-		List<String> items = Configs.getTaskCfg().getStringList("items");
+		try {
+			BingoTaskLoader.loadTasks();
+		} catch (BadTaskException e) {
+			throw e;
+		}
+		List<BingoTask> bingoTasks = BingoTaskLoader.tasks;
 		// 任务数少于25个，不足一场游戏时抛出 BadTaskException
-		if (items.size() < 25) {
+		if (bingoTasks.size() < 25) {
 			throw new BadTaskException(Message.get("errors.bad-task.number-less-than-25"));
 		}
 		Random random = new Random();
 		for (int i = 0; i < 25; i++) {
-			int index = random.nextInt(items.size());
-			String task = items.get(index);
-			if (task.equalsIgnoreCase("IMPOSSIBLE")) {
-				tasks.add(new BingoImpossibleTask());
-			} else {
-				Material m = Material.getMaterial(items.get(index));
-				if (m != null) {
-					tasks.add(new BingoItemTask(new ItemStack(m)));
-				} else {
-					throw new BadTaskException(Message.get("errors.bad-task.cant-solve", items.get(index)));
-				}
-			}
-			items.remove(index);
+			int index = random.nextInt(bingoTasks.size());
+			BingoTask task = bingoTasks.get(index);
+			tasks.add(task);
+			bingoTasks.remove(index);
 		}
 	}
 
