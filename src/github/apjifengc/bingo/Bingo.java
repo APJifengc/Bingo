@@ -1,7 +1,10 @@
 package github.apjifengc.bingo;
 
+import com.sun.istack.internal.Nullable;
 import github.apjifengc.bingo.command.OnCommand;
 import github.apjifengc.bingo.game.BingoGame;
+import github.apjifengc.bingo.game.BingoGameState;
+import github.apjifengc.bingo.game.BingoPlayer;
 import github.apjifengc.bingo.listener.InventoryListener;
 import github.apjifengc.bingo.listener.OtherListener;
 import github.apjifengc.bingo.listener.TaskListener;
@@ -12,6 +15,7 @@ import lombok.Setter;
 import com.onarandombox.MultiverseCore.*;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Bingo extends JavaPlugin {
@@ -72,4 +76,16 @@ public class Bingo extends JavaPlugin {
 		return currentGame != null;
 	}
 
+	@Nullable
+	public BingoPlayer getPlayer(Object player) {
+		if (player == null) return null;
+		if (player instanceof Player) {
+			if (hasBingoGame()) {
+				if (currentGame.getState() == BingoGameState.RUNNING) {
+					return currentGame.getPlayer((Player) player);
+				}
+			}
+		}
+		return null;
+	}
 }

@@ -1,6 +1,10 @@
 package github.apjifengc.bingo.nms;
 
+import github.apjifengc.bingo.Bingo;
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,4 +34,10 @@ public class v1_14_R1 implements NMSBase {
 				.getText();
 	}
 
+	@Override
+	public String getEntityName(Entity entity) {
+		return ChatSerializer.a("{\"translate\":\""
+				+ ((CraftEntity)entity).getName() + "\"}")
+				.getText();
+	}
 }

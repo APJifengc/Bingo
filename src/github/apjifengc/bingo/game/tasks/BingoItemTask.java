@@ -3,6 +3,7 @@ package github.apjifengc.bingo.game.tasks;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -32,12 +33,12 @@ public class BingoItemTask extends BingoTask {
 	public BingoItemTask(ItemStack target) {
 		this.target = target;
 		ItemMeta im = target.getItemMeta();
-		im.setDisplayName(Message.get("task.item-task.title"));
+		im.setDisplayName(Message.get("task.item-task.title",Bingo.NMS.getItemName(target)));
 		List<String> lore = Arrays.asList(Message.get("task.item-task.desc", Bingo.NMS.getItemName(target)).split("\\n"));
 		im.setLore(lore);
 		target.setItemMeta(im);
 		this.showItem = target;
-		this.taskName = Bingo.NMS.getItemName(target);
+		this.taskName = "&b" + Bingo.NMS.getItemName(target);
 	}
 
 }

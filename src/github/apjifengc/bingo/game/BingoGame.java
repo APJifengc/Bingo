@@ -401,28 +401,30 @@ public class BingoGame {
 	}
 
 	public void completeBingo(BingoPlayer player) {
-		winners.add(player);
-		Player p = player.getPlayer();
-		if (Configs.getMainCfg().getBoolean("chat.complete-task-show")) {
-			BingoUtil.sendMessage(players,
-					Message.get("chat.win", winners.size(), p.getName(), player.getFinishedCount()));
-		}
-		p.sendTitle(Message.get("title.win-bingo-title"), Message.get("title.win-bingo-subtitle"), 0, 85, 5);
-		p.sendMessage(Message.get("chat.win-tellraw"));
-		p.setGameMode(GameMode.SPECTATOR);
-		if (winners.size() >= Configs.getMainCfg().getInt("room.winner-count") || winners.size() >= players.size()) {
-			endGame();
-		} else if (winners.size() == 1 && Configs.getMainCfg().getInt("room.end-time") > 0) {
-			// 启动游戏结束倒计时
-			endTimer = Configs.getMainCfg().getInt("room.end-time");
-			eventTasks.put(3, new BukkitRunnable() {
+		if (!winners.contains(player)) {
+			winners.add(player);
+			Player p = player.getPlayer();
+			if (Configs.getMainCfg().getBoolean("chat.complete-task-show")) {
+				BingoUtil.sendMessage(players,
+						Message.get("chat.win", winners.size(), p.getName(), player.getFinishedCount()));
+			}
+			p.sendTitle(Message.get("title.win-bingo-title"), Message.get("title.win-bingo-subtitle"), 0, 85, 5);
+			p.sendMessage(Message.get("chat.win-tellraw"));
+			p.setGameMode(GameMode.SPECTATOR);
+			if (winners.size() >= Configs.getMainCfg().getInt("room.winner-count") || winners.size() >= players.size()) {
+				endGame();
+			} else if (winners.size() == 1 && Configs.getMainCfg().getInt("room.end-time") > 0) {
+				// 启动游戏结束倒计时
+				endTimer = Configs.getMainCfg().getInt("room.end-time");
+				eventTasks.put(3, new BukkitRunnable() {
 
-				@Override
-				public void run() {
-					endGame();
-				}
+					@Override
+					public void run() {
+						endGame();
+					}
 
-			}.runTaskLater(plugin, Configs.getMainCfg().getInt("room.end-time") * 20));
+				}.runTaskLater(plugin, Configs.getMainCfg().getInt("room.end-time") * 20));
+			}
 		}
 	}
 

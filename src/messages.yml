@@ -65,19 +65,54 @@ gui:
     &c&l || &enal, you win!
 task:
   item-task:
-    title: "&bItem Task"
+    title: "&bGet %0$s"
     desc: |
       &c&lBingo Item Task
-      &e&lType description:
-      &a - Get a item to complete this task.
-      &e&lItem type:
-      &a - %0$s
+      &e&lTask description:
+      &a - Get %0$s to complete this task.
   impossible-task:
     title: "&7Impossible Task"
     desc: |
       &c&lBingo Impossible Task
-      &e&lType description:
+      &e&lTask description:
       &a - You can never complete this task.
+  entity-task:
+    kill-entity:
+      title: "&bKill %0$s"
+      desc: |
+        &c&lBingo Kill Entity Task
+        &e&lTask description:
+        &a - Kill %0$s to complete this task.
+    breed-entity:
+      title: "&bBreed %0$s"
+      desc: |
+        &c&lBingo Breed Entity Task
+        &e&lTask description:
+        &a - Breed %0$s to complete this task.
+    damage-entity:
+      title: "&bDamage %0$s"
+      desc: |
+        &c&lBingo Damage Entity Task
+        &e&lTask description:
+        &a - Damage %0$s to complete this task.
+    entity-drop-item:
+      title: "&bKill %0$s and drop %1$s"
+      desc: |
+        &c&lBingo Entity Drop Item Task
+        &e&lTask description:
+        &a - Kill %0$s and drop %1$s to complete this task.
+    tame-entity:
+      title: "&bTame %0$s"
+      desc: |
+        &c&lBingo Tame Entity Task
+        &e&lTask description:
+        &a - Tame %0$s to complete this task.
+    creature-spawn:
+      title: "&bBuild %0$s"
+      desc: |
+        &c&lBingo Creature Task
+        &e&lTask description:
+        &a - Build %0$s to complete this task.
 scoreboard:
   start-timer:
     title: "&c&lBingo Game"

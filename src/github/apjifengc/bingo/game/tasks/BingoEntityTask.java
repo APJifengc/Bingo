@@ -1,15 +1,24 @@
 package github.apjifengc.bingo.game.tasks;
 
+import github.apjifengc.bingo.Bingo;
 import github.apjifengc.bingo.game.BingoTask;
 import github.apjifengc.bingo.game.tasks.enums.EntityTask;
+import github.apjifengc.bingo.util.Message;
+import github.apjifengc.bingo.util.NameFormatter;
+import github.apjifengc.bingo.util.Skull;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -42,18 +51,57 @@ public class BingoEntityTask extends BingoTask {
         this.taskType = taskType;
         this.argument = argument;
         this.entityType = entityType;
-        ItemStack showItem = new ItemStack(Material.PLAYER_HEAD);
-        ItemMeta itemMeta = showItem.getItemMeta();
-        if (entityType == null) {
-            itemMeta.setDisplayName("CREATURE_SPAWN"+argument);
-            this.taskName = "CREATURE_SPAWN"+argument;
+        ItemStack showItem;
+        String entityName;
+        if (taskType == EntityTask.CREATURE_SPAWN) {
+            if (argument == "SNOWMAN") {
+                showItem = Skull.getEntitySkull(EntityType.SNOWMAN);
+                entityName = "Snowman";
+            } else if (argument == "WITHER") {
+                showItem = Skull.getEntitySkull(EntityType.WITHER);
+                entityName = "Wither";
+            } else {
+                showItem = Skull.getEntitySkull(EntityType.IRON_GOLEM);
+                entityName = "Iron golem";
+            }
         } else {
-            itemMeta.setDisplayName(taskType+entityType.name());
-            this.taskName = taskType+entityType.name();
+            showItem = Skull.getEntitySkull(entityType);
+            entityName = NameFormatter.toNameFormat(entityType.name());
         }
+        ItemMeta itemMeta = showItem.getItemMeta();
+        String taskName;
+        String lore;
+
+        if (taskType == EntityTask.CREATURE_SPAWN) {
+            taskName = Message.get("task.entity-task.creature-spawn.title",
+                    entityName
+            );
+            lore = Message.get("task.entity-task.creature-spawn.desc",
+                    entityName
+            );
+        } else if (taskType == EntityTask.ENTITY_DROP_ITEM) {
+            taskName = Message.get("task.entity-task.entity-drop-item.title",
+                    entityName,
+                    Bingo.NMS.getItemName(new ItemStack(Material.getMaterial(argument)))
+            );
+            lore = Message.get("task.entity-task.entity-drop-item.desc",
+                    entityName,
+                    Bingo.NMS.getItemName(new ItemStack(Material.getMaterial(argument)))
+            );
+        } else {
+            taskName = Message.get("task.entity-task."+
+                    taskType.name().toLowerCase().replace("_","-")+ ".title",
+                    entityName
+            );
+            lore = Message.get("task.entity-task."+
+                    taskType.name().toLowerCase().replace("_","-")+ ".desc",
+                    entityName
+            );
+        }
+        itemMeta.setDisplayName(taskName);
+        this.taskName = taskName;
+        itemMeta.setLore(Arrays.asList(lore.split("\n")));
         showItem.setItemMeta(itemMeta);
         this.showItem = showItem;
-
-        // TODO 生物显示（包括lore和name）
     }
 }
