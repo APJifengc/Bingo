@@ -19,13 +19,9 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import com.sun.istack.internal.Nullable;
 
 import github.apjifengc.bingo.exception.BadTaskException;
-import github.apjifengc.bingo.game.tasks.BingoImpossibleTask;
-import github.apjifengc.bingo.game.tasks.BingoItemTask;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.scheduler.BukkitRunnable;

@@ -1,7 +1,5 @@
 package github.apjifengc.bingo.nms;
 
-import github.apjifengc.bingo.Bingo;
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;

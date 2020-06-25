@@ -7,7 +7,6 @@ import github.apjifengc.bingo.game.tasks.BingoItemTask;
 import github.apjifengc.bingo.game.tasks.enums.EntityTask;
 import github.apjifengc.bingo.util.Configs;
 import github.apjifengc.bingo.util.Message;
-import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;

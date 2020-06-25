@@ -89,6 +89,7 @@ public class OtherListener implements Listener {
 			if (game.getState() == BingoGameState.RUNNING) {
 				BingoPlayer player = game.getPlayer(event.getPlayer());
 				if (player != null) {
+				    plugin.getMultiverseCore().getSafeTTeleporter().safelyTeleport(plugin.getServer().getConsoleSender(), event.getPlayer(), plugin.getMultiverseCore().getDestFactory().getDestination(Configs.getMainCfg().getString("room.world-name")));
 					player.giveGuiItem();
 				}
 			}
