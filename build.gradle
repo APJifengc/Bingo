@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'io.freefair.lombok' version '6.0.0-m2'
+}
+
+group 'io.apjifengc.bingo'
+version '1.0.0-beta.3'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'https://repo.onarandombox.com/content/groups/public/' }
+    maven { url 'https://libraries.minecraft.net/' }
+}
+
+dependencies {
+    implementation 'org.spigotmc:spigot-api:1.13-R0.1-SNAPSHOT'
+    implementation 'com.onarandombox.multiversecore:Multiverse-Core:4.3.0'
+    implementation 'com.mojang:authlib:2.3.31'
+
+    implementation 'org.jetbrains:annotations:21.0.1'
+    testImplementation 'org.mockito:mockito-core:3.+'
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+idea {
+    module {
+        downloadSources = true
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        include 'plugin.yml' expand 'version': project.version
+    }
+}

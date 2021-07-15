@@ -1,0 +1,186 @@
+############################
+#    Bingo Message File    #
+###############################################################$
+# This file contains all the texts in the Bingo game.          #
+###############################################################$
+prefix: "&c&l Bingo &9&l▌ "
+
+world-name: "&3Bingo"
+title-text: "&9&l-==============  &c&lBingo&9&l  ==============-\n"
+commands:
+  too-many-arguments: "&cToo many arguments!"
+  too-less-arguments: "&cToo less arguments!"
+  no-permission: "&cYou don't have the permission for this command."
+  no-console: "&cThis command is only for players. You can't use it in the console."
+  unknown-command: "&cUnknown command. Please check is the command right."
+  help:
+    gui: "&7/bingo gui &e- &6Open a GUI for Bingo."
+    join: "&7/bingo join &e- &6Join a Bingo game."
+    leave: "&7/bingo leave &e- &6Leave the Bingo game."
+    start: "&7/bingo start &e- &6Start a Bingo game."
+    stop: "&7/bingo stop &e- &6Stop the Bingo game."
+    reload: "&7/bingo reload &e- &6Reload the Bingo game config files."
+    no-permission: "  &cYou don't have any permission for commands."
+  join:
+    success: "  &eYou have joined the Bingo game.\n  There is current &a{0}/{1} &eplayers in the game."
+    no-game: "&cThere is no game running!"
+    already-in: "&cYou are already in the game!"
+    full-players: "&cThe game is full! Please wait for next game."
+    disallow-join: "&cThe game are still running. Please wait for next game."
+    game-loading: "&cPlease wait for the game loading.."
+  leave:
+    success: "&eYou have left the Bingo game just now."
+    no-game: "&cThere is no game running!"
+    not-in: "&cYou are not in the game!"
+    game-loading: "&cPlease wait for the game loading.."
+  start:
+    success: "  &aA Bingo game has started!\n  &eUse command &7&n/bingo join&e to join the game!"
+    already-running: "&cThere is already a game running!"
+    unable-start: "&cUnable to start a game: "
+  stop:
+    message: "  &cThe Bingo game has been stopped by an administer."
+    no-game: "&cThere is no game running!"
+  gui:
+    not-in: "&cYou are not in a Bingo game!"
+    no-game: "&cThere is no game running!"
+    not-start: "&cThe game hasn't started yet!"
+errors:
+  task-not-enough: "There are not enough tasks to generate non-repetitive game board"
+gui:
+  title: "&c&lBingo &eTasks"
+  complete: "&aYou have completed this task!"
+  goal-title: "&a&lGOAL"
+  goal-lore: |
+    &c&l || &eBingo is a Minecraft survival game.
+    &c&l || &eWhen the game starts, you will get
+    &c&l || &ea 5*5 task panel. You need to com-
+    &c&l || &eplete the tasks inside as much as
+    &c&l || &epossible. Each time you complete a
+    &c&l || &etask, you will get a square of the
+    &c&l || &epanel. If you can get 5 in a row
+    &c&l || &eeither in a row, column, or diago-
+    &c&l || &enal, you win!
+task:
+  item-task:
+    title: "&bGet {0}"
+    desc: |
+      &e&lTask description:
+      &a - Get {0} to complete this task.
+      &7Bingo Item Task
+  impossible-task:
+    title: "&7Impossible Task"
+    desc: |
+      &e&lTask description:
+      &a - You can never complete this task.
+      &7Bingo Impossible Task
+  entity-task:
+    kill:
+      title: "&bKill {0}"
+      desc: |
+        &e&lTask description:
+        &a - Kill {0} to complete this task.
+        &7Bingo Kill Entity Task
+    breed:
+      title: "&bBreed {0}"
+      desc: |
+        &e&lTask description:
+        &a - Breed {0} to complete this task.
+        &7Bingo Breed Entity Task
+    damage:
+      title: "&bDamage {0}"
+      desc: |
+        &e&lTask description:
+        &a - Damage {0} to complete this task.
+        &7Bingo Damage Entity Task
+    drop:
+      title: "&bKill {0} and drop {1}"
+      desc: |
+        &e&lTask description:
+        &a - Kill {0} and drop {1} to complete this task.
+        &7Bingo Entity Drop Item Task
+    tame:
+      title: "&bTame {0}"
+      desc: |
+        &e&lTask description:
+        &a - Tame {0} to complete this task.
+        &7Bingo Tame Entity Task
+    summon:
+      title: "&bBuild {0}"
+      desc: |
+        &e&lTask description:
+        &a - Build {0} to complete this task.
+        &7Bingo Creature Task
+scoreboard:
+  start-timer:
+    title: "&c&lBingo Game"
+    #Please don't add more than two same lines.
+    main: |
+      &3
+      &bPlayers : &d{0}/{1}
+      &2
+      &a{2}
+      &3
+      &7-----------
+      &8&mlocalhost
+    wait-for-people: "Waiting for more people..."
+    starting-in: "Starting in {0} seconds..."
+  in-game:
+    title: "&c&lBingo Game"
+    #Please don't add more than two same lines.
+    main: |
+      &1
+      &eYour tasks:
+      &1
+      &1   {0}
+      &2   {1}
+      &3   {2}
+      &4   {3}
+      &5   {4}
+      &2
+      &7-----------
+      &8&mlocalhost
+    completed: "&a\u2588"
+    uncompleted: "&c\u2588"
+  end:
+    title: "&c&lBingo Game"
+    #Please don't add more than two same lines.
+    main: |
+      &7
+      &d&lGame over!
+      &2
+      {0}
+      &3
+      &7-----------
+      &8&mlocalhost
+    player: "&e#{0} &5{1}"
+bossbar:
+  pvp-timer: "&aEnable PVP - {0}s later"
+  end-timer: "&cEnd Game - {0}s later"
+  normal: "&aTime for Bingo!"
+  gameover: "&eGame over!"
+title:
+  game-start-title: "&6Bingo!"
+  game-start-subtitle: ""
+  pvp-enabled-title: ""
+  pvp-enabled-subtitle: "&cPVP is now enabled."
+  win-bingo-title: "&aB&bi&cn&dg&eo&6!"
+  win-bingo-subtitle: "&7You are now spectator."
+  gameover-title: "&6Game over!"
+  gameover-subtitle: "&7{0} is the winner!"
+  gameover-nowinner-subtitle: "&7Nobody win!"
+item:
+  goal:
+    name: "&aTasks List"
+    lore: "&7Right click to open the list."
+chat:
+  join: "&a{0} joined the game! &d({1}/{2})"
+  leave: "&a{0} left the game! &d({1}/{2})"
+  task: "&a{0} completed the {1} task!"
+  back: "&aWelcome back to Bingo."
+  win: "&a#{0} {1} finished Bingo by getting {2} tasks!"
+  win-tellraw: "&aBingo! &7You are now spectator."
+  not-enough-player: "&cWaiting for more players!"
+  wait-for-world: "&7Please wait for start.."
+  world-gened: "&aTime for Bingo!"
+  pvp-timer: "&7PVP will be enabled in {0} seconds. Be careful.."
+  pvp-enabled: "&aPVP is now enabled."
