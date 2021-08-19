@@ -79,7 +79,7 @@ public class BingoTaskManager {
 
     @SneakyThrows public List<BingoTask> repeatableGenerateTasks() {
         var result = new ArrayList<BingoTask>(25);
-        for (int __ = 0; __ < 25; __++) {
+        for (int i = 0; i < 25; i++) {
             var expr = taskPoll.get(random.nextInt(taskPoll.size()));
             result.add(parseTaskExpression(expr));
         }
@@ -88,7 +88,12 @@ public class BingoTaskManager {
 
     @SneakyThrows public List<BingoTask> nonRepeatableGenerateTasks() {
         var result = new ArrayList<BingoTask>(25);
-        
+        for (int i = 0; i < 25; i++) {
+            var expr = taskPoll.get(random.nextInt(taskPoll.size()));
+            while(result.contains(parseTaskExpression(expr))) expr = taskPoll.get(random.nextInt(taskPoll.size()));
+            result.add(parseTaskExpression(expr));
+        }
+        return result;
     }
 
     public BingoTask parseTaskExpression(String expr) throws BadTaskException {

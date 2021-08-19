@@ -67,7 +67,7 @@ public class TaskListener implements Listener {
         if (player != null) {
             BingoGame game = plugin.getCurrentGame();
             for (int i = 0; i < 25; i++) {
-                BingoTask task = game.getTasks().get(i);
+                BingoTask task = game.getBoard().get(i);
                 if (task instanceof EntityTask) {
                     EntityTask entityTask = (EntityTask) task;
                     if (entityTask.getType() == EntityTask.Type.KILL) {
@@ -93,7 +93,7 @@ public class TaskListener implements Listener {
         if (player != null) {
             BingoGame game = plugin.getCurrentGame();
             for (int i = 0; i < 25; i++) {
-                BingoTask task = game.getTasks().get(i);
+                BingoTask task = game.getBoard().get(i);
                 if (task instanceof EntityTask) {
                     EntityTask entityTask = (EntityTask) task;
                     if (entityTask.getType() == EntityTask.Type.BREED) {
@@ -112,7 +112,7 @@ public class TaskListener implements Listener {
         if (player != null) {
             BingoGame game = plugin.getCurrentGame();
             for (int i = 0; i < 25; i++) {
-                BingoTask task = game.getTasks().get(i);
+                BingoTask task = game.getBoard().get(i);
                 if (task instanceof EntityTask) {
                     EntityTask entityTask = (EntityTask) task;
                     if (entityTask.getType() == EntityTask.Type.DAMAGE) {
@@ -131,7 +131,7 @@ public class TaskListener implements Listener {
         if (player != null) {
             BingoGame game = plugin.getCurrentGame();
             for (int i = 0; i < 25; i++) {
-                BingoTask task = game.getTasks().get(i);
+                BingoTask task = game.getBoard().get(i);
                 if (task instanceof EntityTask) {
                     EntityTask entityTask = (EntityTask) task;
                     if (entityTask.getType() == EntityTask.Type.TAME) {
@@ -165,7 +165,7 @@ public class TaskListener implements Listener {
             if (player != null) {
                 BingoGame game = plugin.getCurrentGame();
                 for (int i = 0; i < 25; i++) {
-                    BingoTask task = game.getTasks().get(i);
+                    BingoTask task = game.getBoard().get(i);
                     if (task instanceof EntityTask) {
                         EntityTask entityTask = (EntityTask) task;
                         if (entityTask.getType() == EntityTask.Type.SUMMON) {
@@ -196,7 +196,7 @@ public class TaskListener implements Listener {
     void getItem(BingoPlayer player, ItemStack is) {
         BingoGame game = plugin.getCurrentGame();
         for (int i = 0; i < 25; i++) {
-            BingoTask task = game.getTasks().get(i);
+            BingoTask task = game.getBoard().get(i);
             if (task instanceof ItemTask) {
                 ItemTask itemTask = (ItemTask) task;
                 if (itemTask.getTarget().getType() == is.getType() && !player.hasFinished(i)) {

@@ -5,8 +5,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import io.apjifengc.bingo.Bingo;
 
-import java.io.File;
-
 /**
  * Bingo configuration constants.
  *

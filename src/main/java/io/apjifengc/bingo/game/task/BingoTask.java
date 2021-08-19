@@ -18,14 +18,16 @@ import java.util.List;
  */
 public abstract class BingoTask {
 
+    
+
     /** Get an item which will be shown in the gui to represent this task. */
-    @NotNull abstract ItemStack getShownItem();
+    @NotNull public abstract ItemStack getShownItem();
 
     /** Get the shown name of the task. */
-    @NotNull abstract List<BaseComponent> getShownName();
+    @NotNull public abstract BaseComponent[] getShownName();
 
     @Override public String toString() {
-        return TextComponent.toPlainText(getShownName().toArray(new BaseComponent[0]));
+        return TextComponent.toPlainText(getShownName());
     }
 
 }

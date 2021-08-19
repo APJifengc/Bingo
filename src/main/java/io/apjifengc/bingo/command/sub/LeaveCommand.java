@@ -24,9 +24,10 @@ public class LeaveCommand extends SubCommand {
                         if (plugin.getCurrentGame().getState() != BingoGame.State.LOADING) {
                             sender.sendMessage(Message.get("prefix") + Message.get("commands.leave.success"));
                             plugin.getCurrentGame().removePlayer((Player) sender);
-                            plugin.getMultiverseCore().getSafeTTeleporter().safelyTeleport(Bukkit.getConsoleSender(),
-                                    (Player) sender, plugin.getMultiverseCore().getDestFactory()
-                                            .getDestination(Config.getMain().getString("room.main-world")));
+                            // TODO: Multiworld
+                            //plugin.getMultiverseCore().getSafeTTeleporter().safelyTeleport(Bukkit.getConsoleSender(),
+                            //        (Player) sender, plugin.getMultiverseCore().getDestFactory()
+                            //                .getDestination(Config.getMain().getString("room.main-world")));
                         } else {
                             sender.sendMessage(Message.get("prefix") + Message.get("commands.leave.game-loading"));
                         }

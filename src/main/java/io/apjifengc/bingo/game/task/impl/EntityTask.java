@@ -6,6 +6,7 @@ import io.apjifengc.bingo.util.NameUtil;
 import io.apjifengc.bingo.util.Skull;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -24,11 +25,13 @@ import static org.apache.commons.lang.Validate.*;
  *
  * @author APJifengc, Milkory
  */
-public class EntityTask implements BingoTask {
+public class EntityTask extends BingoTask {
 
     @Getter private final Type type;
     @Getter private final EntityType entity;
     @Getter private final String param;
+    @Getter private final ItemStack shownItem;
+    @Getter private final BaseComponent[] shownName;
 
     public static EntityTask newInstance(String[] args) {
         isTrue(args.length >= 1, "Task type (arg 1) not found");
@@ -47,7 +50,9 @@ public class EntityTask implements BingoTask {
         }
         if (type == Type.DROP) {
             isTrue(args.length >= 3, "Item to drop (arg 3) not found");
+            return new EntityTask(type, entity, args[2].toUpperCase());
         }
+        return new EntityTask(type, entity, null);
     }
 
     public EntityTask(Type type, @Nullable EntityType entity, @Nullable String param) {
@@ -87,10 +92,10 @@ public class EntityTask implements BingoTask {
             lore = Message.get(toLangKey(type) + ".desc", entityName);
         }
         itemMeta.setDisplayName(taskName);
-        this.name = Collections.singletonList(new TextComponent(taskName));
+        this.shownName = new BaseComponent[]{ new TextComponent(taskName) };
         itemMeta.setLore(Arrays.asList(lore.split("\n")));
         showItem.setItemMeta(itemMeta);
-        this.showItem = showItem;
+        this.shownItem = showItem;
     }
 
     private String toLangKey(Type ori) {

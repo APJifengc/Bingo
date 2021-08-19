@@ -1,6 +1,5 @@
 package io.apjifengc.bingo;
 
-import com.onarandombox.MultiverseCore.MultiverseCore;
 import io.apjifengc.bingo.command.CommandMain;
 import io.apjifengc.bingo.game.BingoGame;
 import io.apjifengc.bingo.game.BingoPlayer;
@@ -10,7 +9,6 @@ import io.apjifengc.bingo.listener.TaskListener;
 import io.apjifengc.bingo.util.Config;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
@@ -35,8 +33,6 @@ public class Bingo extends JavaPlugin {
 
     @Getter @Setter BingoGame currentGame;
 
-    @Getter MultiverseCore multiverseCore;
-
     @Getter CommandMain commandMain;
 
     @Override public void onLoad() {
@@ -45,7 +41,6 @@ public class Bingo extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        multiverseCore = ((MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core"));
         getLogger().info("Bingooooooooo!");
         commandMain = new CommandMain();
         new InventoryListener(this);
@@ -90,7 +85,7 @@ public class Bingo extends JavaPlugin {
     public File saveResource(String path) {
         var file = new File(getDataFolder(), path);
         if (!file.exists()) { // Create the config file if it isn't exist.
-            saveResource(path, false);
+            super.saveResource(path, false);
         }
         return file;
     }

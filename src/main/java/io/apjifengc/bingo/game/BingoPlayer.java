@@ -74,7 +74,7 @@ public class BingoPlayer {
      * @return 若玩家已完成该任务则返回 true，反之返回 false。
      */
     public boolean hasFinished(BingoTask task) {
-        return taskStatus[game.getTasks().indexOf(task)];
+        return taskStatus[game.getBoard().indexOf(task)];
     }
 
     /**
@@ -83,7 +83,7 @@ public class BingoPlayer {
      * @param index 要完成的任务的索引
      */
     public void finishTask(int index) {
-        this.finishTask(game.getTasks().get(index));
+        this.finishTask(game.getBoard().get(index));
     }
 
     /**
@@ -92,7 +92,7 @@ public class BingoPlayer {
      * @param task 要完成的任务
      */
     public void finishTask(BingoTask task) {
-        taskStatus[game.getTasks().indexOf(task)] = true;
+        taskStatus[game.getBoard().indexOf(task)] = true;
         if (Config.getMain().getBoolean("chat.complete-task-show")) {
             Bukkit.spigot().broadcast(Message.getRaw("chat.task", this.getPlayer().getName(), task.getShownName()));
         }
@@ -169,7 +169,7 @@ public class BingoPlayer {
      * @return 若已完成相关 Bingo 则返回true，反之返回 false。
      */
     public boolean checkBingo(BingoTask task) {
-        int index = game.getTasks().indexOf(task);
+        int index = game.getBoard().indexOf(task);
         if (index != -1) {
             return checkBingo(index);
         }
@@ -208,7 +208,7 @@ public class BingoPlayer {
             if (hasFinished(i)) {
                 is = complete;
             } else {
-                is = game.getTasks().get(i).getShownItem();
+                is = game.getBoard().get(i).getShownItem();
             }
             inv.setItem(BingoUtil.getBoardX(i) + BingoUtil.getBoardY(i) * 9 + 2, is);
         }

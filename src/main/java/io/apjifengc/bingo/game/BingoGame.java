@@ -1,10 +1,5 @@
 package io.apjifengc.bingo.game;
 
-import com.onarandombox.MultiverseCore.MultiverseCore;
-import com.onarandombox.MultiverseCore.api.MVDestination;
-import com.onarandombox.MultiverseCore.api.MVWorldManager;
-import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-import com.onarandombox.MultiverseCore.destination.DestinationFactory;
 import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.exception.BadTaskException;
 import io.apjifengc.bingo.game.task.BingoTask;
@@ -58,13 +53,6 @@ public class BingoGame {
 
     @Getter BossBar bossbar = Bukkit.createBossBar(Message.get("bossbar.normal"), BarColor.YELLOW, BarStyle.SEGMENTED_10);
 
-    MultiverseCore mvCore;
-    MVWorldManager mvWM;
-    MultiverseWorld world;
-
-    DestinationFactory df;
-    MVDestination d;
-
     /**
      * 为这个 Bingo 游戏添加一个玩家。
      *
@@ -83,7 +71,8 @@ public class BingoGame {
             player.getInventory().clear();
             p.giveGuiItem();
             bossbar.addPlayer(player);
-            mvCore.getSafeTTeleporter().safelyTeleport(plugin.getServer().getConsoleSender(), player, d);
+            // TODO: Multiworld
+            //mvCore.getSafeTTeleporter().safelyTeleport(plugin.getServer().getConsoleSender(), player, d);
             player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
             player.setFoodLevel(20);
             player.getActivePotionEffects().forEach((s) -> player.removePotionEffect(s.getType()));
@@ -137,9 +126,6 @@ public class BingoGame {
 
     public BingoGame(Bingo plugin) {
         this.plugin = plugin;
-        mvCore = plugin.getMultiverseCore();
-        mvWM = mvCore.getMVWorldManager();
-        df = mvCore.getDestFactory();
         // Start the timer.
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         scoreboard.registerNewObjective("bingo", "dummy", Message.get("scoreboard.start-timer.title"))
@@ -257,6 +243,7 @@ public class BingoGame {
 
     public void start() {
         // Gener world.
+        // TODO: Multiworld
         for (BingoPlayer player : players) {
             player.getPlayer().sendTitle("", Message.get("chat.wait-for-world"), 0, 400, 5);
         }
@@ -264,19 +251,19 @@ public class BingoGame {
         updateScoreboard();
         Random random = new Random();
         String worldName = Config.getMain().getString("room.world-name");
-        if (mvWM.getMVWorld(worldName) != null) {
-            mvWM.deleteWorld(worldName, true);
-        }
-        mvWM.addWorld(worldName, World.Environment.NORMAL, String.valueOf(random.nextLong()), WorldType.NORMAL, true,
-                null);
-        world = mvWM.getMVWorld(worldName);
-        d = df.getDestination(Config.getMain().getString("room.world-name"));
+        //if (mvWM.getMVWorld(worldName) != null) {
+        //    mvWM.deleteWorld(worldName, true);
+        //}
+        //mvWM.addWorld(worldName, World.Environment.NORMAL, String.valueOf(random.nextLong()), WorldType.NORMAL, true,
+        //        null);
+        //world = mvWM.getMVWorld(worldName);
+        //d = df.getDestination(Config.getMain().getString("room.world-name"));
         for (BingoPlayer player : players) {
             Player p = player.getPlayer();
             p.resetTitle();
             p.spigot().respawn();
             p.sendMessage(Message.get("chat.world-gened"));
-            mvCore.getSafeTTeleporter().safelyTeleport(plugin.getServer().getConsoleSender(), p, d);
+            //mvCore.getSafeTTeleporter().safelyTeleport(plugin.getServer().getConsoleSender(), p, d);
             p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
             p.setFoodLevel(20);
             p.getActivePotionEffects().forEach((s) -> p.removePotionEffect(s.getType()));
@@ -284,14 +271,14 @@ public class BingoGame {
         }
         players.forEach((s) -> bossbar.addPlayer(s.getPlayer()));
         if (Config.getMain().getInt("game.world-border") > 0) {
-            world.getCBWorld().getWorldBorder().setSize(Config.getMain().getInt("game.world-border"));
+            //world.getCBWorld().getWorldBorder().setSize(Config.getMain().getInt("game.world-border"));
         }
         int pvpTime = Config.getMain().getInt("game.no-pvp");
         if (pvpTime > 0) {
             timer = 0;
             bossbar.setTitle(Message.get("bossbar.pvp-timer", timer));
             bossbar.setProgress(0);
-            world.setPVPMode(false);
+            //world.setPVPMode(false);
             BingoUtil.sendMessage(players, Message.get("chat.pvp-timer", pvpTime));
             pvpTimer = pvpTime;
             eventTasks.put(2, new BukkitRunnable() {
@@ -299,7 +286,7 @@ public class BingoGame {
                 @Override
                 public void run() {
                     resetBossbar();
-                    world.setPVPMode(true);
+                    //world.setPVPMode(true);
                     BingoUtil.sendMessage(players, Message.get("chat.pvp-enabled"));
                     for (BingoPlayer bp : players) {
                         Player p = bp.getPlayer();
@@ -425,9 +412,9 @@ public class BingoGame {
             bp.clearScoreboard();
             bossbar.removePlayer(bp.getPlayer());
         }
-        if (mvWM.getMVWorld(Config.getMain().getString("room.world-name")) != null) {
-            mvWM.deleteWorld(Config.getMain().getString("room.world-name"), true);
-        }
+        //if (mvWM.getMVWorld(Config.getMain().getString("room.world-name")) != null) {
+        //    mvWM.deleteWorld(Config.getMain().getString("room.world-name"), true);
+        //}
     }
 
     public enum State {

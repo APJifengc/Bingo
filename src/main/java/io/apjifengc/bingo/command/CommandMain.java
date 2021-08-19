@@ -21,16 +21,16 @@ public class CommandMain implements TabExecutor {
 
     private final Bingo plugin = Bingo.getInstance();
 
-    @Getter private final Map<String, SubCommand> commands = new HashMap<>() {{
-        put("debug", new DebugCommand());
-        put("gui", new GuiCommand());
-        put("help", new HelpCommand());
-        put("join", new JoinCommand());
-        put("leave", new LeaveCommand());
-        put("reload", new ReloadCommand());
-        put("start", new StartCommand());
-        put("stop", new StopCommand());
-    }};
+    @Getter private final Map<String, SubCommand> commands = Map.ofEntries(
+        Map.entry("debug", new DebugCommand()),
+        Map.entry("gui", new GuiCommand()),
+        Map.entry("help", new HelpCommand()),
+        Map.entry("join", new JoinCommand()),
+        Map.entry("leave", new LeaveCommand()),
+        Map.entry("reload", new ReloadCommand()),
+        Map.entry("start", new StartCommand()),
+        Map.entry("stop", new StopCommand())
+    );
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

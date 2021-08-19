@@ -2,6 +2,12 @@ package io.apjifengc.bingo.util;
 
 import static org.apache.commons.lang.Validate.*;
 
+import java.util.List;
+
+import org.bukkit.entity.Player;
+
+import io.apjifengc.bingo.game.BingoPlayer;
+
 /**
  * Bingo general utilities.
  *
@@ -28,6 +34,11 @@ public class BingoUtil {
     public static int getBoardYFirst(int row) {
         isTrue(row >= 0 && row <= 5, "Invalid row");
         return 5 * row;
+    }
+
+    /** Send formatted message to players. */
+    public static void sendMessage(List<BingoPlayer> players, String message) {
+        players.forEach(p -> p.getPlayer().sendMessage(message));
     }
 
 }
