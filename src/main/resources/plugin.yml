@@ -1,5 +1,5 @@
 name: Bingo
-main: github.apjifengc.bingo.Bingo
+main: io.apjifengc.bingo.Bingo
 version: ${version}
 authors: [APJifengc, Milkory]
 api-version: 1.13
