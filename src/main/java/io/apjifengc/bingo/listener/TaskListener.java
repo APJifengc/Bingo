@@ -66,18 +66,17 @@ public class TaskListener implements Listener {
         BingoPlayer player = plugin.getPlayer(event.getEntity().getKiller());
         if (player != null) {
             BingoGame game = plugin.getCurrentGame();
-            for (int i = 0; i < 25; i++) {
-                BingoTask task = game.getBoard().get(i);
-                if (task instanceof EntityTask) {
+            for (BingoTask task : game.getBoard()) {
+                if (task instanceof EntityTask && !player.hasFinished(task)) {
                     EntityTask entityTask = (EntityTask) task;
                     if (entityTask.getType() == EntityTask.Type.KILL) {
-                        if (event.getEntityType() == entityTask.getEntity() && !player.hasFinished(i)) {
-                            player.finishTask(i);
+                        if (event.getEntityType() == entityTask.getEntity()) {
+                            player.finishTask(task);
                         }
                     } else if (entityTask.getType() == EntityTask.Type.DROP) {
                         for (ItemStack itemStack : event.getDrops()) {
                             if (itemStack.getType() == Material.getMaterial(entityTask.getParam())) {
-                                player.finishTask(i);
+                                player.finishTask(task);
                                 break;
                             }
                         }
@@ -92,13 +91,12 @@ public class TaskListener implements Listener {
         BingoPlayer player = plugin.getPlayer(event.getBreeder());
         if (player != null) {
             BingoGame game = plugin.getCurrentGame();
-            for (int i = 0; i < 25; i++) {
-                BingoTask task = game.getBoard().get(i);
-                if (task instanceof EntityTask) {
+            for (BingoTask task : game.getBoard()) {
+                if (task instanceof EntityTask && !player.hasFinished(task)) {
                     EntityTask entityTask = (EntityTask) task;
                     if (entityTask.getType() == EntityTask.Type.BREED) {
-                        if (event.getEntityType() == entityTask.getEntity() && !player.hasFinished(i)) {
-                            player.finishTask(i);
+                        if (event.getEntityType() == entityTask.getEntity()) {
+                            player.finishTask(task);
                         }
                     }
                 }
@@ -111,13 +109,12 @@ public class TaskListener implements Listener {
         BingoPlayer player = plugin.getPlayer(event.getDamager());
         if (player != null) {
             BingoGame game = plugin.getCurrentGame();
-            for (int i = 0; i < 25; i++) {
-                BingoTask task = game.getBoard().get(i);
-                if (task instanceof EntityTask) {
+            for (BingoTask task : game.getBoard()) {
+                if (task instanceof EntityTask && !player.hasFinished(task)) {
                     EntityTask entityTask = (EntityTask) task;
                     if (entityTask.getType() == EntityTask.Type.DAMAGE) {
-                        if (event.getEntityType() == entityTask.getEntity() && !player.hasFinished(i)) {
-                            player.finishTask(i);
+                        if (event.getEntityType() == entityTask.getEntity()) {
+                            player.finishTask(task);
                         }
                     }
                 }
@@ -130,13 +127,12 @@ public class TaskListener implements Listener {
         BingoPlayer player = plugin.getPlayer(event.getOwner());
         if (player != null) {
             BingoGame game = plugin.getCurrentGame();
-            for (int i = 0; i < 25; i++) {
-                BingoTask task = game.getBoard().get(i);
-                if (task instanceof EntityTask) {
+            for (BingoTask task : game.getBoard()) {
+                if (task instanceof EntityTask && !player.hasFinished(task)) {
                     EntityTask entityTask = (EntityTask) task;
                     if (entityTask.getType() == EntityTask.Type.TAME) {
-                        if (event.getEntityType() == entityTask.getEntity() && !player.hasFinished(i)) {
-                            player.finishTask(i);
+                        if (event.getEntityType() == entityTask.getEntity()) {
+                            player.finishTask(task);
                         }
                     }
                 }
@@ -164,24 +160,26 @@ public class TaskListener implements Listener {
             BingoPlayer player = plugin.getPlayer(placedBlockPlayer);
             if (player != null) {
                 BingoGame game = plugin.getCurrentGame();
-                for (int i = 0; i < 25; i++) {
-                    BingoTask task = game.getBoard().get(i);
+                for (BingoTask task : game.getBoard()) {
                     if (task instanceof EntityTask) {
                         EntityTask entityTask = (EntityTask) task;
-                        if (entityTask.getType() == EntityTask.Type.SUMMON) {
+                        if (entityTask.getType() == EntityTask.Type.SUMMON && !player.hasFinished(task)) {
                             switch (event.getSpawnReason()) {
                                 case BUILD_IRONGOLEM:
-                                    if (entityTask.getParam().equalsIgnoreCase("IRONGOLEM") && !player.hasFinished(i)) {
-                                        player.finishTask(i);
+                                    if (entityTask.getParam().equalsIgnoreCase("IRONGOLEM")) {
+                                        player.finishTask(task);
                                     }
+                                    break;
                                 case BUILD_SNOWMAN:
-                                    if (entityTask.getParam().equalsIgnoreCase("SNOWMAN") && !player.hasFinished(i)) {
-                                        player.finishTask(i);
+                                    if (entityTask.getParam().equalsIgnoreCase("SNOWMAN")) {
+                                        player.finishTask(task);
                                     }
+                                    break;
                                 case BUILD_WITHER:
-                                    if (entityTask.getParam().equalsIgnoreCase("WITHER") && !player.hasFinished(i)) {
-                                        player.finishTask(i);
+                                    if (entityTask.getParam().equalsIgnoreCase("WITHER")) {
+                                        player.finishTask(task);
                                     }
+                                    break;
                                 default:
                                     break;
                             }
@@ -193,14 +191,13 @@ public class TaskListener implements Listener {
         placedBlockPlayer = null;
     }
 
-    void getItem(BingoPlayer player, ItemStack is) {
+    void getItem(BingoPlayer player, ItemStack itemStack) {
         BingoGame game = plugin.getCurrentGame();
-        for (int i = 0; i < 25; i++) {
-            BingoTask task = game.getBoard().get(i);
+        for (BingoTask task : game.getBoard()) {
             if (task instanceof ItemTask) {
                 ItemTask itemTask = (ItemTask) task;
-                if (itemTask.getTarget().getType() == is.getType() && !player.hasFinished(i)) {
-                    player.finishTask(i);
+                if (itemTask.getTarget().getType() == itemStack.getType() && !player.hasFinished(task)) {
+                    player.finishTask(task);
                 }
             }
         }
