@@ -38,24 +38,18 @@ public class Skull {
     }
 
     enum EntityHead {
-        /*
-
-        {
-                          "type": "item",
-                          "name": "minecraft:skull",
-                          "weight": 50,
-                          "functions": [
-                            {
-                              "function": "set_data",
-                              "data": 3
-                            },
-                            {
-                              "function": "set_nbt",
-                              "tag": "{display:{Name:\"Piglin Brute\"},SkullOwner:{Id:\"a6db33b5-1e60-4cbe-a38f-881579f94336\",Properties:{textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2UzMDBlOTAyNzM0OWM0OTA3NDk3NDM4YmFjMjllM2E0Yzg3YTg0OGM1MGIzNGMyMTI0MjcyN2I1N2Y0ZTFjZiJ9fX0=\"}]}}}"
-                            }
-                          ]
-                        }
-         */
+        GOAT(
+                "da53b29c-78b0-48af-8901-1d396a67d5cf",
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDU3YTBkNTM4ZmEwOGE3YWZmZTMxMjkwMzQ2ODg2MTcyMGY5ZmEzNGU4NmQ0NGI4OWRjZWM1NjM5MjY1ZjAzIn19fQ=="
+        ),
+        GLOW_SQUID(
+                "859e7eec-2db5-4464-9d32-40587ab7fe9b",
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTVlMmI0NmU1MmFjOTJkNDE5YTJkZGJjYzljZGNlN2I0NTFjYjQ4YWU3MzlkODVkNjA3ZGIwNTAyYTAwOGNlMCJ9fX0="
+        ),
+        AXOLOTL(
+                "86b5c0db-744b-4734-9637-30b33090758d",
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWMxMzhmNDAxYzY3ZmMyZTFlMzg3ZDljOTBhOTY5MTc3MmVlNDg2ZThkZGJmMmVkMzc1ZmM4MzQ4NzQ2ZjkzNiJ9fX0="
+        ),
         STRIDER(
                 "d1c2fba9-6633-4625-9cda-8528fae6fe09",
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMThhOWFkZjc4MGVjN2RkNDYyNWM5YzA3NzkwNTJlNmExNWE0NTE4NjY2MjM1MTFlNGM4MmU5NjU1NzE0YjNjMSJ9fX0="
