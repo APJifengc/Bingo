@@ -38,6 +38,52 @@ public class Skull {
     }
 
     enum EntityHead {
+        /*
+
+        {
+                          "type": "item",
+                          "name": "minecraft:skull",
+                          "weight": 50,
+                          "functions": [
+                            {
+                              "function": "set_data",
+                              "data": 3
+                            },
+                            {
+                              "function": "set_nbt",
+                              "tag": "{display:{Name:\"Piglin Brute\"},SkullOwner:{Id:\"a6db33b5-1e60-4cbe-a38f-881579f94336\",Properties:{textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2UzMDBlOTAyNzM0OWM0OTA3NDk3NDM4YmFjMjllM2E0Yzg3YTg0OGM1MGIzNGMyMTI0MjcyN2I1N2Y0ZTFjZiJ9fX0=\"}]}}}"
+                            }
+                          ]
+                        }
+         */
+        STRIDER(
+                "d1c2fba9-6633-4625-9cda-8528fae6fe09",
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMThhOWFkZjc4MGVjN2RkNDYyNWM5YzA3NzkwNTJlNmExNWE0NTE4NjY2MjM1MTFlNGM4MmU5NjU1NzE0YjNjMSJ9fX0="
+        ),
+        PIGLIN_BRUTE(
+                "a6db33b5-1e60-4cbe-a38f-881579f94336",
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2UzMDBlOTAyNzM0OWM0OTA3NDk3NDM4YmFjMjllM2E0Yzg3YTg0OGM1MGIzNGMyMTI0MjcyN2I1N2Y0ZTFjZiJ9fX0="
+        ),
+        ZOMBIFIED_PIGLIN(
+                "24d853db-b5b6-4b46-8cd7-4210c38d246d",
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWMwY2UyZTg5NjRkYjk4M2E4MTI5MGVhODZhMjg5ODUyZjQ0OGM5NjhkNjQ1MTFmNDdkOWNmYjU5MTFkZGU0MCJ9fX0="
+        ),
+        ZOGLIN(
+                "c35e96f6-3548-4240-8f12-7e5e7a34dc20",
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTY3ZTE4NjAyZTAzMDM1YWQ2ODk2N2NlMDkwMjM1ZDg5OTY2NjNmYjllYTQ3NTc4ZDNhN2ViYmM0MmE1Y2NmOSJ9fX0="
+        ),
+        PIGLIN(
+                "24d853db-b5b6-4b46-8cd7-4210c38d246d",
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWY1ODNlZmRhN2I4Mzk2MDQ0YjA0NTg2MjkyNGUzZjg5MTA3YTVjOWNlNGI1ZTZlZTBlMDUwN2Y4NDhiOGRkNyJ9fX0="
+        ),
+        HOGLIN(
+                "8196c240-e96a-4434-b630-6b191ceeb480",
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWJiOWJjMGYwMWRiZDc2MmEwOGQ5ZTc3YzA4MDY5ZWQ3Yzk1MzY0YWEzMGNhMTA3MjIwODU2MWI3MzBlOGQ3NSJ9fX0="
+        ),
+        BEE(
+                "77342662-8870-445a-869f-f0aef1406b3d",
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTlhYzE2ZjI5NmI0NjFkMDVlYTA3ODVkNDc3MDMzZTUyNzM1OGI0ZjMwYzI2NmFhMDJmMDIwMTU3ZmZjYTczNiJ9fX0="
+        ),
         WANDERING_TRADER(
                 "70aaec20-d989-4e06-857d-285ad2dca337",
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWYxMzc5YTgyMjkwZDdhYmUxZWZhYWJiYzcwNzEwZmYyZWMwMmRkMzRhZGUzODZiYzAwYzkzMGM0NjFjZjkzMiJ9fX0="
