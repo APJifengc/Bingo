@@ -30,16 +30,16 @@ public class NameUtil {
         return sb.toString();
     }
 
-    public static List<BaseComponent> getItemName(ItemStack is) {
+    public static BaseComponent getItemName(ItemStack is) {
         if (is.hasItemMeta() && is.getItemMeta().hasDisplayName()) {
-            return Collections.singletonList(new TextComponent(is.getItemMeta().getDisplayName()));
+            return new TextComponent(is.getItemMeta().getDisplayName());
         }
         return getItemName(is.getType());
     }
 
-    public static List<BaseComponent> getItemName(Material mat) {
+    public static BaseComponent getItemName(Material mat) {
         var key = mat.getKey();
-        return Collections.singletonList(new TranslatableComponent("item." + key.getNamespace() + "." + key.getKey()));
+        return new TranslatableComponent("item." + key.getNamespace() + "." + key.getKey());
     }
 
 }

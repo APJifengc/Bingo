@@ -4,7 +4,9 @@ import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.game.BingoPlayer;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.ArrayList;
@@ -42,22 +44,35 @@ public class Message {
         for (int i = 0; i < args.length; i++) {
             src = src.replace("{" + i + "}", args[i].toString());
         }
-        return src.replaceAll("\\\\{0}&(.)", "§$1");
+        return src.replaceAll("\\\\{0}&(.)", "§$1")
+                .replace("\\n", "\n");
+    }
+
+    public static List<BaseComponent[]> getWrapComponents(String path, Object... args) {
+        var list = new ArrayList<BaseComponent[]>();
+        for (String section : config.getString(path).split("(\\n|\\\\n)")) {
+            list.add(serveComponents(section, args));
+        }
+        return list;
+    }
+
+    public static BaseComponent[] getComponents(String path, Object... args) {
+        return serveComponents(config.getString(path), args);
     }
 
     // TODO: Needs cleaning up.
-    public static BaseComponent[] getRaw(String path, Object... args) {
-        String src = config.getString(path);
+    private static BaseComponent[] serveComponents(String src, Object... args) {
         if (src == null) {
             return TextComponent.fromLegacyText("§c§l[Unknown Message]");
         }
         var stream = Stream.<Object>of(src);
         for (int i = 0; i < args.length; i++) {
             var arg = args[i];
-            var replace = String.format("{%d}", i);
+            var replace = String.format("\\{%d\\}", i);
+            int finalI = i;
             stream = stream.map(it -> {
                 if (!(it instanceof String)) return it;
-                var split = ((String) it).split(replace);
+                var split = ((String) it).split(replace, -2);
                 var list = new ArrayList<>();
                 list.add(split[0]);
                 for (int j = 1; j < split.length; j++) {
@@ -70,11 +85,34 @@ public class Message {
                 else return Stream.of(it);
             });
         }
-        var list = stream.map(it -> {
+
+        // Style process & Collect
+        var list = translateColor(stream.map(it -> {
             if (!(it instanceof BaseComponent)) return new TextComponent(it.toString());
             else return (BaseComponent) it;
+        })).flatMap(it -> {
+            if (it instanceof TextComponent) return Stream.of(TextComponent.fromLegacyText(((TextComponent) it).getText()));
+            else return Stream.of(it);
         }).collect(Collectors.toList());
-        return translateColor(list).toArray(new BaseComponent[0]);
+
+        list.get(0).setItalic(false);
+        for (int i = 0; i < list.size(); i++) {
+            var element = list.get(i);
+            if (i - 1 >= 0) {
+                element.copyFormatting(list.get(i - 1), ComponentBuilder.FormatRetention.ALL, false);
+            }
+        }
+        return list.toArray(new BaseComponent[0]);
+    }
+
+    public static String getRaw(String path, Object... args) {
+        return ComponentSerializer.toString(getComponents(path, args));
+    }
+
+    public static List<String> getWrapRaw(String path, Object... args) {
+        return getWrapComponents(path, args).stream().map(
+                ComponentSerializer::toString
+        ).collect(Collectors.toList());
     }
 
     private static String translateColor(String str) {
@@ -86,14 +124,13 @@ public class Message {
         // plugin.saveResource("language/zh_CN.yml");
     }
 
-    private static List<BaseComponent> translateColor(List<BaseComponent> list) {
-        list.forEach(it -> {
+    private static Stream<BaseComponent> translateColor(Stream<BaseComponent> stream) {
+        return stream.peek(it -> {
             if (it instanceof TextComponent) {
                 var iti = (TextComponent) it;
                 iti.setText(translateColor(iti.getText()));
             }
         });
-        return list;
     }
 
     /** Convert a unicode to chinese characters. */

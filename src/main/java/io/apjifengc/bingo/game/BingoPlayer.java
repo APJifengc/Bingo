@@ -94,7 +94,7 @@ public class BingoPlayer {
     public void finishTask(BingoTask task) {
         taskStatus[game.getBoard().indexOf(task)] = true;
         if (Config.getMain().getBoolean("chat.complete-task-show")) {
-            Bukkit.spigot().broadcast(Message.getRaw("chat.task", this.getPlayer().getName(), task.getShownName()));
+            Bukkit.spigot().broadcast(Message.getComponents("chat.task", this.getPlayer().getName(), task.getShownName()));
         }
         this.updateScoreboard();
         Player p = this.getPlayer();

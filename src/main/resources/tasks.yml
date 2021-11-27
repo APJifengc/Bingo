@@ -7,13 +7,13 @@
 
 ################
 #  Item Tasks  #
-#########################################
-# Every text in the list is a item task.#
-# Example:                              #
-# items:                                #
-#   - 'CLOCK'                           #
-#   - 'APPLE'                           #
-#########################################
+##########################################
+# Every text in the list is an item task.#
+# Example:                               #
+# items:                                 #
+#   - 'CLOCK'                            #
+#   - 'APPLE'                            #
+##########################################
 
 repeatable: false
 
