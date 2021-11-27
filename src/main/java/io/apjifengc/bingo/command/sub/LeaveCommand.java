@@ -7,6 +7,7 @@ import io.apjifengc.bingo.game.BingoPlayer;
 import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Message;
 
+import io.apjifengc.bingo.util.TeleportUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,10 +25,7 @@ public class LeaveCommand extends SubCommand {
                         if (plugin.getCurrentGame().getState() != BingoGame.State.LOADING) {
                             sender.sendMessage(Message.get("prefix") + Message.get("commands.leave.success"));
                             plugin.getCurrentGame().removePlayer((Player) sender);
-                            // TODO: Multiworld
-                            //plugin.getMultiverseCore().getSafeTTeleporter().safelyTeleport(Bukkit.getConsoleSender(),
-                            //        (Player) sender, plugin.getMultiverseCore().getDestFactory()
-                            //                .getDestination(Config.getMain().getString("room.main-world")));
+                            TeleportUtil.safeTeleport((Player) sender, Bukkit.getWorld(Config.getMain().getString("room.main-world")), 0, 0);
                         } else {
                             sender.sendMessage(Message.get("prefix") + Message.get("commands.leave.game-loading"));
                         }

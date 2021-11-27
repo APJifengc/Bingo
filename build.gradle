@@ -2,10 +2,13 @@ plugins {
     id 'java'
     id 'idea'
     id 'io.freefair.lombok' version '6.0.0-m2'
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
 
 group 'io.apjifengc.bingo'
 version '1.0.0-beta.3'
+
+apply plugin: 'com.github.johnrengelman.shadow'
 
 repositories {
     mavenCentral()
@@ -14,6 +17,8 @@ repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'https://repo.onarandombox.com/content/groups/public/' }
     maven { url 'https://libraries.minecraft.net/' }
+    maven { url 'https://repo.codemc.org/repository/maven-public/' }
+    maven { url 'https://maven.enginehub.org/repo/' }
 }
 
 dependencies {
@@ -21,10 +26,21 @@ dependencies {
     implementation 'com.mojang:authlib:2.3.31'
 
     implementation 'org.jetbrains:annotations:22.0.0'
-    testImplementation 'org.mockito:mockito-core:4.0.0'
-    testImplementation 'org.mockito:mockito-inline:4.0.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'io.github.bananapuncher714:nbteditor:7.17.0'
+    implementation 'com.sk89q.worldedit:worldedit-core:7.2.7'
+    implementation 'com.sk89q.worldedit:worldedit-bukkit:7.2.7'
+}
+
+shadowJar {
+    dependencies {
+        include(dependency('commons-io:commons-io:2.11.0'))
+        include(dependency('org.apache.commons:commons-lang3:3.12.0'))
+        include(dependency('io.github.bananapuncher714:nbteditor:7.17.0'))
+    }
+
 }
 
 idea {
@@ -41,7 +57,17 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
+jar {
+    enabled = false
+    dependsOn(shadowJar)
+}
+
+tasks.withType(Jar) {
+    destinationDirectory = file("$rootDir/run/plugins/");
+}
+
 processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE;
     from(sourceSets.main.resources.srcDirs) {
         include 'plugin.yml' expand 'version': project.version
     }

@@ -51,6 +51,7 @@ public class Bingo extends JavaPlugin {
 
     public void loadPlugin() {
         Config.load();
+        saveResource("lobby.schem");
     }
 
     @Override

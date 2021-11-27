@@ -47,10 +47,10 @@ public class ItemTask extends BingoTask {
         im.setLore(lore);
         target.setItemMeta(im);
         this.shownItem = target;
-        this.shownName = (BaseComponent[]) NameUtil.getItemName(target).toArray();
+        this.shownName = NameUtil.getItemName(target).toArray(new BaseComponent[0]);
     }
 
-    public static ItemTask getInstance(String[] args) {
+    public static ItemTask newInstance(String[] args) {
         isTrue(args.length >= 1, "The item ID not found");
         return new ItemTask(new ItemStack(Material.getMaterial(args[0].toUpperCase())));
     }

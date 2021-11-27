@@ -83,7 +83,7 @@ public class Message {
 
     public static void extractLanguageFiles() {
         plugin.saveResource("language/en_US.yml");
-        plugin.saveResource("language/zh_CN.yml");
+        // plugin.saveResource("language/zh_CN.yml");
     }
 
     private static List<BaseComponent> translateColor(List<BaseComponent> list) {

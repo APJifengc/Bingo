@@ -63,3 +63,11 @@ game:
   # This is how long the world border is. (Blocks)
   # lower than 1 to disable it.
   world-border: 800
+
+  # This is how many chunks will be pre-generated.
+  # lower than 1 to disable it.
+  pre-generate-range: 12
+
+  # This is the max range that player will be teleported randomly at the beginning.
+  # lower than 1 to disable it.
+  random-teleport-range: 800

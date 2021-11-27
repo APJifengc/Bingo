@@ -4,6 +4,7 @@ import static org.apache.commons.lang.Validate.*;
 
 import java.util.List;
 
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import io.apjifengc.bingo.game.BingoPlayer;

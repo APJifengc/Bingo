@@ -83,9 +83,9 @@ public class EntityTask extends BingoTask {
         String lore;
 
         if (type == Type.DROP) {
-            taskName = Message.get("task.entity-task.entity-drop-item.title", entityName,
+            taskName = Message.get("task.entity-task.drop.title", entityName,
                     NameUtil.getItemName(new ItemStack(Material.getMaterial(param))));
-            lore = Message.get("task.entity-task.entity-drop-item.desc", entityName,
+            lore = Message.get("task.entity-task.drop.desc", entityName,
                     NameUtil.getItemName(new ItemStack(Material.getMaterial(param))));
         } else {
             taskName = Message.get(toLangKey(type) + ".title", entityName);

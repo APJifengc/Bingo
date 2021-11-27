@@ -55,7 +55,7 @@ public class BingoTaskManager {
             var map = (Map<?, ?>) obj;
             for (Object o : map.keySet()) {
                 var value = map.get(o);
-                result.addAll(parseTaskObject(value, o + "::"));
+                result.addAll(parseTaskObject(value, prefix + o.toString() + "::"));
             }
             return result;
         } else return Collections.singletonList(prefix + obj.toString());

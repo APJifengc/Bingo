@@ -17,9 +17,6 @@ import java.util.List;
  * @author Milkory
  */
 public abstract class BingoTask {
-
-    
-
     /** Get an item which will be shown in the gui to represent this task. */
     @NotNull public abstract ItemStack getShownItem();
 
@@ -29,5 +26,4 @@ public abstract class BingoTask {
     @Override public String toString() {
         return TextComponent.toPlainText(getShownName());
     }
-
 }

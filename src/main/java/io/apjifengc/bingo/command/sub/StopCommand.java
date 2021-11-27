@@ -15,7 +15,7 @@ public class StopCommand extends SubCommand {
             if (plugin.hasBingoGame()) {
                 plugin.getCurrentGame().stop();
                 plugin.setCurrentGame(null);
-                Bukkit.broadcastMessage(Message.get("title-text") + "\n" + Message.get("commands.stop.message"));
+                Bukkit.broadcastMessage(Message.get("title-text") + Message.get("commands.stop.message"));
             } else {
                 sender.sendMessage(Message.get("prefix") + Message.get("commands.stop.no-game"));
             }

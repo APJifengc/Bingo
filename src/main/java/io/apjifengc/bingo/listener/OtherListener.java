@@ -5,8 +5,10 @@ import io.apjifengc.bingo.game.BingoGame;
 import io.apjifengc.bingo.game.BingoPlayer;
 import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Message;
+import io.apjifengc.bingo.util.TeleportUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -43,17 +45,15 @@ public class OtherListener implements Listener {
         if (plugin.hasBingoGame()) {
             BingoGame game = plugin.getCurrentGame();
             Player player = event.getPlayer();
-            BingoPlayer bplayer = game.getPlayer(player);
-            if (game.getState() == BingoGame.State.RUNNING && bplayer != null) {
-                bplayer.updatePlayer();
-                bplayer.giveGuiItem();
-                player.setScoreboard(bplayer.getScoreboard());
+            BingoPlayer gamePlayer = game.getPlayer(player);
+            if (game.getState() == BingoGame.State.RUNNING && gamePlayer != null) {
+                gamePlayer.updatePlayer();
+                gamePlayer.giveGuiItem();
+                player.setScoreboard(gamePlayer.getScoreboard());
                 game.getBossbar().addPlayer(player);
                 if (!player.getWorld().getName().equals(Config.getMain().getString("room.world-name"))) {
-                    // TODO: Multiworld
-                    /*plugin.getMultiverseCore().getSafeTTeleporter().safelyTeleport(
-                            plugin.getServer().getConsoleSender(), player, plugin.getMultiverseCore().getDestFactory()
-                                    .getDestination(Config.getMain().getString("room.world-name")));*/
+                    World world = Bukkit.getWorld(Config.getMain().getString("room.world-name"));
+                    TeleportUtil.safeTeleport(player, world, 0, 0);
                 }
                 player.sendMessage(Message.get("chat.back"));
             }
@@ -84,8 +84,6 @@ public class OtherListener implements Listener {
             if (game.getState() == BingoGame.State.RUNNING) {
                 BingoPlayer player = game.getPlayer(event.getPlayer());
                 if (player != null) {
-                    // TODO: Multiworld
-                    //plugin.getMultiverseCore().getSafeTTeleporter().safelyTeleport(plugin.getServer().getConsoleSender(), event.getPlayer(), plugin.getMultiverseCore().getDestFactory().getDestination(Config.getMain().getString("room.world-name")));
                     player.giveGuiItem();
                 }
             }

@@ -11,6 +11,7 @@ import io.apjifengc.bingo.game.BingoGame;
 import io.apjifengc.bingo.util.Message;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
@@ -20,6 +21,11 @@ import java.util.stream.Collectors;
 public class CommandMain implements TabExecutor {
 
     private final Bingo plugin = Bingo.getInstance();
+
+    public CommandMain() {
+        Bukkit.getPluginCommand("bingo").setExecutor(this);
+        Bukkit.getPluginCommand("bingo").setTabCompleter(this);
+    }
 
     @Getter private final Map<String, SubCommand> commands = Map.ofEntries(
         Map.entry("debug", new DebugCommand()),
