@@ -69,7 +69,6 @@ public class Message {
         for (int i = 0; i < args.length; i++) {
             var arg = args[i];
             var replace = String.format("\\{%d\\}", i);
-            int finalI = i;
             stream = stream.map(it -> {
                 if (!(it instanceof String)) return it;
                 var split = ((String) it).split(replace, -2);
@@ -82,6 +81,7 @@ public class Message {
                 return list;
             }).flatMap(it -> {
                 if (it instanceof List) return ((List<?>) it).stream();
+                else if (it.getClass().isArray()) return Stream.of((Object[]) it);
                 else return Stream.of(it);
             });
         }
@@ -121,7 +121,7 @@ public class Message {
 
     public static void extractLanguageFiles() {
         plugin.saveResource("language/en_US.yml");
-        // plugin.saveResource("language/zh_CN.yml");
+        plugin.saveResource("language/zh_CN.yml");
     }
 
     private static Stream<BaseComponent> translateColor(Stream<BaseComponent> stream) {
