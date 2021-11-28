@@ -66,33 +66,31 @@ public class EntityTask extends BingoTask {
         this.param = param;
         this.entity = entity;
         ItemStack shownItem;
-        String entityName;
         if (type == Type.SUMMON) {
             if ("SNOWMAN".equals(param)) {
                 shownItem = Skull.getEntitySkull(EntityType.SNOWMAN);
-                entityName = "Snowman";
+                entity = EntityType.SNOWMAN;
             } else if ("WITHER".equals(param)) {
                 shownItem = Skull.getEntitySkull(EntityType.WITHER);
-                entityName = "Wither";
+                entity = EntityType.WITHER;
             } else {
                 shownItem = Skull.getEntitySkull(EntityType.IRON_GOLEM);
-                entityName = "Iron Golem";
+                entity = EntityType.IRON_GOLEM;
             }
         } else {
             shownItem = Skull.getEntitySkull(entity);
-            entityName = NameUtil.formatName(entity.name());
         }
 
         BaseComponent[] taskName;
         List<String> rawLore;
         if (type == Type.DROP) {
-            taskName = Message.getComponents("task.entity-task.drop.title", entityName,
+            taskName = Message.getComponents("task.entity-task.drop.title", NameUtil.getEntityName(entity),
                     NameUtil.getItemName(Objects.requireNonNull(Material.getMaterial(param))));
-            rawLore = Message.getWrapRaw("task.entity-task.drop.desc", entityName,
+            rawLore = Message.getWrapRaw("task.entity-task.drop.desc", NameUtil.getEntityName(entity),
                     NameUtil.getItemName(Objects.requireNonNull(Material.getMaterial(param))));
         } else {
-            taskName = Message.getComponents(toLangKey(type) + ".title", entityName);
-            rawLore = Message.getWrapRaw(toLangKey(type) + ".desc", entityName);
+            taskName = Message.getComponents(toLangKey(type) + ".title", NameUtil.getEntityName(entity));
+            rawLore = Message.getWrapRaw(toLangKey(type) + ".desc", NameUtil.getEntityName(entity));
         }
         var rawTaskName = ComponentSerializer.toString(taskName);
         shownItem = BingoUtil.setRawDisplay(shownItem, rawTaskName, rawLore);

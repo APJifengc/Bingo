@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -40,6 +41,11 @@ public class NameUtil {
     public static BaseComponent getItemName(Material mat) {
         var key = mat.getKey();
         return new TranslatableComponent((mat.isBlock() ? "block." : "item.") + key.getNamespace() + "." + key.getKey());
+    }
+
+    public static BaseComponent getEntityName(EntityType type) {
+        var key = type.getKey();
+        return new TranslatableComponent("entity." + key.getNamespace() + "." + key.getKey());
     }
 
 }
