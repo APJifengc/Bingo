@@ -113,7 +113,6 @@ task:
 scoreboard:
   start-timer:
     title: "&c&lBingo Game"
-    #Please don't add more than two same lines.
     main: |
       &3
       &bPlayers : &d{0}/{1}
@@ -126,7 +125,6 @@ scoreboard:
     starting-in: "Starting in {0} seconds..."
   in-game:
     title: "&c&lBingo Game"
-    #Please don't add more than two same lines.
     main: |
       &1
       &eYour tasks:
@@ -143,7 +141,6 @@ scoreboard:
     uncompleted: "&c\u2588"
   end:
     title: "&c&lBingo Game"
-    #Please don't add more than two same lines.
     main: |
       &7
       &d&lGame over!
