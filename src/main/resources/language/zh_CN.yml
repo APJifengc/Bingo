@@ -149,8 +149,8 @@ scoreboard:
       &8&mlocalhost
     player: "&e#{0} &5{1}"
 bossbar:
-  pvp-timer: "&a启用 PVP - {0}s later"
-  end-timer: "&c游戏结束 - {0}s later"
+  pvp-timer: "&a启用 PVP - {0}s"
+  end-timer: "&c游戏结束 - {0}s"
   normal: "&aBingo 时间到"
   gameover: "&e游戏结束"
 title:
