@@ -39,7 +39,7 @@ public class NameUtil {
 
     public static BaseComponent getItemName(Material mat) {
         var key = mat.getKey();
-        return new TranslatableComponent("item." + key.getNamespace() + "." + key.getKey());
+        return new TranslatableComponent((mat.isBlock() ? "block." : "item.") + key.getNamespace() + "." + key.getKey());
     }
 
 }

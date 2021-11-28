@@ -4,10 +4,12 @@ import static org.apache.commons.lang.Validate.*;
 
 import java.util.List;
 
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import io.apjifengc.bingo.game.BingoPlayer;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Bingo general utilities.
@@ -40,6 +42,14 @@ public class BingoUtil {
     /** Send formatted message to players. */
     public static void sendMessage(List<BingoPlayer> players, String message) {
         players.forEach(p -> p.getPlayer().sendMessage(message));
+    }
+
+    public static ItemStack setRawDisplay(ItemStack item, String rawName, List<String> rawLore) {
+        item = NBTEditor.set(item, rawName,"display", "Name");
+        for (String lore :rawLore) {
+            item = NBTEditor.set(item, lore, "display", "Lore", null);
+        }
+        return item;
     }
 
 }

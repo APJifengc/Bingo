@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.apjifengc.bingo.Bingo;
+import io.apjifengc.bingo.util.BingoUtil;
 import io.apjifengc.bingo.util.NameUtil;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -42,11 +43,8 @@ public class ItemTask extends BingoTask {
     public ItemTask(ItemStack target) {
         this.target = target;
         var item = target.clone();
-        item = NBTEditor.set(item, Message.getRaw("task.item-task.title", NameUtil.getItemName(target)),
-                "display", "Name");
-        for (String lore : Message.getWrapRaw("task.item-task.desc", NameUtil.getItemName(target))) {
-            item = NBTEditor.set(item, lore, "display", "Lore", null);
-        }
+        item = BingoUtil.setRawDisplay(item, Message.getRaw("task.item-task.title", NameUtil.getItemName(target)),
+                Message.getWrapRaw("task.item-task.desc", NameUtil.getItemName(target)));
         this.shownItem = item;
         this.shownName = new BaseComponent[]{NameUtil.getItemName(target)};
     }

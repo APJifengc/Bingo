@@ -1,12 +1,15 @@
 package io.apjifengc.bingo.game.task.impl;
 
 import io.apjifengc.bingo.game.task.BingoTask;
+import io.apjifengc.bingo.util.BingoUtil;
 import io.apjifengc.bingo.util.Message;
 import io.apjifengc.bingo.util.NameUtil;
 import io.apjifengc.bingo.util.Skull;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -15,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import static org.apache.commons.lang.Validate.*;
@@ -61,41 +65,39 @@ public class EntityTask extends BingoTask {
         this.type = type;
         this.param = param;
         this.entity = entity;
-        ItemStack showItem;
+        ItemStack shownItem;
         String entityName;
         if (type == Type.SUMMON) {
             if ("SNOWMAN".equals(param)) {
-                showItem = Skull.getEntitySkull(EntityType.SNOWMAN);
+                shownItem = Skull.getEntitySkull(EntityType.SNOWMAN);
                 entityName = "Snowman";
             } else if ("WITHER".equals(param)) {
-                showItem = Skull.getEntitySkull(EntityType.WITHER);
+                shownItem = Skull.getEntitySkull(EntityType.WITHER);
                 entityName = "Wither";
             } else {
-                showItem = Skull.getEntitySkull(EntityType.IRON_GOLEM);
+                shownItem = Skull.getEntitySkull(EntityType.IRON_GOLEM);
                 entityName = "Iron Golem";
             }
         } else {
-            showItem = Skull.getEntitySkull(entity);
+            shownItem = Skull.getEntitySkull(entity);
             entityName = NameUtil.formatName(entity.name());
         }
-        ItemMeta itemMeta = showItem.getItemMeta();
-        String taskName;
-        String lore;
 
+        BaseComponent[] taskName;
+        List<String> rawLore;
         if (type == Type.DROP) {
-            taskName = Message.get("task.entity-task.drop.title", entityName,
-                    NameUtil.getItemName(new ItemStack(Material.getMaterial(param))));
-            lore = Message.get("task.entity-task.drop.desc", entityName,
-                    NameUtil.getItemName(new ItemStack(Material.getMaterial(param))));
+            taskName = Message.getComponents("task.entity-task.drop.title", entityName,
+                    NameUtil.getItemName(Objects.requireNonNull(Material.getMaterial(param))));
+            rawLore = Message.getWrapRaw("task.entity-task.drop.desc", entityName,
+                    NameUtil.getItemName(Objects.requireNonNull(Material.getMaterial(param))));
         } else {
-            taskName = Message.get(toLangKey(type) + ".title", entityName);
-            lore = Message.get(toLangKey(type) + ".desc", entityName);
+            taskName = Message.getComponents(toLangKey(type) + ".title", entityName);
+            rawLore = Message.getWrapRaw(toLangKey(type) + ".desc", entityName);
         }
-        itemMeta.setDisplayName(taskName);
-        this.shownName = new BaseComponent[]{ new TextComponent(taskName) };
-        itemMeta.setLore(Arrays.asList(lore.split("\n")));
-        showItem.setItemMeta(itemMeta);
-        this.shownItem = showItem;
+        var rawTaskName = ComponentSerializer.toString(taskName);
+        shownItem = BingoUtil.setRawDisplay(shownItem, rawTaskName, rawLore);
+        this.shownName = taskName;
+        this.shownItem = shownItem;
     }
 
     private String toLangKey(Type ori) {
