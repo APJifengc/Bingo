@@ -60,7 +60,7 @@ public class Message {
         return serveComponents(config.getString(path), args);
     }
 
-    // TODO: Needs cleaning up.
+    // TODO: really needs cleaning up.
     private static BaseComponent[] serveComponents(String src, Object... args) {
         if (src == null) {
             return TextComponent.fromLegacyText("§c§l[Unknown Message]");
@@ -88,12 +88,15 @@ public class Message {
 
         // Style process & Collect
         var list = translateColor(stream.map(it -> {
-            if (!(it instanceof BaseComponent)) return new TextComponent(it.toString());
-            else return (BaseComponent) it;
-        })).flatMap(it -> {
-            if (it instanceof TextComponent) return Stream.of(TextComponent.fromLegacyText(((TextComponent) it).getText()));
-            else return Stream.of(it);
-        }).collect(Collectors.toList());
+            if (it instanceof BaseComponent) return new BaseComponent[]{(BaseComponent) it};
+            else if (it.getClass().isArray() && it.getClass().getComponentType() == BaseComponent.class)
+                return (BaseComponent[]) it;
+            else return new BaseComponent[]{new TextComponent(it.toString())};
+        }).flatMap(Stream::of))
+                .flatMap(it -> {
+                    if (it instanceof TextComponent) return Stream.of(TextComponent.fromLegacyText(((TextComponent) it).getText()));
+                    else return Stream.of(it);
+                }).collect(Collectors.toList());
 
         list.get(0).setItalic(false);
         for (int i = 0; i < list.size(); i++) {

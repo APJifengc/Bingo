@@ -172,9 +172,9 @@ item:
 chat:
   join: "&a{0} joined the game! &d({1}/{2})"
   leave: "&a{0} left the game! &d({1}/{2})"
-  task: "&a{0} completed the {1} task!"
+  task: "&a{0} completed the &b{1} &rtask!"
   back: "&aWelcome back to Bingo."
-  win: "&a#{0} {1} finished Bingo by getting {2} tasks!"
+  win: "&a#{0} {1} finished Bingo by getting {2} squares!"
   win-tellraw: "&aBingo! &7You are now spectator."
   not-enough-player: "&cWaiting for more players!"
   wait-for-world: "&7Please wait for start.."
