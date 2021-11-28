@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'idea'
     id 'io.freefair.lombok' version '6.0.0-m2'
     id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
@@ -24,42 +23,19 @@ repositories {
 dependencies {
     implementation 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
     implementation 'com.mojang:authlib:2.3.31'
-
-    implementation 'org.jetbrains:annotations:22.0.0'
-
-    implementation 'org.apache.commons:commons-lang3:3.12.0'
-    implementation 'commons-io:commons-io:2.11.0'
-    implementation 'io.github.bananapuncher714:nbteditor:7.17.0'
     implementation 'com.sk89q.worldedit:worldedit-core:7.2.7'
     implementation 'com.sk89q.worldedit:worldedit-bukkit:7.2.7'
+    shadow 'io.github.bananapuncher714:nbteditor:7.17.0'
+
+    implementation 'org.jetbrains:annotations:22.0.0'
 }
 
 shadowJar {
-    dependencies {
-        include(dependency('commons-io:commons-io:2.11.0'))
-        include(dependency('org.apache.commons:commons-lang3:3.12.0'))
-        include(dependency('io.github.bananapuncher714:nbteditor:7.17.0'))
-    }
-
-}
-
-idea {
-    module {
-        downloadSources = true
-    }
-}
-
-test {
-    useJUnitPlatform()
+    configurations = [project.configurations.shadow]
 }
 
 tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
-
-jar {
-    enabled = false
-    dependsOn(shadowJar)
+    options.encoding = "UTF-8"
 }
 
 tasks.withType(Jar) {

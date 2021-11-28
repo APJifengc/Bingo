@@ -2,13 +2,13 @@ package io.apjifengc.bingo.world;
 
 import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.util.Config;
-import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 /**
  * 多世界管理器
@@ -20,7 +20,7 @@ public class WorldManager {
         if (Bukkit.getWorld(name) != null) {
             try {
                 Bukkit.unloadWorld(name, false);
-                FileUtils.deleteDirectory(new File(Bukkit.getWorldContainer(), name));
+                Files.deleteIfExists(Bukkit.getWorldContainer().toPath().resolve("name"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
