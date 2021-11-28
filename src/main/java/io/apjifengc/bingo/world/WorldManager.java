@@ -2,13 +2,14 @@ package io.apjifengc.bingo.world;
 
 import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.util.Config;
+import io.apjifengc.bingo.util.Files;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
 /**
  * 多世界管理器
@@ -18,12 +19,8 @@ import java.nio.file.Files;
 public class WorldManager {
     public static void regenerateWorld(String name) {
         if (Bukkit.getWorld(name) != null) {
-            try {
-                Bukkit.unloadWorld(name, false);
-                Files.deleteIfExists(Bukkit.getWorldContainer().toPath().resolve("name"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Bukkit.unloadWorld(name, false);
+            Files.deleteDirectory(new File(Bukkit.getWorldContainer(), name));
         }
         World world = Bukkit.createWorld(new WorldCreator(name));
         int chunks = Config.getMain().getInt("game.pre-generate-range", 20);
