@@ -6,6 +6,7 @@ import java.util.List;
 
 import io.apjifengc.bingo.game.task.BingoTask;
 import io.apjifengc.bingo.util.Config;
+import io.apjifengc.bingo.util.TaskUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -94,7 +95,7 @@ public class BingoPlayer {
     public void finishTask(BingoTask task) {
         taskStatus[game.getBoard().indexOf(task)] = true;
         if (Config.getMain().getBoolean("chat.complete-task-show")) {
-            Bukkit.spigot().broadcast(Message.getComponents("chat.task", this.getPlayer().getName(), task.getShownName()));
+            Bukkit.spigot().broadcast(Message.getComponents("chat.task", this.getPlayer().getName(), TaskUtil.getTaskComponent(task)));
         }
         this.updateScoreboard();
         Player p = this.getPlayer();

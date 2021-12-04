@@ -17,8 +17,6 @@
 
 repeatable: false
 
-# 我换了个设计 (TEMP COMMENT, MUST BE REMOVED WHEN COMMITTING)
-
 tasks:
   - 'impossible'
   - item:
@@ -95,10 +93,10 @@ tasks:
     - drop:
       - 'zombie::potato'
       - 'zombie::carrot'
-      - 'witch::sugar' # 也可以是 'entity::drop::witch::sugar'，第一个是任务类型，后面三个是参数 :D (TEMP COMMENT)
+      - 'witch::sugar' # also 'entity::drop::witch::sugar'
     - tame:
       - 'wolf'
       - 'cat'
       - 'parrot'
     - summon:
-      - 'snowman'
+      - 'snowman' # iron_golem, wither

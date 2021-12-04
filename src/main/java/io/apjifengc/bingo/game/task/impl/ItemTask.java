@@ -1,25 +1,14 @@
 package io.apjifengc.bingo.game.task.impl;
 
-import java.util.Arrays;
-import java.util.List;
-
-import io.apjifengc.bingo.Bingo;
-import io.apjifengc.bingo.util.BingoUtil;
-import io.apjifengc.bingo.util.NameUtil;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
-import net.md_5.bungee.api.chat.BaseComponent;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import io.apjifengc.bingo.game.task.BingoTask;
 import io.apjifengc.bingo.util.Message;
+import io.apjifengc.bingo.util.TaskUtil;
 import lombok.Getter;
-import lombok.Setter;
+import net.md_5.bungee.api.chat.BaseComponent;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
-import static org.apache.commons.lang.Validate.*;
+import static org.apache.commons.lang.Validate.isTrue;
 
 /**
  * 代表一个 Bingo 物品任务
@@ -28,9 +17,7 @@ import static org.apache.commons.lang.Validate.*;
  */
 public class ItemTask extends BingoTask {
 
-    @Setter
-    @Getter
-    private ItemStack target;
+    @Getter private final ItemStack target;
 
     @Getter private final ItemStack shownItem;
     @Getter private final BaseComponent[] shownName;
@@ -43,10 +30,11 @@ public class ItemTask extends BingoTask {
     public ItemTask(ItemStack target) {
         this.target = target;
         var item = target.clone();
-        item = BingoUtil.setRawDisplay(item, Message.getRaw("task.item-task.title", NameUtil.getItemName(target)),
-                Message.getWrapRaw("task.item-task.desc", NameUtil.getItemName(target)));
+        TaskUtil.setAllHideFlags(item);
+        item = TaskUtil.setRawDisplay(item, Message.getRaw("task.item-task.title", TaskUtil.getItemName(target)),
+                Message.getWrapRaw("task.item-task.desc", TaskUtil.getItemName(target)));
         this.shownItem = item;
-        this.shownName = new BaseComponent[]{NameUtil.getItemName(target)};
+        this.shownName = new BaseComponent[]{TaskUtil.getItemName(target)};
     }
 
     public static ItemTask newInstance(String[] args) {

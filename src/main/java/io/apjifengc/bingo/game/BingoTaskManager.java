@@ -26,11 +26,11 @@ public class BingoTaskManager {
 
     @Getter private boolean isRepeatable = false;
 
-    @Getter private Map<String, Class<? extends BingoTask>> taskMap = new HashMap<>() {{
-        put("item", ItemTask.class);
-        put("entity", EntityTask.class);
-        put("impossible", ImpossibleTask.class);
-    }};
+    @Getter private Map<String, Class<? extends BingoTask>> taskMap = Map.of(
+            "item", ItemTask.class,
+            "entity", EntityTask.class,
+            "impossible", ImpossibleTask.class
+    );
 
     public BingoTaskManager() {
         reloadTaskConfig();
@@ -88,9 +88,11 @@ public class BingoTaskManager {
 
     @SneakyThrows public List<BingoTask> nonRepeatableGenerateTasks() {
         var result = new ArrayList<BingoTask>(25);
+        var exprSet = new HashSet<String>(25);
         for (int i = 0; i < 25; i++) {
             var expr = taskPoll.get(random.nextInt(taskPoll.size()));
-            while(result.contains(parseTaskExpression(expr))) expr = taskPoll.get(random.nextInt(taskPoll.size()));
+            while (exprSet.contains(expr)) expr = taskPoll.get(random.nextInt(taskPoll.size()));
+            exprSet.add(expr);
             result.add(parseTaskExpression(expr));
         }
         return result;

@@ -30,6 +30,9 @@ public class Message {
 
     @Getter private static YamlConfiguration config;
 
+    public static final String ERROR_STRING = "§c§l[ERROR]";
+    public static final BaseComponent[] ERROR_COMPONENT = TextComponent.fromLegacyText(ERROR_STRING);
+
     public static void load() {
         extractLanguageFiles();
         var lang = Config.getMain().get("lang");
@@ -38,9 +41,7 @@ public class Message {
 
     public static String get(String path, Object... args) {
         String src = config.getString(path);
-        if (src == null) {
-            return "§c§l[Unknown Message]";
-        }
+        if (src == null) return ERROR_STRING;
         for (int i = 0; i < args.length; i++) {
             src = src.replace("{" + i + "}", args[i].toString());
         }
@@ -62,10 +63,8 @@ public class Message {
 
     // TODO: really needs cleaning up.
     private static BaseComponent[] serveComponents(String src, Object... args) {
-        if (src == null) {
-            return TextComponent.fromLegacyText("§c§l[Unknown Message]");
-        }
-        var stream = Stream.<Object>of(src);
+        if (src == null) return ERROR_COMPONENT;
+        var stream = Stream.<Object>of(translateColor(src));
         for (int i = 0; i < args.length; i++) {
             var arg = args[i];
             var replace = String.format("\\{%d\\}", i);
@@ -80,29 +79,25 @@ public class Message {
                 }
                 return list;
             }).flatMap(it -> {
-                if (it instanceof List) return ((List<?>) it).stream();
+                if (it instanceof Collection) return ((Collection<?>) it).stream();
                 else if (it.getClass().isArray()) return Stream.of((Object[]) it);
                 else return Stream.of(it);
             });
         }
 
-        // Style process & Collect
-        var list = translateColor(stream.map(it -> {
+        // collect & style process
+        var list = stream.map(it -> {
             if (it instanceof BaseComponent) return new BaseComponent[]{(BaseComponent) it};
             else if (it.getClass().isArray() && it.getClass().getComponentType() == BaseComponent.class)
                 return (BaseComponent[]) it;
-            else return new BaseComponent[]{new TextComponent(it.toString())};
-        }).flatMap(Stream::of))
-                .flatMap(it -> {
-                    if (it instanceof TextComponent) return Stream.of(TextComponent.fromLegacyText(((TextComponent) it).getText()));
-                    else return Stream.of(it);
-                }).collect(Collectors.toList());
+            else return TextComponent.fromLegacyText(it.toString());
+        }).flatMap(Stream::of).collect(Collectors.toList());
 
         list.get(0).setItalic(false);
         for (int i = 0; i < list.size(); i++) {
             var element = list.get(i);
             if (i - 1 >= 0) {
-                element.copyFormatting(list.get(i - 1), ComponentBuilder.FormatRetention.ALL, false);
+                element.copyFormatting(list.get(i - 1), ComponentBuilder.FormatRetention.FORMATTING, false);
             }
         }
         return list.toArray(new BaseComponent[0]);
@@ -125,15 +120,6 @@ public class Message {
     public static void extractLanguageFiles() {
         plugin.saveResource("language/en_US.yml");
         plugin.saveResource("language/zh_CN.yml");
-    }
-
-    private static Stream<BaseComponent> translateColor(Stream<BaseComponent> stream) {
-        return stream.peek(it -> {
-            if (it instanceof TextComponent) {
-                var iti = (TextComponent) it;
-                iti.setText(translateColor(iti.getText()));
-            }
-        });
     }
 
     /** Convert a unicode to chinese characters. */

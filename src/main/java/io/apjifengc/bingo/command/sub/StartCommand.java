@@ -33,7 +33,9 @@ public class StartCommand extends SubCommand {
                     return;
                 }
                 String worldName = Config.getMain().getString("room.world-name");
-                WorldManager.regenerateWorld(worldName);
+                if (!(Config.getMain().getBoolean("debug") && Bukkit.getWorld(worldName) != null)) {
+                    WorldManager.regenerateWorld(worldName);
+                }
                 try {
                     SchematicManager.buildSchematic(new File(plugin.getDataFolder(), "lobby.schem"),
                             new Location(Bukkit.getWorld(worldName), 0, 200, 0));

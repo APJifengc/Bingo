@@ -17,6 +17,7 @@ import java.io.IOException;
  * @author APJifengc
  */
 public class WorldManager {
+
     public static void regenerateWorld(String name) {
         if (Bukkit.getWorld(name) != null) {
             Bukkit.unloadWorld(name, false);
@@ -34,4 +35,5 @@ public class WorldManager {
             }
         }
     }
+
 }

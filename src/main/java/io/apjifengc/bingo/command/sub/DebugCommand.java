@@ -21,7 +21,9 @@ public class DebugCommand extends SubCommand {
 
     @Override public void run(CommandSender sender, String[] args) {
         if (sender.hasPermission("bingo.dev")) {
-            if (args[1].equalsIgnoreCase("finish")) {
+            if (args.length < 2) {
+                sender.sendMessage("You're lost.");
+            } else if (args[1].equalsIgnoreCase("finish")) {
                 BingoPlayer player = plugin.getCurrentGame().getPlayer((Player) sender);
                 if (player == null) return;
                 player.finishTask(Integer.parseInt(args[2]));

@@ -71,3 +71,6 @@ game:
   # This is the max range that player will be teleported randomly at the beginning.
   # lower than 1 to disable it.
   random-teleport-range: 800
+
+# Whether generate world when a game start, used for debugging only.
+debug: false

@@ -172,7 +172,7 @@ item:
 chat:
   join: "&a{0} joined the game! &d({1}/{2})"
   leave: "&a{0} left the game! &d({1}/{2})"
-  task: "&a{0} completed the &b{1} &rtask!"
+  task: "&a{0} completed a &7[&a{1}&7] &atask!"
   back: "&aWelcome back to Bingo."
   win: "&a#{0} {1} finished Bingo by getting {2} squares!"
   win-tellraw: "&aBingo! &7You are now spectator."
