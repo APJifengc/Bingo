@@ -6,7 +6,7 @@ import io.apjifengc.bingo.api.event.game.BingoGameStateChangeEvent;
 import io.apjifengc.bingo.api.event.player.BingoPlayerFinishBingoEvent;
 import io.apjifengc.bingo.api.event.player.BingoPlayerLeaveEvent;
 import io.apjifengc.bingo.api.event.player.BingoPlayerPreJoinEvent;
-import io.apjifengc.bingo.exception.BadTaskException;
+import io.apjifengc.bingo.api.exception.BadTaskException;
 import io.apjifengc.bingo.api.game.task.BingoTask;
 import io.apjifengc.bingo.api.util.BingoUtil;
 import io.apjifengc.bingo.util.Config;

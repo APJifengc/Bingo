@@ -2,7 +2,7 @@ package io.apjifengc.bingo.api.game;
 
 import io.apjifengc.bingo.api.event.player.BingoPlayerFinishTaskEvent;
 import io.apjifengc.bingo.api.game.task.BingoTask;
-import io.apjifengc.bingo.inventory.BingoGuiInventory;
+import io.apjifengc.bingo.api.inventory.BingoGuiInventory;
 import io.apjifengc.bingo.api.util.BingoUtil;
 import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Message;

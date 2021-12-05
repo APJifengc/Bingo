@@ -1,4 +1,4 @@
-package io.apjifengc.bingo.inventory;
+package io.apjifengc.bingo.api.inventory;
 
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;

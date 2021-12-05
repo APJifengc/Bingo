@@ -2,7 +2,7 @@ package io.apjifengc.bingo.command.sub;
 
 import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.command.SubCommand;
-import io.apjifengc.bingo.exception.BadTaskException;
+import io.apjifengc.bingo.api.exception.BadTaskException;
 import io.apjifengc.bingo.api.game.BingoGame;
 import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Message;

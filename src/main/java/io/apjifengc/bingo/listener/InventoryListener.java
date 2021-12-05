@@ -1,7 +1,7 @@
 package io.apjifengc.bingo.listener;
 
 import io.apjifengc.bingo.Bingo;
-import io.apjifengc.bingo.inventory.BingoGuiInventory;
+import io.apjifengc.bingo.api.inventory.BingoGuiInventory;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;

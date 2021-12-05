@@ -1,6 +1,6 @@
 package io.apjifengc.bingo.api.game;
 
-import io.apjifengc.bingo.exception.BadTaskException;
+import io.apjifengc.bingo.api.exception.BadTaskException;
 import io.apjifengc.bingo.api.game.task.BingoTask;
 import io.apjifengc.bingo.api.game.task.impl.EntityTask;
 import io.apjifengc.bingo.api.game.task.impl.ImpossibleTask;
@@ -8,7 +8,6 @@ import io.apjifengc.bingo.api.game.task.impl.ItemTask;
 import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Message;
 import lombok.Getter;
-import lombok.SneakyThrows;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 

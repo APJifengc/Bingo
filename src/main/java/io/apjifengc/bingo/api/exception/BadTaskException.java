@@ -1,4 +1,4 @@
-package io.apjifengc.bingo.exception;
+package io.apjifengc.bingo.api.exception;
 
 import io.apjifengc.bingo.api.game.task.BingoTask;
 
