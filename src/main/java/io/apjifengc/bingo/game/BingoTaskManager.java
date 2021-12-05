@@ -1,5 +1,6 @@
 package io.apjifengc.bingo.game;
 
+import com.google.common.collect.Maps;
 import io.apjifengc.bingo.exception.BadTaskException;
 import io.apjifengc.bingo.game.task.BingoTask;
 import io.apjifengc.bingo.game.task.impl.EntityTask;
@@ -26,11 +27,11 @@ public class BingoTaskManager {
 
     @Getter private boolean isRepeatable = false;
 
-    @Getter private Map<String, Class<? extends BingoTask>> taskMap = Map.of(
-            "item", ItemTask.class,
-            "entity", EntityTask.class,
-            "impossible", ImpossibleTask.class
-    );
+    @Getter private final Map<String, Class<? extends BingoTask>> taskMap = new HashMap<>() {{
+        put("item", ItemTask.class);
+        put("entity", EntityTask.class);
+        put("impossible", ImpossibleTask.class);
+    }};
 
     public BingoTaskManager() {
         reloadTaskConfig();
