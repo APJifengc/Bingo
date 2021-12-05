@@ -1,7 +1,7 @@
 package io.apjifengc.bingo.util;
 
 import io.apjifengc.bingo.Bingo;
-import io.apjifengc.bingo.game.BingoPlayer;
+import io.apjifengc.bingo.api.game.BingoPlayer;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;

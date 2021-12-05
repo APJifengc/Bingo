@@ -2,7 +2,7 @@ package io.apjifengc.bingo.command.sub;
 
 import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.command.SubCommand;
-import io.apjifengc.bingo.game.BingoPlayer;
+import io.apjifengc.bingo.api.game.BingoPlayer;
 import io.apjifengc.bingo.world.SchematicManager;
 import io.apjifengc.bingo.world.WorldManager;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class DebugCommand extends SubCommand {
 

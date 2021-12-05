@@ -2,7 +2,7 @@ package io.apjifengc.bingo.command.sub;
 
 import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.command.SubCommand;
-import io.apjifengc.bingo.game.BingoGame;
+import io.apjifengc.bingo.api.game.BingoGame;
 import io.apjifengc.bingo.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

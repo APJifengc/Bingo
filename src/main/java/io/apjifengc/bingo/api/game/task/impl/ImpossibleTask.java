@@ -1,8 +1,7 @@
-package io.apjifengc.bingo.game.task.impl;
+package io.apjifengc.bingo.api.game.task.impl;
 
-import java.util.Arrays;
-import java.util.List;
-
+import io.apjifengc.bingo.api.game.task.BingoTask;
+import io.apjifengc.bingo.util.Message;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -10,9 +9,14 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import io.apjifengc.bingo.game.task.BingoTask;
-import io.apjifengc.bingo.util.Message;
+import java.util.Arrays;
+import java.util.List;
 
+/**
+ * Represents a task which is impossible to finish.
+ *
+ * @author Milkory
+ */
 public class ImpossibleTask extends BingoTask {
 
     @Getter private final ItemStack shownItem;

@@ -1,12 +1,10 @@
-package io.apjifengc.bingo.game.task;
+package io.apjifengc.bingo.api.game.task;
 
-import io.apjifengc.bingo.game.task.impl.ImpossibleTask;
+import io.apjifengc.bingo.api.game.task.impl.ImpossibleTask;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 /**
  * Represents a bingo task. <p>

@@ -1,12 +1,11 @@
 package io.apjifengc.bingo.listener;
 
 import io.apjifengc.bingo.Bingo;
-import io.apjifengc.bingo.game.BingoGame;
-import io.apjifengc.bingo.game.BingoPlayer;
-import io.apjifengc.bingo.game.task.BingoTask;
-import io.apjifengc.bingo.game.task.impl.EntityTask;
-import io.apjifengc.bingo.game.task.impl.ItemTask;
-
+import io.apjifengc.bingo.api.game.BingoGame;
+import io.apjifengc.bingo.api.game.BingoPlayer;
+import io.apjifengc.bingo.api.game.task.BingoTask;
+import io.apjifengc.bingo.api.game.task.impl.EntityTask;
+import io.apjifengc.bingo.api.game.task.impl.ItemTask;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
@@ -20,7 +19,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class TaskListener implements Listener {
+public final class TaskListener implements Listener {
 
     private final Bingo plugin;
     private Player placedBlockPlayer;

@@ -1,8 +1,8 @@
 package io.apjifengc.bingo;
 
 import io.apjifengc.bingo.command.CommandMain;
-import io.apjifengc.bingo.game.BingoGame;
-import io.apjifengc.bingo.game.BingoPlayer;
+import io.apjifengc.bingo.api.game.BingoGame;
+import io.apjifengc.bingo.api.game.BingoPlayer;
 import io.apjifengc.bingo.listener.InventoryListener;
 import io.apjifengc.bingo.listener.OtherListener;
 import io.apjifengc.bingo.listener.TaskListener;

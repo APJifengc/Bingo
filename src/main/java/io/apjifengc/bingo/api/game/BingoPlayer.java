@@ -1,12 +1,13 @@
-package io.apjifengc.bingo.game;
+package io.apjifengc.bingo.api.game;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import io.apjifengc.bingo.game.task.BingoTask;
+import io.apjifengc.bingo.api.event.player.BingoPlayerFinishTaskEvent;
+import io.apjifengc.bingo.api.game.task.BingoTask;
+import io.apjifengc.bingo.inventory.BingoGuiInventory;
+import io.apjifengc.bingo.api.util.BingoUtil;
 import io.apjifengc.bingo.util.Config;
+import io.apjifengc.bingo.util.Message;
 import io.apjifengc.bingo.util.TaskUtil;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -17,31 +18,31 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import io.apjifengc.bingo.inventory.BingoGuiInventory;
-import io.apjifengc.bingo.util.BingoUtil;
-import io.apjifengc.bingo.util.Message;
-import lombok.Getter;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
- * 代表一个在 Bingo 游戏中的玩家
+ * Represents a player in a Bingo game.
  *
  * @author Milkory
  */
 public class BingoPlayer {
 
-    @Getter
-    Player player;
+    /** The original {@link Player} instance. */
+    @Getter Player player;
 
-    @Getter
-    BingoGame game;
+    /** The {@link BingoGame} they belong to. */
+    @Getter BingoGame game;
 
-    @Getter
-    Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+    /** The scoreboard to be shown to them. */
+    @Getter Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
+    /** Their task finishing status. */
     boolean[] taskStatus = new boolean[25];
 
     public BingoPlayer(Player player, BingoGame game) {
@@ -49,6 +50,7 @@ public class BingoPlayer {
         this.game = game;
     }
 
+    /** Update the {@link #player} field. */
     public boolean updatePlayer() {
         Player p = Bukkit.getPlayer(player.getUniqueId());
         if (player == null || p == null) {
@@ -59,57 +61,62 @@ public class BingoPlayer {
     }
 
     /**
-     * 根据任务索引检查该玩家是否已完成某任务。
+     * Check if the player finished a task.
      *
-     * @param index 要检查的任务的索引
-     * @return 若玩家已完成该任务则返回 true，反之返回 false。
+     * @param index The index of the task to be checked.
+     * @return Finished or not.
      */
     public boolean hasFinished(int index) {
         return taskStatus[index];
     }
 
     /**
-     * 根据任务检查该玩家是否已完成某任务。
+     * Check if the player finished a task.
      *
-     * @param task 要检查的任务
-     * @return 若玩家已完成该任务则返回 true，反之返回 false。
+     * @param task The task instance to be checked.
+     * @return Finished or not.
      */
     public boolean hasFinished(BingoTask task) {
         return taskStatus[game.getBoard().indexOf(task)];
     }
 
     /**
-     * 使玩家完成一项任务。
+     * Make the player finish a task.
      *
-     * @param index 要完成的任务的索引
+     * @param index The index of the task to be finished.
      */
     public void finishTask(int index) {
         this.finishTask(game.getBoard().get(index));
     }
 
     /**
-     * 使玩家完成一项任务。
+     * Make the player finish a task.
      *
-     * @param task 要完成的任务
+     * @param task The task instance to be finished.
      */
     public void finishTask(BingoTask task) {
-        taskStatus[game.getBoard().indexOf(task)] = true;
-        if (Config.getMain().getBoolean("chat.complete-task-show")) {
-            Bukkit.spigot().broadcast(Message.getComponents("chat.task", this.getPlayer().getName(), TaskUtil.getTaskComponent(task)));
-        }
-        this.updateScoreboard();
-        Player p = this.getPlayer();
-        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 2048.0f, 1.0f);
-        p.spawnParticle(Particle.VILLAGER_HAPPY, p.getLocation().add(0, 0.5, 0), 50, 0.3, 0.3, 0.3);
-        if (checkBingo(task)) {
-            game.completeBingo(this);
+        var index = game.getBoard().indexOf(task);
+
+        if (BingoUtil.callEvent(new BingoPlayerFinishTaskEvent(this, task, index))) {
+            taskStatus[index] = true;
+
+            if (Config.getMain().getBoolean("chat.complete-task-show")) {
+                Bukkit.spigot().broadcast(Message.getComponents("chat.task", this.getPlayer().getName(), TaskUtil.getTaskComponent(task)));
+            }
+            this.updateScoreboard();
+            Player p = this.getPlayer();
+            p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 2048.0f, 1.0f);
+            p.spawnParticle(Particle.VILLAGER_HAPPY, p.getLocation().add(0, 0.5, 0), 50, 0.3, 0.3, 0.3);
+            if (checkBingo(task)) {
+                game.completeBingo(this, task);
+            }
         }
     }
 
     /**
-     * 获取玩家完成任务的数量。
+     * Get the amount of the player's finished tasks.
      *
-     * @return 玩家完成任务的数量。
+     * @return The amount.
      */
     public int getFinishedCount() {
         int i = 0;
@@ -122,9 +129,9 @@ public class BingoPlayer {
     }
 
     /**
-     * 检查玩家是否已完成 Bingo。
+     * Check if the player has finished Bingo.
      *
-     * @return 若已完成 Bingo 则返回true，反之返回 false。
+     * @return Finished or not.
      */
     public boolean checkBingo() {
         if (taskStatus[0] && taskStatus[6] && taskStatus[12] && taskStatus[18] && taskStatus[24])
@@ -142,10 +149,10 @@ public class BingoPlayer {
     }
 
     /**
-     * 根据任务索引检查玩家是否已完成相关 Bingo。
+     * Check if the player has finished Bingo, by only checking a task around.
      *
-     * @param index 任务索引
-     * @return 若已完成 Bingo 则返回true，反之返回 false。
+     * @param index The index of the task.
+     * @return Finished or not.
      */
     public boolean checkBingo(int index) {
         if (index % 6 == 0) {
@@ -164,10 +171,10 @@ public class BingoPlayer {
     }
 
     /**
-     * 根据任务检查玩家是否已完成相关 Bingo。
+     * Check if the player has finished Bingo, by only checking a task around.
      *
-     * @param task 要检查的任务
-     * @return 若已完成相关 Bingo 则返回true，反之返回 false。
+     * @param task The task instance.
+     * @return Finished or not.
      */
     public boolean checkBingo(BingoTask task) {
         int index = game.getBoard().indexOf(task);
@@ -178,9 +185,9 @@ public class BingoPlayer {
     }
 
     /**
-     * 获取玩家的任务清单 GUI。
+     * Generate the player's Bingo GUI.
      *
-     * @return GUI
+     * @return The player's Bingo GUI.
      */
     public Inventory getInventory() {
         Inventory inv = Bukkit.createInventory(new BingoGuiInventory(), 54, Message.get("gui.title"));
@@ -216,9 +223,7 @@ public class BingoPlayer {
         return inv;
     }
 
-    /**
-     * 给玩家显示计分板。
-     */
+    /** Show their scoreboard. */
     public void showScoreboard() {
         Objective obj;
         try {
@@ -235,9 +240,7 @@ public class BingoPlayer {
         player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
     }
 
-    /**
-     * 更新玩家的记分板。
-     */
+    /** Update their scoreboard */
     public void updateScoreboard() {
         int i = 10;
         List<String> stringList = new ArrayList<String>();
@@ -265,9 +268,7 @@ public class BingoPlayer {
         }
     }
 
-    /**
-     * 给予玩家打开 GUI 的物品（即物品栏最后一格）
-     */
+    /** Give the item to the player which can open the GUI by right click. */
     public void giveGuiItem() {
         ItemStack is = new ItemStack(Material.PAPER);
         ItemMeta im = is.getItemMeta();

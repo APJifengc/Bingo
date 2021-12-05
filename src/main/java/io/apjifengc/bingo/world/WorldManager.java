@@ -3,13 +3,11 @@ package io.apjifengc.bingo.world;
 import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Files;
-import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * 多世界管理器

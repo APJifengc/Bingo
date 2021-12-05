@@ -1,6 +1,6 @@
-package io.apjifengc.bingo.game.task.impl;
+package io.apjifengc.bingo.api.game.task.impl;
 
-import io.apjifengc.bingo.game.task.BingoTask;
+import io.apjifengc.bingo.api.game.task.BingoTask;
 import io.apjifengc.bingo.util.Message;
 import io.apjifengc.bingo.util.TaskUtil;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import static org.apache.commons.lang.Validate.isTrue;
 
 /**
- * 代表一个 Bingo 物品任务
+ * Represents a task which asks players to get items.
  *
  * @author Milkory
  */

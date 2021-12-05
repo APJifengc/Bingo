@@ -2,11 +2,10 @@ package io.apjifengc.bingo.command.sub;
 
 import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.command.SubCommand;
-import io.apjifengc.bingo.game.BingoGame;
-import io.apjifengc.bingo.game.BingoPlayer;
+import io.apjifengc.bingo.api.game.BingoGame;
+import io.apjifengc.bingo.api.game.BingoPlayer;
 import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Message;
-
 import io.apjifengc.bingo.util.TeleportUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

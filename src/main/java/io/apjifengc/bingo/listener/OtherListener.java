@@ -1,8 +1,8 @@
 package io.apjifengc.bingo.listener;
 
 import io.apjifengc.bingo.Bingo;
-import io.apjifengc.bingo.game.BingoGame;
-import io.apjifengc.bingo.game.BingoPlayer;
+import io.apjifengc.bingo.api.game.BingoGame;
+import io.apjifengc.bingo.api.game.BingoPlayer;
 import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Message;
 import io.apjifengc.bingo.util.TeleportUtil;
@@ -16,7 +16,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 
-public class OtherListener implements Listener {
+public final class OtherListener implements Listener {
 
     private final Bingo plugin;
 

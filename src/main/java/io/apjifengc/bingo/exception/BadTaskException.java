@@ -1,6 +1,6 @@
 package io.apjifengc.bingo.exception;
 
-import io.apjifengc.bingo.game.task.BingoTask;
+import io.apjifengc.bingo.api.game.task.BingoTask;
 
 public class BadTaskException extends Exception {
 

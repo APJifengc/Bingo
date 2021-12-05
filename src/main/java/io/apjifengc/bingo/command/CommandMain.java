@@ -7,15 +7,19 @@ package io.apjifengc.bingo.command;
 
 import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.command.sub.*;
-import io.apjifengc.bingo.game.BingoGame;
+import io.apjifengc.bingo.api.game.BingoGame;
 import io.apjifengc.bingo.util.Message;
-
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.command.*;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CommandMain implements TabExecutor {

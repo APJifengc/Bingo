@@ -1,15 +1,13 @@
-package io.apjifengc.bingo.util;
+package io.apjifengc.bingo.api.util;
 
-import static org.apache.commons.lang.Validate.*;
+import io.apjifengc.bingo.api.game.BingoPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 
 import java.util.List;
 
-import io.github.bananapuncher714.nbteditor.NBTEditor;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-
-import io.apjifengc.bingo.game.BingoPlayer;
-import org.bukkit.inventory.ItemStack;
+import static org.apache.commons.lang.Validate.isTrue;
 
 /**
  * Bingo general utilities.
@@ -42,6 +40,11 @@ public class BingoUtil {
     /** Send formatted message to players. */
     public static void sendMessage(List<BingoPlayer> players, String message) {
         players.forEach(p -> p.getPlayer().sendMessage(message));
+    }
+
+    public static boolean callEvent(Event event) {
+        Bukkit.getPluginManager().callEvent(event);
+        return !(event instanceof Cancellable) || !((Cancellable) event).isCancelled();
     }
 
 }

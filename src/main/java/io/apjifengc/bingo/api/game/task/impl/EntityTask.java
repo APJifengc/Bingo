@@ -1,10 +1,9 @@
-package io.apjifengc.bingo.game.task.impl;
+package io.apjifengc.bingo.api.game.task.impl;
 
-import io.apjifengc.bingo.game.task.BingoTask;
-import io.apjifengc.bingo.util.BingoUtil;
+import io.apjifengc.bingo.api.game.task.BingoTask;
 import io.apjifengc.bingo.util.Message;
-import io.apjifengc.bingo.util.TaskUtil;
 import io.apjifengc.bingo.util.Skull;
+import io.apjifengc.bingo.util.TaskUtil;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
@@ -16,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-import static org.apache.commons.lang.Validate.*;
+import static org.apache.commons.lang.Validate.isTrue;
 
 
 /**

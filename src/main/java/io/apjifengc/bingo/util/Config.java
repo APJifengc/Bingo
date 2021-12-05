@@ -1,9 +1,8 @@
 package io.apjifengc.bingo.util;
 
+import io.apjifengc.bingo.Bingo;
 import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
-
-import io.apjifengc.bingo.Bingo;
 
 /**
  * Bingo configuration constants.
