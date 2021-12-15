@@ -281,7 +281,7 @@ public class BingoGame {
                         Config.getMain().getInt("game.random-teleport-range"));
             }
             player.setGameMode(GameMode.SURVIVAL);
-            player.setBedSpawnLocation(player.getLocation());
+            player.setBedSpawnLocation(player.getLocation(), true);
             player.resetTitle();
             player.spigot().respawn();
             player.sendMessage(Message.get("chat.world-gened"));

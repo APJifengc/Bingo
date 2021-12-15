@@ -34,6 +34,11 @@ shadowJar {
     configurations = [project.configurations.shadow]
 }
 
+jar {
+    enabled = false
+    dependsOn(shadowJar)
+}
+
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
