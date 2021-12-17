@@ -46,6 +46,7 @@ room:
 
   # This is when the Bingo game ends or someone leaves the game, the world that players will go.
   main-world: world
+
 chat:
   # This is when a player complete a task, whether it will show in the chat or not.
   # Available values: true / false
@@ -71,6 +72,12 @@ game:
   # This is the max range that player will be teleported randomly at the beginning.
   # lower than 1 to disable it.
   random-teleport-range: 800
+
+display:
+  # This is whether map displaying is enabled.
+  # Map displaying will replace the task item with a map that displays the tasks.
+  # Available values: true / false
+  enable-map-display: true
 
 # Whether generate world when a game start, used for debugging only.
 debug: false

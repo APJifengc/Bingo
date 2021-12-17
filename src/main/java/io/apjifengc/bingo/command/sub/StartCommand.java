@@ -23,13 +23,6 @@ public class StartCommand extends SubCommand {
         if (sender.hasPermission("bingo.admin.start")) {
             if (!plugin.hasBingoGame()) {
                 BingoGame game = new BingoGame(plugin);
-                try {
-                    game.generateTasks();
-                } catch (BadTaskException e) {
-                    e.printStackTrace();
-                    sender.sendMessage(Message.get("prefix") + Message.get("commands.start.unable-start") + e.getMessage());
-                    return;
-                }
                 String worldName = Config.getMain().getString("room.world-name");
                 if (!(Config.getMain().getBoolean("debug") && Bukkit.getWorld(worldName) != null)) {
                     WorldManager.regenerateWorld(worldName);
@@ -39,6 +32,13 @@ public class StartCommand extends SubCommand {
                             new Location(Bukkit.getWorld(worldName), 0, 200, 0));
                 } catch (IOException e) {
                     e.printStackTrace();
+                    return;
+                }
+                try {
+                    game.generateTasks();
+                } catch (BadTaskException e) {
+                    e.printStackTrace();
+                    sender.sendMessage(Message.get("prefix") + Message.get("commands.start.unable-start") + e.getMessage());
                     return;
                 }
                 plugin.setCurrentGame(game);

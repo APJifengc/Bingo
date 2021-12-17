@@ -1,9 +1,11 @@
 package io.apjifengc.bingo.api.game;
 
+import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.api.event.player.BingoPlayerFinishTaskEvent;
 import io.apjifengc.bingo.api.game.task.BingoTask;
 import io.apjifengc.bingo.api.inventory.BingoGuiInventory;
 import io.apjifengc.bingo.api.util.BingoUtil;
+import io.apjifengc.bingo.map.TaskMapRenderer;
 import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Message;
 import io.apjifengc.bingo.util.TaskUtil;
@@ -18,6 +20,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.MapMeta;
+import org.bukkit.map.MapView;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -245,7 +249,7 @@ public class BingoPlayer {
         int i = 10;
         List<String> stringList = new ArrayList<String>();
         scoreboard.getEntries().forEach((s) -> scoreboard.resetScores(s));
-        Objective obj = scoreboard.getObjective("bingoInfo");
+        Objective objective = scoreboard.getObjective("bingoInfo");
         String[] tasksString = {"", "", "", "", ""};
         for (int k = 1; k <= 5; k++) {
             for (int j = 1; j <= 5; j++) {
@@ -254,31 +258,23 @@ public class BingoPlayer {
                         : Message.get("scoreboard.in-game.uncompleted"));
             }
         }
-        String[] strs = Message.get("scoreboard.in-game.main", tasksString[0], tasksString[1], tasksString[2],
+        String[] strings = Message.get("scoreboard.in-game.main", tasksString[0], tasksString[1], tasksString[2],
                 tasksString[3], tasksString[4]).split("\n");
-        for (String str : strs) {
+        for (String string : strings) {
             i--;
-            if (stringList.contains(str)) {
-                stringList.add(str + "§1");
-                obj.getScore(str + "§1").setScore(i);
+            if (stringList.contains(string)) {
+                stringList.add(string + "§1");
+                objective.getScore(string + "§1").setScore(i);
             } else {
-                stringList.add(str);
-                obj.getScore(str).setScore(i);
+                stringList.add(string);
+                objective.getScore(string).setScore(i);
             }
         }
     }
 
     /** Give the item to the player which can open the GUI by right click. */
     public void giveGuiItem() {
-        ItemStack is = new ItemStack(Material.PAPER);
-        ItemMeta im = is.getItemMeta();
-        im.setDisplayName(Message.get("item.goal.name"));
-        im.setLore(Arrays.asList(Message.get("item.goal.lore").split("\n")));
-        // 消失诅咒
-        im.addEnchant(Enchantment.VANISHING_CURSE, 1, false);
-        im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        is.setItemMeta(im);
-        player.getInventory().setItem(8, is);
+        player.getInventory().setItem(8, getGame().getTaskItem());
     }
 
 }

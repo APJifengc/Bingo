@@ -9,6 +9,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -99,5 +100,4 @@ public class EntityTask extends BingoTask {
     public enum Type {
         KILL, BREED, DAMAGE, DROP, TAME, SUMMON
     }
-
 }

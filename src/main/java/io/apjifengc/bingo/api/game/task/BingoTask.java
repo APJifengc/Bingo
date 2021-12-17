@@ -3,6 +3,7 @@ package io.apjifengc.bingo.api.game.task;
 import io.apjifengc.bingo.api.game.task.impl.ImpossibleTask;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 

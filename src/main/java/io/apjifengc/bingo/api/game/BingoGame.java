@@ -9,6 +9,7 @@ import io.apjifengc.bingo.api.event.player.BingoPlayerPreJoinEvent;
 import io.apjifengc.bingo.api.exception.BadTaskException;
 import io.apjifengc.bingo.api.game.task.BingoTask;
 import io.apjifengc.bingo.api.util.BingoUtil;
+import io.apjifengc.bingo.map.TaskMapRenderer;
 import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Message;
 import io.apjifengc.bingo.util.TeleportUtil;
@@ -19,7 +20,13 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.MapMeta;
+import org.bukkit.map.MapView;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -28,10 +35,7 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Represents a Bingo game.
@@ -59,6 +63,9 @@ public class BingoGame {
     Bingo plugin;
 
     @Getter BossBar bossbar = Bukkit.createBossBar(Message.get("bossbar.normal"), BarColor.YELLOW, BarStyle.SEGMENTED_10);
+
+    /** The task item for one user. */
+    @Getter ItemStack taskItem;
 
     /**
      * Add a player to the game.
@@ -143,6 +150,24 @@ public class BingoGame {
         var result = BingoTaskManager.getInstance().generateTasks();
         Bukkit.getPluginManager().callEvent(new BingoGameGenerateTaskEvent(this, result));
         this.board = result;
+        if (Config.getMain().getBoolean("display.enable-map-display", true)) {
+            taskItem = new ItemStack(Material.FILLED_MAP);
+            MapMeta mapMeta = (MapMeta) taskItem.getItemMeta();
+            MapView mapView = Bukkit.createMap(Bukkit.getWorld(Config.getMain().getString("room.world-name")));
+            mapView.getRenderers().forEach(mapView::removeRenderer);
+            mapView.addRenderer(new TaskMapRenderer(this));
+            mapMeta.setMapView(mapView);
+            taskItem.setItemMeta(mapMeta);
+        } else {
+            taskItem = new ItemStack(Material.PAPER);
+        }
+        ItemMeta itemMeta = taskItem.getItemMeta();
+        itemMeta.setDisplayName(Message.get("item.goal.name"));
+        itemMeta.setLore(Arrays.asList(Message.get("item.goal.lore").split("\n")));
+        // 消失诅咒
+        itemMeta.addEnchant(Enchantment.VANISHING_CURSE, 1, false);
+        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        taskItem.setItemMeta(itemMeta);
     }
 
     public BingoGame(Bingo plugin) {
@@ -453,9 +478,6 @@ public class BingoGame {
             bingoPlayer.clearScoreboard();
             bossbar.removePlayer(bingoPlayer.getPlayer());
         }
-        //if (mvWM.getMVWorld(Config.getMain().getString("room.world-name")) != null) {
-        //    mvWM.deleteWorld(Config.getMain().getString("room.world-name"), true);
-        //}
     }
 
     private void changeState(State after) {
