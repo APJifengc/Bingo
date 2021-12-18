@@ -42,12 +42,13 @@ commands:
     no-game: "&cThere is no game running!"
   gui:
     not-in: "&cYou are not in a Bingo game!"
+    other-not-in: "&cThe player isn't in the Bingo game!"
     no-game: "&cThere is no game running!"
     not-start: "&cThe game hasn't started yet!"
 errors:
   task-not-enough: "There are not enough tasks to generate non-repetitive game board"
 gui:
-  title: "&c&lBingo &eTasks"
+  title: "&0{1}'s &8Game Board"
   complete: "&aYou have completed this task!"
   goal-title: "&a&lGOAL"
   goal-lore: |

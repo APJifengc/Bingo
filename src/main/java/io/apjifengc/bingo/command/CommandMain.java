@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -32,14 +33,14 @@ public class CommandMain implements TabExecutor {
     }
 
     @Getter private final Map<String, SubCommand> commands = Map.ofEntries(
-        Map.entry("debug", new DebugCommand()),
-        Map.entry("gui", new GuiCommand()),
-        Map.entry("help", new HelpCommand()),
-        Map.entry("join", new JoinCommand()),
-        Map.entry("leave", new LeaveCommand()),
-        Map.entry("reload", new ReloadCommand()),
-        Map.entry("start", new StartCommand()),
-        Map.entry("stop", new StopCommand())
+            Map.entry("debug", new DebugCommand()),
+            Map.entry("gui", new GuiCommand()),
+            Map.entry("help", new HelpCommand()),
+            Map.entry("join", new JoinCommand()),
+            Map.entry("leave", new LeaveCommand()),
+            Map.entry("reload", new ReloadCommand()),
+            Map.entry("start", new StartCommand()),
+            Map.entry("stop", new StopCommand())
     );
 
     @Override
@@ -58,6 +59,17 @@ public class CommandMain implements TabExecutor {
         if (cmd.getName().equalsIgnoreCase("bingo")) {
             if (args.length == 1) {
                 return getSubCommands(sender).stream().filter(s -> s.startsWith(args[0])).collect(Collectors.toList());
+            } else if (args.length == 2) {
+                if ("gui".equals(args[0])) {
+                    if (sender instanceof Player && sender.hasPermission("bingo.use.gui.others")) {
+                        if (plugin.hasBingoGame() && plugin.getCurrentGame().isAllowOpenOthersGui()) {
+                            return Bukkit.getOnlinePlayers().stream()
+                                    .map(HumanEntity::getName)
+                                    .filter(it -> !sender.getName().equals(it))
+                                    .collect(Collectors.toList());
+                        }
+                    }
+                }
             }
         }
         return Collections.emptyList();

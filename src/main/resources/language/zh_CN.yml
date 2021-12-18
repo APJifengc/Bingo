@@ -42,12 +42,13 @@ commands:
     no-game: "&c没有正在运行的游戏."
   gui:
     not-in: "&c您当前不在游戏中."
+    other-not-in: "&c对方当前不在游戏中."
     no-game: "&c没有正在运行的游戏."
     not-start: "&c当前游戏还未开始."
 errors:
   task-not-enough: "任务列表数量不足以生成一个任务不重复的游戏板."
 gui:
-  title: "&c&lBingo &e任务列表"
+  title: "&0{0} &8的游戏盘"
   complete: "&a您已经完成了这项任务！ "
   goal-title: "&a&l目标"
   goal-lore: |

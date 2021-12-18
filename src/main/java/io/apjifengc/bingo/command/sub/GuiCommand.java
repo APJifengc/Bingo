@@ -15,25 +15,39 @@ public class GuiCommand extends SubCommand {
         if (sender instanceof Player) {
             if (sender.hasPermission("bingo.use.gui")) {
                 if (plugin.hasBingoGame()) {
-                    if (plugin.getCurrentGame().getPlayer((Player) sender) != null) {
+                    var player = plugin.getCurrentGame().getPlayer((Player) sender);
+                    if (player != null) {
                         if (plugin.getCurrentGame().getState() == BingoGame.State.RUNNING) {
-                            Player player = (Player) sender;
-                            player.closeInventory();
-                            player.openInventory(plugin.getCurrentGame().getPlayer(player).getInventory());
+                            if (args.length == 1) {
+                                player.openGui();
+                            } else if (args.length == 2) {
+                                if (sender.hasPermission("bingo.use.gui.others")) {
+                                    var target = plugin.getCurrentGame().getPlayer(args[1]);
+                                    if (target != null) {
+                                        player.openGui(target);
+                                    } else {
+                                        Message.sendToWithPrefix(sender, "commands.gui.other-not-in");
+                                    }
+                                } else {
+                                    Message.sendToWithPrefix(sender, "commands.no-permission");
+                                }
+                            } else {
+                                Message.sendToWithPrefix(sender, "commands.too-many-arguments");
+                            }
                         } else {
-                            sender.sendMessage(Message.get("prefix") + Message.get("commands.gui.not-start"));
+                            Message.sendToWithPrefix(sender, "commands.gui.not-start");
                         }
                     } else {
-                        sender.sendMessage(Message.get("prefix") + Message.get("commands.gui.not-in"));
+                        Message.sendToWithPrefix(sender, "commands.gui.not-in");
                     }
                 } else {
-                    sender.sendMessage(Message.get("prefix") + Message.get("commands.gui.no-game"));
+                    Message.sendToWithPrefix(sender, "commands.gui.no-game");
                 }
             } else {
-                sender.sendMessage(Message.get("prefix") + Message.get("commands.no-permission"));
+                Message.sendToWithPrefix(sender, "commands.no-permission");
             }
         } else {
-            sender.sendMessage(Message.get("prefix") + Message.get("commands.no-console"));
+            Message.sendToWithPrefix(sender, "commands.no-console");
         }
     }
 

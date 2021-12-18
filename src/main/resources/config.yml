@@ -73,6 +73,10 @@ game:
   # lower than 1 to disable it.
   random-teleport-range: 800
 
+  # Allows players to open other players' GUI. (bingo.use.gui.others)
+  # Available values: true / false
+  access-to-others-gui: true
+
 display:
   # This is whether map displaying is enabled.
   # Map displaying will replace the task item with a map that displays the tasks.

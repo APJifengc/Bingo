@@ -193,8 +193,9 @@ public class BingoPlayer {
      *
      * @return The player's Bingo GUI.
      */
-    public Inventory getInventory() {
-        Inventory inv = Bukkit.createInventory(new BingoGuiInventory(), 54, Message.get("gui.title"));
+    // TODO: cleanup
+    public Inventory getGui() {
+        Inventory inv = Bukkit.createInventory(new BingoGuiInventory(), 54, Message.get("gui.title", player.getName()));
         ItemStack is = new ItemStack(Material.MAGENTA_STAINED_GLASS_PANE);
         ItemMeta im = is.getItemMeta();
         im.setDisplayName("§1");
@@ -225,6 +226,16 @@ public class BingoPlayer {
             inv.setItem(BingoUtil.getBoardX(i) + BingoUtil.getBoardY(i) * 9 + 2, is);
         }
         return inv;
+    }
+
+    public void openGui() {
+        player.closeInventory();
+        player.openInventory(getGui());
+    }
+
+    public void openGui(BingoPlayer other) {
+        player.closeInventory();
+        player.openInventory(other.getGui());
     }
 
     /** Show their scoreboard. */

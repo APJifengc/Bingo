@@ -7,7 +7,9 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,10 +35,13 @@ public class Message {
     public static final String ERROR_STRING = "§c§l[ERROR]";
     public static final BaseComponent[] ERROR_COMPONENT = TextComponent.fromLegacyText(ERROR_STRING);
 
+    public static String prefix = ERROR_STRING;
+
     public static void load() {
         extractLanguageFiles();
         var lang = Config.getMain().get("lang");
         config = Config.loadConfig(String.format("language/%s.yml", lang));
+        prefix = get("prefix");
     }
 
     public static String get(String path, Object... args) {
@@ -135,8 +140,12 @@ public class Message {
         }
     }
 
-    public static void sendTo(Collection<BingoPlayer> bingoPlayer, String msg) {
-        bingoPlayer.forEach(it -> it.getPlayer().sendMessage(msg));
+    public static void sendTo(Collection<BingoPlayer> bingoPlayer, String key, Object... args) {
+        bingoPlayer.forEach(it -> it.getPlayer().sendMessage(get(key, args)));
+    }
+
+    public static void sendToWithPrefix(CommandSender player, String key, Object... args) {
+        player.sendMessage(prefix + get(key, args));
     }
 
     public static void warning(String path, Object... args) {

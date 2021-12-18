@@ -45,27 +45,60 @@ import java.util.*;
 // TODO: clean up
 public class BingoGame {
 
-    @Getter List<BingoTask> board = new ArrayList<>(25);
-    @Getter ArrayList<BingoPlayer> players = new ArrayList<>();
-    @Getter ArrayList<BingoPlayer> winners = new ArrayList<>();
+    private static final Bingo plugin = Bingo.getInstance();
+
+    @Getter private State state = State.LOADING;
+    @Getter private List<BingoTask> board = new ArrayList<>(25);
+
+    @Getter private final ArrayList<BingoPlayer> players = new ArrayList<>();
+    @Getter private final ArrayList<BingoPlayer> winners = new ArrayList<>();
 
     // TODO
-    Map<Integer, BukkitTask> eventTasks = new HashMap<>();
+    private final Map<Integer, BukkitTask> eventTasks = new HashMap<>();
+    private final Map<Integer, Integer> timeMap = new HashMap<>();
+    private int timer, pvpTimer, endTimer;
 
-    int timer, pvpTimer, endTimer;
-
-    @Getter State state;
-
-    Map<Integer, Integer> TimeMap = new HashMap<>();
-
-    @Getter Scoreboard scoreboard;
-
-    Bingo plugin;
-
-    @Getter BossBar bossbar = Bukkit.createBossBar(Message.get("bossbar.normal"), BarColor.YELLOW, BarStyle.SEGMENTED_10);
+    @Getter private final Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+    @Getter private final BossBar bossbar = Bukkit.createBossBar(Message.get("bossbar.normal"), BarColor.YELLOW, BarStyle.SEGMENTED_10);
 
     /** The task item for one user. */
-    @Getter ItemStack taskItem;
+    @Getter private ItemStack taskItem;
+
+    @Getter boolean allowOpenOthersGui;
+
+    public BingoGame() {
+        this.allowOpenOthersGui = Config.getMain().getBoolean("game.access-to-others-gui");
+
+        // Start the timer.
+        scoreboard.registerNewObjective("bingo", "dummy", Message.get("scoreboard.start-timer.title"))
+                .setDisplaySlot(DisplaySlot.SIDEBAR);
+        scoreboard.registerNewObjective("bingo-end", "dummy", Message.get("scoreboard.end.title"));
+        List<String> TimeList = Config.getMain().getStringList("room.start-time");
+        changeState(State.WAITING);
+        timer = -1;
+        for (String str : TimeList) {
+            String[] strings;
+            strings = str.split("\\|");
+            try {
+                timeMap.put(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]));
+            } catch (ArrayIndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
+        }
+        eventTasks.put(1, new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (timer != -1) {
+                    timer--;
+                }
+                updateScoreboard();
+                if (timer == 0) {
+                    this.cancel();
+                    start();
+                }
+            }
+        }.runTaskTimer(plugin, 0L, 20L));
+    }
 
     /**
      * Add a player to the game.
@@ -77,8 +110,8 @@ public class BingoGame {
         if (BingoUtil.callEvent(new BingoPlayerPreJoinEvent(player, this))) {
             BingoPlayer p = new BingoPlayer(player, this);
             players.add(p);
-            Message.sendTo(players, Message.get("chat.join", player.getName(), players.size(),
-                    Config.getMain().getInt("room.max-player")));
+            Message.sendTo(players, "chat.join", player.getName(), players.size(),
+                    Config.getMain().getInt("room.max-player"));
             if (state == State.WAITING) {
                 updateStartTime();
                 player.setScoreboard(scoreboard);
@@ -109,12 +142,12 @@ public class BingoGame {
         BingoPlayer bp = getPlayer(player);
         if (bp != null) {
             if (BingoUtil.callEvent(new BingoPlayerLeaveEvent(bp))) {
-                bp.getInventory().clear();
+                bp.getGui().clear();
                 bp.clearScoreboard();
                 bossbar.removePlayer(player);
                 players.remove(bp);
-                Message.sendTo(players, Message.get("chat.leave", player.getName(), players.size(),
-                        Config.getMain().getInt("room.max-player")));
+                Message.sendTo(players, "chat.leave", player.getName(), players.size(),
+                        Config.getMain().getInt("room.max-player"));
                 if (state == State.WAITING) {
                     updateStartTime();
                 }
@@ -139,6 +172,17 @@ public class BingoGame {
             }
         }
         return null;
+    }
+
+    /**
+     * Get a {@link BingoPlayer} instance according to a player's name.
+     *
+     * @param player The player to be got.
+     * @return The specified player or null for not found.
+     */
+    @Nullable
+    public BingoPlayer getPlayer(String player) {
+        return getPlayer(Bukkit.getPlayer(player));
     }
 
     /**
@@ -168,41 +212,6 @@ public class BingoGame {
         itemMeta.addEnchant(Enchantment.VANISHING_CURSE, 1, false);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         taskItem.setItemMeta(itemMeta);
-    }
-
-    public BingoGame(Bingo plugin) {
-        this.plugin = plugin;
-        // Start the timer.
-        scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        scoreboard.registerNewObjective("bingo", "dummy", Message.get("scoreboard.start-timer.title"))
-                .setDisplaySlot(DisplaySlot.SIDEBAR);
-        scoreboard.registerNewObjective("bingo-end", "dummy", Message.get("scoreboard.end.title"));
-        List<String> TimeList = Config.getMain().getStringList("room.start-time");
-        changeState(State.WAITING);
-        timer = -1;
-        for (String str : TimeList) {
-            String[] strings;
-            strings = str.split("\\|");
-            try {
-                TimeMap.put(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]));
-            } catch (ArrayIndexOutOfBoundsException e) {
-                e.printStackTrace();
-            }
-        }
-        eventTasks.put(1, new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (timer != -1) {
-                    timer--;
-                }
-                updateScoreboard();
-                if (timer == 0) {
-                    this.cancel();
-                    start();
-                }
-            }
-        }.runTaskTimer(plugin, 0L, 20L));
-
     }
 
     /** Update the scoreboard. */
@@ -272,9 +281,9 @@ public class BingoGame {
     /** Update the time last to start the game. */
     public void updateStartTime() {
         for (int i = 1; i <= players.size(); i++) {
-            if (TimeMap.containsKey(i)) {
-                if (timer > TimeMap.get(i) || timer == -1) {
-                    timer = TimeMap.get(i);
+            if (timeMap.containsKey(i)) {
+                if (timer > timeMap.get(i) || timer == -1) {
+                    timer = timeMap.get(i);
                 }
             }
         }
