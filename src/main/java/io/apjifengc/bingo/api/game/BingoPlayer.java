@@ -94,12 +94,17 @@ public class BingoPlayer {
     }
 
     /**
-     * Make the player finish a task.
+     * Make the player finish a task. <br/>
+     * If the task is already finished, it will do nothing.
      *
      * @param task The task instance to be finished.
      */
     public void finishTask(BingoTask task) {
         var index = game.getBoard().indexOf(task);
+
+        if (hasFinished(index)) {
+            return;
+        }
 
         if (BingoUtil.callEvent(new BingoPlayerFinishTaskEvent(this, task, index))) {
             taskStatus[index] = true;

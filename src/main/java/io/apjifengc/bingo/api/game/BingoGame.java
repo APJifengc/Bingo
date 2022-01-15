@@ -22,6 +22,8 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -56,6 +58,7 @@ public class BingoGame {
     // TODO
     private final Map<Integer, BukkitTask> eventTasks = new HashMap<>();
     private final Map<Integer, Integer> timeMap = new HashMap<>();
+    private final List<Listener> taskListeners = new ArrayList<>();
     private int timer, pvpTimer, endTimer;
 
     @Getter private final Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
@@ -194,6 +197,11 @@ public class BingoGame {
         var result = BingoTaskManager.getInstance().generateTasks();
         Bukkit.getPluginManager().callEvent(new BingoGameGenerateTaskEvent(this, result));
         this.board = result;
+        result.forEach(t -> {
+            Listener listener = t.getTaskListener();
+            taskListeners.add(listener);
+            Bukkit.getPluginManager().registerEvents(listener, plugin);
+        });
         if (Config.getMain().getBoolean("display.enable-map-display", true)) {
             taskItem = new ItemStack(Material.FILLED_MAP);
             MapMeta mapMeta = (MapMeta) taskItem.getItemMeta();
@@ -481,6 +489,7 @@ public class BingoGame {
      */
     public void stop() {
         eventTasks.forEach((i, s) -> s.cancel());
+        taskListeners.forEach(HandlerList::unregisterAll);
         for (BingoPlayer bingoPlayer : players) {
             TeleportUtil.safeTeleport(bingoPlayer.getPlayer(), Bukkit.getWorld(Config.getMain().getString("room.main-world")), 0, 0);
             bingoPlayer.getPlayer().getInventory().clear();

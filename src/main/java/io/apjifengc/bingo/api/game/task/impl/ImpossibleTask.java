@@ -6,8 +6,11 @@ import lombok.Getter;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +33,13 @@ public class ImpossibleTask extends BingoTask {
         im.setLore(lore);
         is.setItemMeta(im);
         this.shownItem = is;
+    }
+
+    @Override
+    public @NotNull Listener getTaskListener() {
+        return new Listener() {
+
+        };
     }
 
     public static ImpossibleTask newInstance(String[] args) {

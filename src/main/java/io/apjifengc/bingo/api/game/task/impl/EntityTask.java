@@ -1,5 +1,7 @@
 package io.apjifengc.bingo.api.game.task.impl;
 
+import io.apjifengc.bingo.api.game.BingoGame;
+import io.apjifengc.bingo.api.game.BingoPlayer;
 import io.apjifengc.bingo.api.game.task.BingoTask;
 import io.apjifengc.bingo.util.Message;
 import io.apjifengc.bingo.util.Skull;
@@ -9,8 +11,14 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -95,6 +103,105 @@ public class EntityTask extends BingoTask {
 
     private String toLangKey(Type ori) {
         return "task.entity-task." + ori.name().toLowerCase().replace("_", "-");
+    }
+
+    @Override
+    public @NotNull Listener getTaskListener() {
+        return new Listener() {
+            private Player placedBlockPlayer;
+
+            @EventHandler(ignoreCancelled = true)
+            void onEntityKill(EntityDeathEvent event) {
+                Player player = event.getEntity().getKiller();
+                if (getType() == EntityTask.Type.KILL) {
+                    if (event.getEntityType() == getEntity()) {
+                        finishTask(player);
+                    }
+                } else if (getType() == EntityTask.Type.DROP) {
+                    for (ItemStack itemStack : event.getDrops()) {
+                        if (itemStack.getType() == Material.getMaterial(getParam())) {
+                            finishTask(player);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @EventHandler(ignoreCancelled = true)
+            void onEntityBreed(EntityBreedEvent event) {
+                if (event.getBreeder() instanceof Player player) {
+                    if (getType() == EntityTask.Type.BREED) {
+                        if (event.getEntityType() == getEntity()) {
+                            finishTask(player);
+                        }
+                    }
+                }
+            }
+
+            @EventHandler(ignoreCancelled = true)
+            void onEntityDamage(EntityDamageByEntityEvent event) {
+                if (event.getDamager() instanceof Player player) {
+                    if (getType() == EntityTask.Type.DAMAGE) {
+                        if (event.getEntityType() == getEntity()) {
+                            finishTask(player);
+                        }
+                    }
+                }
+            }
+
+            @EventHandler(ignoreCancelled = true)
+            void onEntityTame(EntityTameEvent event) {
+                if (event.getOwner() instanceof Player player) {
+                    if (getType() == EntityTask.Type.TAME) {
+                        if (event.getEntityType() == getEntity()) {
+                            finishTask(player);
+                        }
+                    }
+                }
+            }
+
+            @EventHandler(priority = EventPriority.HIGH)
+            void onBlockPlace(BlockPlaceEvent event) {
+                if (event.getBlockPlaced().getType() == Material.IRON_BLOCK
+                        || event.getBlockPlaced().getType() == Material.PUMPKIN
+                        || event.getBlockPlaced().getType() == Material.SNOW_BLOCK
+                        || event.getBlockPlaced().getType() == Material.WITHER_SKELETON_SKULL
+                        || event.getBlockPlaced().getType() == Material.SOUL_SAND
+                        || event.getBlockPlaced().getType() == Material.WITHER_SKELETON_WALL_SKULL) {
+                    placedBlockPlayer = event.getPlayer();
+                }
+            }
+
+            @EventHandler(ignoreCancelled = true)
+            void onCreatureSpawn(CreatureSpawnEvent event) {
+                if (event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.BUILD_IRONGOLEM
+                        || event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.BUILD_SNOWMAN
+                        || event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.BUILD_WITHER) {
+                    if (getType() == EntityTask.Type.SUMMON) {
+                        switch (event.getSpawnReason()) {
+                            case BUILD_IRONGOLEM:
+                                if (getParam().equalsIgnoreCase("IRONGOLEM")) {
+                                    finishTask(placedBlockPlayer);
+                                }
+                                break;
+                            case BUILD_SNOWMAN:
+                                if (getParam().equalsIgnoreCase("SNOWMAN")) {
+                                    finishTask(placedBlockPlayer);
+                                }
+                                break;
+                            case BUILD_WITHER:
+                                if (getParam().equalsIgnoreCase("WITHER")) {
+                                    finishTask(placedBlockPlayer);
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+                placedBlockPlayer = null;
+            }
+        };
     }
 
     public enum Type {
