@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    implementation 'org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT'
     implementation 'com.mojang:authlib:2.3.31'
     implementation 'com.sk89q.worldedit:worldedit-core:7.2.7'
     implementation 'com.sk89q.worldedit:worldedit-bukkit:7.2.7'
