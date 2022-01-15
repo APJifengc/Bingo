@@ -9,7 +9,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,6 +18,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Bingo message constants.
@@ -56,7 +57,7 @@ public class Message {
 
     public static List<BaseComponent[]> getWrapComponents(String path, Object... args) {
         var list = new ArrayList<BaseComponent[]>();
-        for (String section : config.getString(path).split("(\\n|\\\\n)")) {
+        for (String section : requireNonNull(config.getString(path)).split("(\\n|\\\\n)")) {
             list.add(serveComponents(section, args));
         }
         return list;
@@ -96,7 +97,7 @@ public class Message {
             else if (it.getClass().isArray() && it.getClass().getComponentType() == BaseComponent.class)
                 return (BaseComponent[]) it;
             else return TextComponent.fromLegacyText(it.toString());
-        }).flatMap(Stream::of).collect(Collectors.toList());
+        }).flatMap(Stream::of).toList();
 
         list.get(0).setItalic(false);
         for (int i = 0; i < list.size(); i++) {
@@ -128,10 +129,11 @@ public class Message {
     }
 
     /** Convert a unicode to chinese characters. */
+    @SuppressWarnings("unused")
     public static String unicodeToCn(String src) {
         StringBuilder sb = new StringBuilder(src);
         while (true) {
-            Matcher m = Pattern.compile("\\\\u[a-z,A-Z,0-9]{4}").matcher(sb.toString());
+            Matcher m = Pattern.compile("\\\\u[a-zA-Z0-9]{4}").matcher(sb.toString());
             if (!m.find()) {
                 return sb.toString();
             }

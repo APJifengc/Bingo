@@ -15,6 +15,7 @@ import java.util.*;
 
 import static org.apache.commons.lang.Validate.isTrue;
 
+@SuppressWarnings("unused")
 public class BingoTaskManager {
 
     @Getter private static final BingoTaskManager instance = new BingoTaskManager();
@@ -57,9 +58,8 @@ public class BingoTaskManager {
                 result.addAll(parseTaskObject(o, prefix));
             }
             return result;
-        } else if (obj instanceof Map) {
+        } else if (obj instanceof Map<?, ?> map) {
             var result = new ArrayList<String>();
-            var map = (Map<?, ?>) obj;
             for (Object o : map.keySet()) {
                 var value = map.get(o);
                 result.addAll(parseTaskObject(value, prefix + o.toString() + "::"));

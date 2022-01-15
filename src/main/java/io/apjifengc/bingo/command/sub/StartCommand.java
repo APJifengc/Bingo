@@ -22,7 +22,6 @@ public class StartCommand extends SubCommand {
     @Override public void run(CommandSender sender, String[] args) {
         if (sender.hasPermission("bingo.admin.start")) {
             if (!plugin.hasBingoGame()) {
-                BingoGame game = new BingoGame();
                 String worldName = Config.getMain().getString("room.world-name");
                 if (!(Config.getMain().getBoolean("debug") && Bukkit.getWorld(worldName) != null)) {
                     WorldManager.regenerateWorld(worldName);
@@ -34,6 +33,7 @@ public class StartCommand extends SubCommand {
                     e.printStackTrace();
                     return;
                 }
+                BingoGame game = new BingoGame();
                 try {
                     game.generateTasks();
                 } catch (BadTaskException e) {

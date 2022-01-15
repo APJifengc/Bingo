@@ -6,7 +6,6 @@ import lombok.Getter;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,6 +19,7 @@ import java.util.List;
  *
  * @author Milkory
  */
+@SuppressWarnings("unused")
 public class ImpossibleTask extends BingoTask {
 
     @Getter private final ItemStack shownItem;

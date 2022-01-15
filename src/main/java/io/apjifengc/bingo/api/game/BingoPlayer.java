@@ -1,11 +1,9 @@
 package io.apjifengc.bingo.api.game;
 
-import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.api.event.player.BingoPlayerFinishTaskEvent;
 import io.apjifengc.bingo.api.game.task.BingoTask;
 import io.apjifengc.bingo.api.inventory.BingoGuiInventory;
 import io.apjifengc.bingo.api.util.BingoUtil;
-import io.apjifengc.bingo.map.TaskMapRenderer;
 import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Message;
 import io.apjifengc.bingo.util.TaskUtil;
@@ -14,14 +12,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.MapMeta;
-import org.bukkit.map.MapView;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -35,19 +29,20 @@ import java.util.List;
  *
  * @author Milkory
  */
+@SuppressWarnings("unused")
 public class BingoPlayer {
 
     /** The original {@link Player} instance. */
     @Getter Player player;
 
     /** The {@link BingoGame} they belong to. */
-    @Getter BingoGame game;
+    @Getter final BingoGame game;
 
     /** The scoreboard to be shown to them. */
-    @Getter Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+    @Getter final Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
     /** Their task finishing status. */
-    boolean[] taskStatus = new boolean[25];
+    final boolean[] taskStatus = new boolean[25];
 
     public BingoPlayer(Player player, BingoGame game) {
         this.player = player;
@@ -55,13 +50,12 @@ public class BingoPlayer {
     }
 
     /** Update the {@link #player} field. */
-    public boolean updatePlayer() {
+    public void updatePlayer() {
         Player p = Bukkit.getPlayer(player.getUniqueId());
         if (player == null || p == null) {
-            return false;
+            return;
         }
         player = p;
-        return true;
     }
 
     /**
@@ -167,7 +161,7 @@ public class BingoPlayer {
         if (index % 6 == 0) {
             if (taskStatus[0] && taskStatus[6] && taskStatus[12] && taskStatus[18] && taskStatus[24])
                 return true;
-        } else if (index % 4 == 0 && index != 0) {
+        } else if (index % 4 == 0) {
             if (taskStatus[4] && taskStatus[8] && taskStatus[12] && taskStatus[16] && taskStatus[20])
                 return true;
         }
@@ -263,7 +257,7 @@ public class BingoPlayer {
     /** Update their scoreboard */
     public void updateScoreboard() {
         int i = 10;
-        List<String> stringList = new ArrayList<String>();
+        List<String> stringList = new ArrayList<>();
         scoreboard.getEntries().forEach((s) -> scoreboard.resetScores(s));
         Objective objective = scoreboard.getObjective("bingoInfo");
         String[] tasksString = {"", "", "", "", ""};

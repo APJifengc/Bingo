@@ -348,8 +348,8 @@ public class Skull {
                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmFkYzA0OGE3Y2U3OGY3ZGFkNzJhMDdkYTI3ZDg1YzA5MTY4ODFlNTUyMmVlZWQxZTNkYWYyMTdhMzhjMWEifX19"
         );
 
-        public String UUID;
-        public String texture;
+        public final String UUID;
+        public final String texture;
 
         EntityHead(String UUID, String texture) {
             this.texture = texture;

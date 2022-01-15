@@ -16,6 +16,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 
+@SuppressWarnings("ClassCanBeRecord")
 public final class OtherListener implements Listener {
 
     private final Bingo plugin;
@@ -52,7 +53,7 @@ public final class OtherListener implements Listener {
                 player.setScoreboard(gamePlayer.getScoreboard());
                 game.getBossbar().addPlayer(player);
                 if (!player.getWorld().getName().equals(Config.getMain().getString("room.world-name"))) {
-                    World world = Bukkit.getWorld(Config.getMain().getString("room.world-name"));
+                    World world = game.getWorld();
                     TeleportUtil.safeTeleport(player, world, 0, 0);
                 }
                 player.sendMessage(Message.get("chat.back"));

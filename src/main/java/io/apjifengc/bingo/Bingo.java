@@ -5,7 +5,6 @@ import io.apjifengc.bingo.api.game.BingoGame;
 import io.apjifengc.bingo.api.game.BingoPlayer;
 import io.apjifengc.bingo.listener.InventoryListener;
 import io.apjifengc.bingo.listener.OtherListener;
-import io.apjifengc.bingo.listener.TaskListener;
 import io.apjifengc.bingo.util.Config;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,7 +44,6 @@ public class Bingo extends JavaPlugin {
         commandMain = new CommandMain();
         new InventoryListener(this);
         new OtherListener(this);
-        new TaskListener(this);
         loadPlugin();
     }
 

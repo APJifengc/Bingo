@@ -1,7 +1,5 @@
 package io.apjifengc.bingo.api.game.task.impl;
 
-import io.apjifengc.bingo.api.game.BingoGame;
-import io.apjifengc.bingo.api.game.BingoPlayer;
 import io.apjifengc.bingo.api.game.task.BingoTask;
 import io.apjifengc.bingo.util.Message;
 import io.apjifengc.bingo.util.TaskUtil;
@@ -27,6 +25,7 @@ import static org.apache.commons.lang.Validate.isTrue;
  *
  * @author Milkory
  */
+@SuppressWarnings("unused")
 public class ItemTask extends BingoTask {
 
     @Getter private final ItemStack target;

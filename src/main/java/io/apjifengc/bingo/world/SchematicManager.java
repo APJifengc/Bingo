@@ -24,11 +24,11 @@ import java.io.IOException;
  * @author APJifengc
  */
 public class SchematicManager {
-    private static Clipboard clipboard;
     private static EditSession editSession;
 
     public static void buildSchematic(File file, Location location) throws IOException {
         ClipboardFormat format = ClipboardFormats.findByFile(file);
+        Clipboard clipboard;
         try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
             clipboard = reader.read();
         }

@@ -44,11 +44,11 @@ tasks.withType(JavaCompile) {
 }
 
 tasks.withType(Jar) {
-    destinationDirectory = file("$rootDir/run/plugins/");
+    destinationDirectory = file("$rootDir/run/plugins/")
 }
 
 processResources {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE;
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     from(sourceSets.main.resources.srcDirs) {
         include 'plugin.yml' expand 'version': project.version
     }

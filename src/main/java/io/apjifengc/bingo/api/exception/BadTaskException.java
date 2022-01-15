@@ -2,6 +2,7 @@ package io.apjifengc.bingo.api.exception;
 
 import io.apjifengc.bingo.api.game.task.BingoTask;
 
+@SuppressWarnings("unused")
 public class BadTaskException extends Exception {
 
     public BadTaskException() {

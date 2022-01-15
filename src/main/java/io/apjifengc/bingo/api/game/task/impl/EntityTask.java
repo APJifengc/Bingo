@@ -1,7 +1,5 @@
 package io.apjifengc.bingo.api.game.task.impl;
 
-import io.apjifengc.bingo.api.game.BingoGame;
-import io.apjifengc.bingo.api.game.BingoPlayer;
 import io.apjifengc.bingo.api.game.task.BingoTask;
 import io.apjifengc.bingo.util.Message;
 import io.apjifengc.bingo.util.Skull;
@@ -32,6 +30,7 @@ import static org.apache.commons.lang.Validate.isTrue;
  *
  * @author APJifengc, Milkory
  */
+@SuppressWarnings("unused")
 public class EntityTask extends BingoTask {
 
     @Getter private final Type type;

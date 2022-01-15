@@ -45,6 +45,7 @@ import java.util.*;
  * @author Milkory
  */
 // TODO: clean up
+@SuppressWarnings("UnusedReturnValue")
 public class BingoGame {
 
     private static final Bingo plugin = Bingo.getInstance();
@@ -63,15 +64,16 @@ public class BingoGame {
 
     @Getter private final Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
     @Getter private final BossBar bossbar = Bukkit.createBossBar(Message.get("bossbar.normal"), BarColor.YELLOW, BarStyle.SEGMENTED_10);
+    @Getter private final World world;
 
     /** The task item for one user. */
     @Getter private ItemStack taskItem;
 
-    @Getter boolean allowOpenOthersGui;
+    @Getter final boolean allowOpenOthersGui;
 
     public BingoGame() {
         this.allowOpenOthersGui = Config.getMain().getBoolean("game.access-to-others-gui");
-
+        this.world = Bukkit.getWorld(Objects.requireNonNull(Config.getMain().getString("room.main-world")));
         // Start the timer.
         scoreboard.registerNewObjective("bingo", "dummy", Message.get("scoreboard.start-timer.title"))
                 .setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -119,14 +121,14 @@ public class BingoGame {
                 updateStartTime();
                 player.setScoreboard(scoreboard);
                 player.setGameMode(GameMode.ADVENTURE);
-                player.teleport(new Location(Bukkit.getWorld(Config.getMain().getString("room.world-name")), 0, 200, 0));
+                player.teleport(new Location(world, 0, 200, 0));
             } else if (state == State.RUNNING) {
                 p.showScoreboard();
                 player.getInventory().clear();
                 player.setGameMode(GameMode.SURVIVAL);
                 p.giveGuiItem();
                 bossbar.addPlayer(player);
-                TeleportUtil.safeTeleport(player, Bukkit.getWorld(Config.getMain().getString("room.world-name")), 0, 0);
+                TeleportUtil.safeTeleport(player, world, 0, 0);
                 player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
                 player.setFoodLevel(20);
                 player.getActivePotionEffects().forEach((s) -> player.removePotionEffect(s.getType()));
@@ -205,7 +207,7 @@ public class BingoGame {
         if (Config.getMain().getBoolean("display.enable-map-display", true)) {
             taskItem = new ItemStack(Material.FILLED_MAP);
             MapMeta mapMeta = (MapMeta) taskItem.getItemMeta();
-            MapView mapView = Bukkit.createMap(Bukkit.getWorld(Config.getMain().getString("room.world-name")));
+            MapView mapView = Bukkit.createMap(world);
             mapView.getRenderers().forEach(mapView::removeRenderer);
             mapView.addRenderer(new TaskMapRenderer(this));
             mapMeta.setMapView(mapView);
@@ -225,11 +227,11 @@ public class BingoGame {
     /** Update the scoreboard. */
     public void updateScoreboard() {
         int i = 10;
-        List<String> stringList = new ArrayList<String>();
+        List<String> stringList = new ArrayList<>();
         // 如果游戏正在等待玩家加入
         if (this.state == State.WAITING || state == State.LOADING) {
             Objective obj = scoreboard.getObjective("bingo");
-            scoreboard.getEntries().forEach((s) -> scoreboard.resetScores(s));
+            scoreboard.getEntries().forEach(scoreboard::resetScores);
             String timeString;
             if (timer == -1) {
                 timeString = Message.get("scoreboard.start-timer.wait-for-people");
@@ -269,9 +271,8 @@ public class BingoGame {
             players.forEach((p) -> p.getPlayer().setScoreboard(scoreboard));
             Objective endObjective = scoreboard.getObjective("bingo-end");
             int order = 0;
-            i = 10;
             endObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
-            List<String> winnerText = new ArrayList<String>();
+            List<String> winnerText = new ArrayList<>();
             for (BingoPlayer winner : winners) {
                 order++;
                 winnerText.add(Message.get("scoreboard.end.player", order, winner.getPlayer().getName()));
@@ -333,7 +334,6 @@ public class BingoGame {
             player.getInventory().clear();
         }
         players.forEach((s) -> bossbar.addPlayer(s.getPlayer()));
-        World world = Bukkit.getWorld(Config.getMain().getString("room.world-name"));
         if (Config.getMain().getInt("game.world-border") > 0) {
             world.getWorldBorder().setCenter(0, 0);
             world.getWorldBorder().setSize(Config.getMain().getInt("game.world-border"));
@@ -362,7 +362,7 @@ public class BingoGame {
                     this.cancel();
                 }
 
-            }.runTaskLater(plugin, pvpTime * 20));
+            }.runTaskLater(plugin, pvpTime * 20L));
             eventTasks.put(5, new BukkitRunnable() {
 
                 @Override
@@ -445,7 +445,7 @@ public class BingoGame {
                             endGame();
                         }
 
-                    }.runTaskLater(plugin, Config.getMain().getInt("room.end-time") * 20));
+                    }.runTaskLater(plugin, Config.getMain().getInt("room.end-time") * 20L));
                 }
             }
         }
@@ -491,7 +491,7 @@ public class BingoGame {
         eventTasks.forEach((i, s) -> s.cancel());
         taskListeners.forEach(HandlerList::unregisterAll);
         for (BingoPlayer bingoPlayer : players) {
-            TeleportUtil.safeTeleport(bingoPlayer.getPlayer(), Bukkit.getWorld(Config.getMain().getString("room.main-world")), 0, 0);
+            TeleportUtil.safeTeleport(bingoPlayer.getPlayer(), world, 0, 0);
             bingoPlayer.getPlayer().getInventory().clear();
             bingoPlayer.clearScoreboard();
             bossbar.removePlayer(bingoPlayer.getPlayer());

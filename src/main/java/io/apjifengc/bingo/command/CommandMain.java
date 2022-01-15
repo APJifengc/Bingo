@@ -16,6 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,7 +45,7 @@ public class CommandMain implements TabExecutor {
     );
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         var sub = commands.get(args.length == 0 ? "help" : args[0]);
         if (sub != null) {
             sub.run(sender, args);
@@ -55,7 +56,7 @@ public class CommandMain implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, Command cmd, @NotNull String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("bingo")) {
             if (args.length == 1) {
                 return getSubCommands(sender).stream().filter(s -> s.startsWith(args[0])).collect(Collectors.toList());

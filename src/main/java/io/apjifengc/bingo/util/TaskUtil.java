@@ -13,24 +13,6 @@ import java.util.List;
 
 public class TaskUtil {
 
-    /** Format a string like "{@code iron_golem}" to "{@code Iron Golem}". */
-    public static String formatName(String ori) {
-        StringBuilder sb = new StringBuilder();
-        boolean isUpperCase = true;
-        for (int i = 0; i < ori.length(); i++) {
-            if (ori.charAt(i) == '_') {
-                sb.append(" ");
-                isUpperCase = true;
-            } else if (isUpperCase) {
-                sb.append(ori.toUpperCase().charAt(i));
-                isUpperCase = false;
-            } else {
-                sb.append(ori.toLowerCase().charAt(i));
-            }
-        }
-        return sb.toString();
-    }
-
     public static BaseComponent getItemName(ItemStack is) {
         if (is.hasItemMeta() && is.getItemMeta().hasDisplayName()) {
             return new TextComponent(is.getItemMeta().getDisplayName());
@@ -70,11 +52,10 @@ public class TaskUtil {
         return item;
     }
 
-    public static ItemStack setAllHideFlags(ItemStack item) {
+    public static void setAllHideFlags(ItemStack item) {
         var meta = item.getItemMeta();
         meta.addItemFlags(ItemFlag.values());
         item.setItemMeta(meta);
-        return item;
     }
 
 }

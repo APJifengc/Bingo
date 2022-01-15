@@ -26,7 +26,7 @@ room:
   # lower than 1 to disable it.
   end-time: 300
 
-  # This is the time(seconds) to start the game when the players is enough.
+  # This is the time(seconds) to start the game when the players are enough.
   # Example:
   # start-time:
   #  - "4|300"  -  When the player count is more than 4 (include 4), the game will start in 300 seconds

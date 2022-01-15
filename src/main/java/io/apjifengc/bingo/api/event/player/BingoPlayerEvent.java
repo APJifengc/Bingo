@@ -8,9 +8,10 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Milkory
  */
+@SuppressWarnings("unused")
 public abstract class BingoPlayerEvent extends Event {
 
-    @Getter protected BingoPlayer player;
+    @Getter protected final BingoPlayer player;
 
     public BingoPlayerEvent(@NotNull BingoPlayer who) {
         this.player = who;

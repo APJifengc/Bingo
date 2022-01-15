@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Milkory
  */
+@SuppressWarnings("unused")
 public class BingoPlayerFinishBingoEvent extends BingoPlayerEvent implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();

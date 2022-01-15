@@ -13,6 +13,7 @@ import java.util.List;
  *
  * @author Milkory
  */
+@SuppressWarnings("unused")
 public class BingoGameGenerateTaskEvent extends BingoGameEvent {
 
     private static final HandlerList handlers = new HandlerList();

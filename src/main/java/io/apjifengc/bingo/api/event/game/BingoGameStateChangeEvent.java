@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Milkory
  */
+@SuppressWarnings("unused")
 public class BingoGameStateChangeEvent extends BingoGameEvent {
 
     private static final HandlerList handlers = new HandlerList();

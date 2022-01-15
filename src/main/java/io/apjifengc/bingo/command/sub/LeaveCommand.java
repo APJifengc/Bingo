@@ -24,7 +24,7 @@ public class LeaveCommand extends SubCommand {
                         if (plugin.getCurrentGame().getState() != BingoGame.State.LOADING) {
                             sender.sendMessage(Message.get("prefix") + Message.get("commands.leave.success"));
                             plugin.getCurrentGame().removePlayer((Player) sender);
-                            TeleportUtil.safeTeleport((Player) sender, Bukkit.getWorld(Config.getMain().getString("room.main-world")), 0, 0);
+                            TeleportUtil.safeTeleport((Player) sender, plugin.getCurrentGame().getWorld(), 0, 0);
                         } else {
                             sender.sendMessage(Message.get("prefix") + Message.get("commands.leave.game-loading"));
                         }
