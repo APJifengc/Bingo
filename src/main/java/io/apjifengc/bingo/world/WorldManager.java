@@ -3,13 +3,13 @@ package io.apjifengc.bingo.world;
 import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Files;
-import org.apache.commons.lang.mutable.MutableInt;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 多世界管理器
@@ -30,7 +30,7 @@ public class WorldManager {
         World world = Bukkit.createWorld(new WorldCreator(name));
         int chunks = Config.getMain().getInt("game.pre-generate-range", 20);
         if (chunks <= 1) return;
-        MutableInt count = new MutableInt(0);
+        AtomicInteger count = new AtomicInteger(0);
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -42,7 +42,7 @@ public class WorldManager {
         }.runTaskTimer(Bingo.getInstance(), 0, 20);
         for (int i = -chunks; i <= chunks; i++) {
             for (int j = -chunks; j <= chunks; j++) {
-                count.add(1);
+                count.addAndGet(1);
                 world.loadChunk(i, j);
             }
         }
