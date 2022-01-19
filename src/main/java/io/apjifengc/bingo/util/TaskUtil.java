@@ -45,8 +45,8 @@ public class TaskUtil {
     }
 
     public static ItemStack setRawDisplay(ItemStack item, String rawName, List<String> rawLore) {
-        item = NBTEditor.set(item, rawName,"display", "Name");
-        for (String lore :rawLore) {
+        item = NBTEditor.set(item, rawName, "display", "Name");
+        for (String lore : rawLore) {
             item = NBTEditor.set(item, lore, "display", "Lore", null);
         }
         return item;

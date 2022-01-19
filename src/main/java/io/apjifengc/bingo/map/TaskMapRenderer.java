@@ -34,8 +34,8 @@ public class TaskMapRenderer extends MapRenderer {
         for (int i = 1; i <= 5; i++) {
             for (int j = 1; j <= 5; j++) {
                 byte color = game.getPlayer(player).hasFinished(5 * j + i - 6) ? MapPalette.LIGHT_GREEN : MapPalette.RED;
-                for (int k = 17 + i * 19 - 18; k <= 16 + i * 19 ; k++) {
-                    for (int q = 17 + j * 19 - 18; q <= 16 + j * 19 ; q++) {
+                for (int k = 17 + i * 19 - 18; k <= 16 + i * 19; k++) {
+                    for (int q = 17 + j * 19 - 18; q <= 16 + j * 19; q++) {
                         canvas.setPixel(k, q, color);
                     }
                 }

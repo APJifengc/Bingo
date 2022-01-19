@@ -8,18 +8,18 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public final class InventoryListener implements Listener {
 
-	public InventoryListener(Bingo plugin) {
-		plugin.getServer().getPluginManager().registerEvents(this, plugin);
-	}
+    public InventoryListener(Bingo plugin) {
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
 
-	@EventHandler
-	public void onInventoryClick(InventoryClickEvent event) {
-		if (event.getClickedInventory() != null) {
-			if (event.getClickedInventory().getHolder() != null
-					&& event.getClickedInventory().getHolder() instanceof BingoGuiInventory) {
-				event.setCancelled(true);
-			}
-		}
-	}
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getClickedInventory() != null) {
+            if (event.getClickedInventory().getHolder() != null
+                    && event.getClickedInventory().getHolder() instanceof BingoGuiInventory) {
+                event.setCancelled(true);
+            }
+        }
+    }
 
 }

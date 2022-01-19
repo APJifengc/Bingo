@@ -30,7 +30,6 @@ public class CommandMain implements TabExecutor {
 
     public CommandMain() {
         Bukkit.getPluginCommand("bingo").setExecutor(this);
-        Bukkit.getPluginCommand("bingo").setTabCompleter(this);
     }
 
     @Getter private final Map<String, SubCommand> commands = Map.ofEntries(

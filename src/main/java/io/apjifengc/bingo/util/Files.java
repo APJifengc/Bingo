@@ -10,7 +10,7 @@ import java.io.File;
 public class Files {
 
     public static void deleteDirectory(File dir) {
-        if(!dir.exists()) return;
+        if (!dir.exists()) return;
         Validate.isTrue(dir.isDirectory());
         cleanDirectory(dir);
         dir.delete();
