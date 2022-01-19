@@ -52,10 +52,9 @@ public class BingoPlayer {
     /** Update the {@link #player} field. */
     public void updatePlayer() {
         Player p = Bukkit.getPlayer(player.getUniqueId());
-        if (player == null || p == null) {
-            return;
+        if (p != null) {
+            player = p;
         }
-        player = p;
     }
 
     /**
