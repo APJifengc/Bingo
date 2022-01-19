@@ -1,5 +1,5 @@
 # Bingo
-A Minecraft plugin for 1.13+ *(theoretically, untested)* **Spigot**, Paper server.
+A Minecraft plugin for 1.16+ **Spigot**, Paper server.
 
 Bingo is a Minecraft survival game. When the game starts, you will get a 5*5 task panel. You need to complete the tasks inside as much as possible. Each time you complete a task, you will get a square of the panel. If you can get 5 in a row either in a row, column, or diagonal, you win!
 

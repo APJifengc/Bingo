@@ -69,7 +69,7 @@ task:
       &a - Get {0} to complete this task.
       &7Bingo Item Task
   impossible-task:
-    title: "&7Impossible Task"
+    title: "&7Barrier"
     desc: |
       &e&lTask description:
       &a - You can never complete this task.

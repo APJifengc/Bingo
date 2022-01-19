@@ -204,7 +204,7 @@ public class BingoGame {
             taskListeners.add(listener);
             Bukkit.getPluginManager().registerEvents(listener, plugin);
         });
-        if (Config.getMain().getBoolean("display.enable-map-display", true)) {
+        if (Config.getMain().getBoolean("display.enable-map-display", false)) {
             taskItem = new ItemStack(Material.FILLED_MAP);
             MapMeta mapMeta = (MapMeta) taskItem.getItemMeta();
             MapView mapView = Bukkit.createMap(world);

@@ -77,11 +77,5 @@ game:
   # Available values: true / false
   access-to-others-gui: true
 
-display:
-  # This is whether map displaying is enabled.
-  # Map displaying will replace the task item with a map that displays the tasks.
-  # Available values: true / false
-  enable-map-display: true
-
 # Whether generate world when a game start, used for debugging only.
 debug: false

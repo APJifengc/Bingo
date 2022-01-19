@@ -70,7 +70,7 @@ public final class OtherListener implements Listener {
                 if (player != null && (event.getAction() == Action.RIGHT_CLICK_AIR
                         || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
                     if (event.getPlayer().getInventory().getHeldItemSlot() == 8) {
-                        plugin.getCommandMain().getCommands().get("gui").run(event.getPlayer(), new String[]{});
+                        player.openGui();
                     }
                 }
             }
