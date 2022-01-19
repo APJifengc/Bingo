@@ -1,0 +1,32 @@
+name: Bingo
+main: io.apjifengc.bingo.Bingo
+version: ${version}
+authors: [APJifengc, Milkory]
+api-version: 1.16
+depend: [WorldEdit]
+
+commands:
+  bingo:
+    description: All of Bingo right here.
+
+permissions:
+  bingo.admin:
+    description: Allows you to run all the admin commands.
+    children:
+      bingo.admin.start: true
+      bingo.admin.stop: true
+      bingo.admin.reload: true
+    default: op
+  bingo.use:
+    description: Allows you to run all the player commands.
+    children:
+      bingo.use.gui: true
+      bingo.use.gui.others: true
+      bingo.use.join: true
+      bingo.use.leave: true
+    default: true
+  bingo.dev:
+    description: Developing commands.
+    children:
+      bingo.dev.debug: true
+    default: false

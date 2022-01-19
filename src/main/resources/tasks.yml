@@ -1,0 +1,102 @@
+############################
+#    Bingo Tasks Config    #
+###########################################################
+# This file contains all the tasks that will in the game. #
+# See more information                                    #
+###########################################################
+
+################
+#  Item Tasks  #
+##########################################
+# Every text in the list is an item task.#
+# Example:                               #
+# items:                                 #
+#   - 'CLOCK'                            #
+#   - 'APPLE'                            #
+##########################################
+
+repeatable: false
+
+tasks:
+  - 'impossible'
+  - item:
+    - 'acacia_trapdoor'
+    - 'anvil'
+    - 'apple'
+    - 'ender_pearl'
+    - 'birch_fence'
+    - 'black_bed'
+    - 'blue_wool'
+    - 'armor_stand'
+    - 'snow_block'
+    - 'firework_star'
+    - 'cactus'
+    - 'lava_bucket'
+    - 'painting'
+    - 'hopper'
+    - 'lantern'
+    - 'flint_and_steel'
+    - 'sweet_berries'
+    - 'carrot_on_a_stick'
+    - 'item_frame'
+    - 'cocoa_beans'
+    - 'wheat'
+    - 'redstone'
+    - 'egg'
+    - 'charcoal'
+    - 'coal_block'
+    - 'tripwire_hook'
+    - 'trident'
+    - 'crossbow'
+    - 'green_dye'
+    - 'iron_chestplate'
+    - 'stick'
+    - 'piston'
+    - 'glass_bottle'
+    - 'golden_sword'
+    - 'iron_shovel'
+    - 'diamond_hoe'
+    - 'bookshelf'
+    - 'emerald'
+    - 'white_dye'
+    - 'map'
+    - 'milk_bucket'
+    - 'chiseled_stone_bricks'
+    - 'composter'
+    - 'grindstone'
+    - 'barrel'
+    - 'jack_o_lantern'
+    - 'green_banner'
+    - 'green_stained_glass_pane'
+    - 'paper'
+    - 'writable_book'
+    - 'cake'
+    - 'note_block'
+    - 'acacia_sapling'
+    - 'experience_bottle'
+
+  - entity:
+    - kill:
+      - 'spider'
+      - 'squid'
+      - 'horse'
+      - 'creeper'
+    - breed:
+      - 'pig'
+      - 'chicken'
+      - 'cow'
+      - 'sheep'
+    - damage:
+      - 'iron_golem'
+      - 'villager'
+      - 'slime'
+    - drop:
+      - 'zombie::potato'
+      - 'zombie::carrot'
+      - 'witch::sugar' # also 'entity::drop::witch::sugar'
+    - tame:
+      - 'wolf'
+      - 'cat'
+      - 'parrot'
+    - summon:
+      - 'snowman' # iron_golem, wither
