@@ -97,7 +97,7 @@ public class Message {
             else if (it.getClass().isArray() && it.getClass().getComponentType() == BaseComponent.class)
                 return (BaseComponent[]) it;
             else return TextComponent.fromLegacyText(it.toString());
-        }).flatMap(Stream::of).toList();
+        }).flatMap(Stream::of).collect(Collectors.toList());
 
         list.get(0).setItalic(false);
         for (int i = 0; i < list.size(); i++) {

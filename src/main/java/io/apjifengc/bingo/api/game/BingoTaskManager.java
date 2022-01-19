@@ -58,8 +58,9 @@ public class BingoTaskManager {
                 result.addAll(parseTaskObject(o, prefix));
             }
             return result;
-        } else if (obj instanceof Map<?, ?> map) {
+        } else if (obj instanceof Map) {
             var result = new ArrayList<String>();
+            var map = (Map<?, ?>) obj;
             for (Object o : map.keySet()) {
                 var value = map.get(o);
                 result.addAll(parseTaskObject(value, prefix + o.toString() + "::"));

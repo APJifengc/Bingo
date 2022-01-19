@@ -128,10 +128,11 @@ public class EntityTask extends BingoTask {
 
             @EventHandler(ignoreCancelled = true)
             void onEntityBreed(EntityBreedEvent event) {
-                if (event.getBreeder() instanceof Player player) {
+                var breeder = event.getBreeder();
+                if (breeder instanceof Player) {
                     if (getType() == EntityTask.Type.BREED) {
                         if (event.getEntityType() == getEntity()) {
-                            finishTask(player);
+                            finishTask((Player) breeder);
                         }
                     }
                 }
@@ -139,10 +140,11 @@ public class EntityTask extends BingoTask {
 
             @EventHandler(ignoreCancelled = true)
             void onEntityDamage(EntityDamageByEntityEvent event) {
-                if (event.getDamager() instanceof Player player) {
+                var damager = event.getDamager();
+                if (damager instanceof Player) {
                     if (getType() == EntityTask.Type.DAMAGE) {
                         if (event.getEntityType() == getEntity()) {
-                            finishTask(player);
+                            finishTask((Player) damager);
                         }
                     }
                 }
@@ -150,10 +152,11 @@ public class EntityTask extends BingoTask {
 
             @EventHandler(ignoreCancelled = true)
             void onEntityTame(EntityTameEvent event) {
-                if (event.getOwner() instanceof Player player) {
+                var owner = event.getOwner();
+                if (owner instanceof Player) {
                     if (getType() == EntityTask.Type.TAME) {
                         if (event.getEntityType() == getEntity()) {
-                            finishTask(player);
+                            finishTask((Player) owner);
                         }
                     }
                 }

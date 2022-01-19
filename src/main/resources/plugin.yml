@@ -2,7 +2,7 @@ name: Bingo
 main: io.apjifengc.bingo.Bingo
 version: ${version}
 authors: [APJifengc, Milkory]
-api-version: 1.13
+api-version: 1.16
 depend: [WorldEdit]
 
 commands:

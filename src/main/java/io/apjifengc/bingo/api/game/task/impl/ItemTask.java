@@ -18,6 +18,8 @@ import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 import static org.apache.commons.lang.Validate.isTrue;
 
 /**
@@ -50,7 +52,7 @@ public class ItemTask extends BingoTask {
 
     public static ItemTask newInstance(String[] args) {
         isTrue(args.length >= 1, "The item ID not found");
-        return new ItemTask(new ItemStack(Material.getMaterial(args[0].toUpperCase())));
+        return new ItemTask(new ItemStack(Objects.requireNonNull(Material.getMaterial(args[0].toUpperCase()))));
     }
 
     @Override
