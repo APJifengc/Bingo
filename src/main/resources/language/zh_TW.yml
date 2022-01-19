@@ -1,0 +1,182 @@
+############################
+#    Bingo Message File    #
+###############################################################$
+# This file contains all the texts in the Bingo game.          #
+###############################################################$
+prefix: "&c&l Bingo &9&l▌ "
+
+world-name: "&3Bingo"
+title-text: "&9&l-==============  &c&lBingo&9&l  ==============-\n"
+commands:
+  too-many-arguments: "&c&l參數過多！ &c請檢查您的命令語法."
+  too-less-arguments: "&c&l參數過少！ &c請檢查您的命令語法."
+  no-permission: "&c您沒有使用此命令的權限."
+  no-console: "&c請在遊戲中使用此命令."
+  unknown-command: "&c&l未知命令！ &c請檢查您的命令語法."
+  help:
+    gui: "&7/bingo gui &e- &6打開 GUI 菜單."
+    join: "&7/bingo join &e- &6加入一場遊戲."
+    leave: "&7/bingo leave &e- &6離開當前的遊戲."
+    start: "&7/bingo start &e- &6啟動一場遊戲."
+    stop: "&7/bingo stop &e- &6停止當前的遊戲."
+    reload: "&7/bingo reload &e- &6重載配置文件."
+    no-permission: "  &c沒有任何可供展示的命令."
+  join:
+    success: "  &e您加入了 Bingo 遊戲.\n  目前有 &a{0}/{1} &e玩家在遊戲中."
+    no-game: "&c沒有正在運行的遊戲."
+    already-in: "&c您已經在遊戲中了."
+    full-players: "&c&l遊戲人數已滿！ &c請等待下一場遊戲."
+    disallow-join: "&c&l遊戲已經開始了！ &c請等待下一場遊戲."
+    game-loading: "&c請等待遊戲加載.."
+  leave:
+    success: "&e您離開了 Bingo 遊戲."
+    no-game: "&c沒有正在運行的遊戲."
+    not-in: "&c您當前不在遊戲中."
+    game-loading: "&c請等待遊戲加載.."
+  start:
+    success: "  &a一場 Bingo 遊戲被啟動了！\n  &e使用 &7&n/bingo join&e 命令以加入這場遊戲."
+    already-running: "&c已經有一場遊戲在運行了."
+    unable-start: "&c遊戲啟動失敗， 原因： "
+  stop:
+    message: "  &c遊戲被一名管理員強製終止."
+    no-game: "&c沒有正在運行的遊戲."
+  gui:
+    not-in: "&c您當前不在遊戲中."
+    other-not-in: "&c對方當前不在遊戲中."
+    no-game: "&c沒有正在運行的遊戲."
+    not-start: "&c當前遊戲還未開始."
+errors:
+  task-not-enough: "任務列表數量不足以生成一個任務不重復的遊戲板."
+gui:
+  title: "&0{0} &8的遊戲盤"
+  complete: "&a您已經完成了這項任務！ "
+  goal-title: "&a&l目標"
+  goal-lore: |
+    &c&l || &eBingo 是一個 Minecraft 生存遊戲.
+    &c&l || &e當遊戲開始時， 您會得到一個 5*5 的
+    &c&l || &e任務板， 您需要盡力完成這些任務. 每
+    &c&l || &e當您完成了其中的任意一項任務， 您就
+    &c&l || &e獲得了那個任務所在的方塊. 當您把已獲
+    &c&l || &e得的方塊連成了一條線， 您就獲得了勝利！
+task:
+  item-task:
+    title: "&b獲取 &f[&b{0}&f]"
+    desc: |
+      &e&l任務描述：
+      &a - 獲取 &f[&a{0}&f] &a以完成這項任務.
+      &7物品獲取任務
+  impossible-task:
+    title: "&7屏障"
+    desc: |
+      &e&l任務描述：
+      &a - 這個任務是用來阻擋您的.
+      &a - 您永遠無法完成這項任務.
+      &7障礙任務
+  entity-task:
+    kill:
+      title: "&b殺死 &f[&b{0}&f]"
+      desc: |
+        &e&l任務描述：
+        &a - 殺死 &f[&a{0}&f] &a來完成這項任務.
+        &7實體清理任務
+    breed:
+      title: "&b繁殖 &f[&b{0}&f]"
+      desc: |
+        &e&l任務描述：
+        &a - 繁殖 &f[&a{0}&f] &a來完成這項任務.
+        &7實體繁殖任務
+    damage:
+      title: "&b攻擊 &f[&b{0}&f]"
+      desc: |
+        &e&l任務描述：
+        &a - 攻擊 &f[&a{0}&f] &a來完成這項任務.
+        &7實體攻擊任務
+    drop:
+      title: "&b殺死 &f[&b{0}&f] &b並掉落 &f[&b{1}&f]"
+      desc: |
+        &e&l任務描述：
+        &a - 殺死 &f[&a{0}&f] &a的同時要求其掉落 &f[&a{1}&f] &a來完成這項任務.
+        &7實體戰利品任務
+    tame:
+      title: "&b馴服 &f[&b{0}&f]"
+      desc: |
+        &e&l任務描述：
+        &a - 馴服 &f[&a{0}&f] &a來完成這項任務.
+        &7實體馴服任務
+    summon:
+      title: "&b建造 &f[&b{0}&f]"
+      desc: |
+        &e&l任務描述：
+        &a - 建造 &f[&a{0}&f] &a來完成這項任務.
+        &7Bingo Creature Task
+scoreboard:
+  start-timer:
+    title: "&c&lBingo"
+    main: |
+      &3
+      &b玩家 ： &d{0}/{1}
+      &2
+      &a{2}
+      &3
+      &7-----------
+      &8&mlocalhost
+    wait-for-people: "等待更多玩家..."
+    starting-in: "將在 {0} 秒後開始遊戲..."
+  in-game:
+    title: "&c&lBingo"
+    main: |
+      &1
+      &e任務列表
+      &1
+      &1   {0}
+      &2   {1}
+      &3   {2}
+      &4   {3}
+      &5   {4}
+      &2
+      &7-----------
+      &8&mlocalhost
+    completed: "&a\u2588"
+    uncompleted: "&c\u2588"
+  end:
+    title: "&c&lBingo Game"
+    main: |
+      &7
+      &d&l遊戲結束！
+      &2
+      {0}
+      &3
+      &7-----------
+      &8&mlocalhost
+    player: "&e#{0} &5{1}"
+bossbar:
+  pvp-timer: "&a啟用 PVP - {0}s"
+  end-timer: "&c遊戲結束 - {0}s"
+  normal: "&aBingo 時間到"
+  gameover: "&e遊戲結束"
+title:
+  game-start-title: "&6Bingo!"
+  game-start-subtitle: ""
+  pvp-enabled-title: ""
+  pvp-enabled-subtitle: "&cPVP 已被啟用"
+  win-bingo-title: "&aB&bi&cn&dg&eo&6!"
+  win-bingo-subtitle: "&7您現在是觀察者了"
+  gameover-title: "&6遊戲結束"
+  gameover-subtitle: "&7{0} 是最後的勝者."
+  gameover-nowinner-subtitle: "&7沒有贏家."
+item:
+  goal:
+    name: "&a任務列表"
+    lore: "&7右鍵以打開任務列表."
+chat:
+  join: "&a{0} 加入了遊戲！ &d({1}/{2})"
+  leave: "&a{0} 離開了遊戲！ &d({1}/{2})"
+  task: "&a{0} 完成了任務 &f[&a{1}&f] &a！"
+  back: "&a歡迎回到 Bingo 遊戲."
+  win: "&a#{0} {1} 完成了 Bingo， 其共完成了 {2} 項任務."
+  win-tellraw: "&aBingo! &7您現在是觀察者了"
+  not-enough-player: "&c等待更多玩家"
+  wait-for-world: "&7請等待遊戲開始.."
+  world-gened: "&aBingo 時間到"
+  pvp-timer: "&7PVP 將在 {0} 秒後啟用， 請小心.."
+  pvp-enabled: "&aPVP 已被啟用."
