@@ -125,6 +125,7 @@ public class BingoGame {
                 updateStartTime();
                 player.setScoreboard(scoreboard);
                 player.setGameMode(GameMode.ADVENTURE);
+                p.clearPlayer();
                 player.teleport(new Location(bingoWorld, 0, 200, 0));
             } else if (state == State.RUNNING) {
                 p.showScoreboard();
