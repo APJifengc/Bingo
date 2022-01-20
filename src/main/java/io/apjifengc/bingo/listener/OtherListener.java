@@ -53,7 +53,7 @@ public final class OtherListener implements Listener {
                 player.setScoreboard(gamePlayer.getScoreboard());
                 game.getBossbar().addPlayer(player);
                 if (!player.getWorld().getName().equals(Config.getMain().getString("room.world-name"))) {
-                    World world = game.getWorld();
+                    World world = game.getBingoWorld();
                     TeleportUtil.safeTeleport(player, world, 0, 0);
                 }
                 player.sendMessage(Message.get("chat.back"));

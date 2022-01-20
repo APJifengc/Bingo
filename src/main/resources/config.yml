@@ -12,12 +12,6 @@ room:
   # This is the min player count to start the game.
   min-player: 4
 
-  # This is the time(seconds) between the first game ends and the second game creates.
-  # lower than 1 to disable it.
-  ########Currently invalid########
-  new-game-delay: -1
-  ########Currently invalid########
-
   # This is how many players complete needed to instantly end the game.
   # Suggest value: the max players / 4
   winner-count: 2

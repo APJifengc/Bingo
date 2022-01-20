@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -284,6 +285,14 @@ public class BingoPlayer {
     /** Give the item to the player which can open the GUI by right click. */
     public void giveGuiItem() {
         player.getInventory().setItem(8, getGame().getTaskItem());
+    }
+
+    /** Refresh the player, including healing and removing potion effects. */
+    public void clearPlayer() {
+        player.getInventory().clear();
+        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        player.setFoodLevel(20);
+        player.getActivePotionEffects().forEach((s) -> player.removePotionEffect(s.getType()));
     }
 
 }

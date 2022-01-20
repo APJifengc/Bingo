@@ -64,16 +64,20 @@ public class BingoGame {
 
     @Getter private final Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
     @Getter private final BossBar bossbar = Bukkit.createBossBar(Message.get("bossbar.normal"), BarColor.YELLOW, BarStyle.SEGMENTED_10);
-    @Getter private final World world;
+    @Getter private final World mainWorld;
+    @Getter private final World bingoWorld;
 
     /** The task item for one user. */
     @Getter private ItemStack taskItem;
 
     @Getter final boolean allowOpenOthersGui;
+    @Getter final int randomTeleportRange;
 
     public BingoGame() {
         this.allowOpenOthersGui = Config.getMain().getBoolean("game.access-to-others-gui");
-        this.world = Bukkit.getWorld(Objects.requireNonNull(Config.getMain().getString("room.main-world")));
+        this.randomTeleportRange = Config.getMain().getInt("game.random-teleport-range");
+        this.mainWorld = Bukkit.getWorld(Objects.requireNonNull(Config.getMain().getString("room.main-world")));
+        this.bingoWorld = Bukkit.getWorld(Objects.requireNonNull(Config.getMain().getString("room.world-name")));
         // Start the timer.
         scoreboard.registerNewObjective("bingo", "dummy", Message.get("scoreboard.start-timer.title"))
                 .setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -121,17 +125,14 @@ public class BingoGame {
                 updateStartTime();
                 player.setScoreboard(scoreboard);
                 player.setGameMode(GameMode.ADVENTURE);
-                player.teleport(new Location(world, 0, 200, 0));
+                player.teleport(new Location(bingoWorld, 0, 200, 0));
             } else if (state == State.RUNNING) {
                 p.showScoreboard();
-                player.getInventory().clear();
+                p.clearPlayer();
                 player.setGameMode(GameMode.SURVIVAL);
                 p.giveGuiItem();
                 bossbar.addPlayer(player);
-                TeleportUtil.safeTeleport(player, world, 0, 0);
-                player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-                player.setFoodLevel(20);
-                player.getActivePotionEffects().forEach((s) -> player.removePotionEffect(s.getType()));
+                teleportToBingoWorld(player);
             }
             return p;
         } else return null;
@@ -207,7 +208,7 @@ public class BingoGame {
         if (Config.getMain().getBoolean("display.enable-map-display", false)) {
             taskItem = new ItemStack(Material.FILLED_MAP);
             MapMeta mapMeta = (MapMeta) taskItem.getItemMeta();
-            MapView mapView = Bukkit.createMap(world);
+            MapView mapView = Bukkit.createMap(mainWorld);
             mapView.getRenderers().forEach(mapView::removeRenderer);
             mapView.addRenderer(new TaskMapRenderer(this));
             mapMeta.setMapView(mapView);
@@ -319,31 +320,25 @@ public class BingoGame {
         SchematicManager.undo();
         for (BingoPlayer bingoPlayer : players) {
             Player player = bingoPlayer.getPlayer();
-            if (Config.getMain().getInt("game.random-teleport-range") > 0) {
-                TeleportUtil.randomTeleport(player, player.getWorld(), 0, 0,
-                        Config.getMain().getInt("game.random-teleport-range"));
-            }
+            teleportToBingoWorld(player);
             player.setGameMode(GameMode.SURVIVAL);
             player.setBedSpawnLocation(player.getLocation(), true);
             player.resetTitle();
             player.spigot().respawn();
             player.sendMessage(Message.get("chat.world-gened"));
-            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-            player.setFoodLevel(20);
-            player.getActivePotionEffects().forEach((s) -> player.removePotionEffect(s.getType()));
-            player.getInventory().clear();
+            bingoPlayer.clearPlayer();
         }
         players.forEach((s) -> bossbar.addPlayer(s.getPlayer()));
         if (Config.getMain().getInt("game.world-border") > 0) {
-            world.getWorldBorder().setCenter(0, 0);
-            world.getWorldBorder().setSize(Config.getMain().getInt("game.world-border"));
+            bingoWorld.getWorldBorder().setCenter(0, 0);
+            bingoWorld.getWorldBorder().setSize(Config.getMain().getInt("game.world-border"));
         }
         int pvpTime = Config.getMain().getInt("game.no-pvp");
         if (pvpTime > 0) {
             timer = 0;
             bossbar.setTitle(Message.get("bossbar.pvp-timer", timer));
             bossbar.setProgress(0);
-            world.setPVP(false);
+            bingoWorld.setPVP(false);
             BingoUtil.sendMessage(players, Message.get("chat.pvp-timer", pvpTime));
             pvpTimer = pvpTime;
             eventTasks.put(2, new BukkitRunnable() {
@@ -351,7 +346,7 @@ public class BingoGame {
                 @Override
                 public void run() {
                     resetBossbar();
-                    world.setPVP(true);
+                    bingoWorld.setPVP(true);
                     BingoUtil.sendMessage(players, Message.get("chat.pvp-enabled"));
                     for (BingoPlayer bingoPlayer : players) {
                         Player player = bingoPlayer.getPlayer();
@@ -491,9 +486,10 @@ public class BingoGame {
         eventTasks.forEach((i, s) -> s.cancel());
         taskListeners.forEach(HandlerList::unregisterAll);
         for (BingoPlayer bingoPlayer : players) {
-            TeleportUtil.safeTeleport(bingoPlayer.getPlayer(), world, 0, 0);
-            bingoPlayer.getPlayer().getInventory().clear();
+            TeleportUtil.safeTeleport(bingoPlayer.getPlayer(), mainWorld, 0, 0);
+            bingoPlayer.clearPlayer();
             bingoPlayer.clearScoreboard();
+            bingoPlayer.getPlayer().setGameMode(Bukkit.getServer().getDefaultGameMode());
             bossbar.removePlayer(bingoPlayer.getPlayer());
         }
     }
@@ -502,6 +498,14 @@ public class BingoGame {
         var before = state;
         state = after;
         BingoUtil.callEvent(new BingoGameStateChangeEvent(this, before, after));
+    }
+
+    public void teleportToBingoWorld(Player player) {
+        if (randomTeleportRange > 0) {
+            TeleportUtil.randomTeleport(player, bingoWorld, 0, 0, randomTeleportRange);
+        } else {
+            TeleportUtil.safeTeleport(player, bingoWorld, 0, 0);
+        }
     }
 
     /** The state of a game. */
