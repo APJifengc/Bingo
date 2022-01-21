@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
     id 'io.freefair.lombok' version '6.0.0-m2'
     id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
@@ -30,24 +31,50 @@ dependencies {
 
 shadowJar {
     configurations = [project.configurations.shadow]
+    archiveClassifier = ''
 }
 
-jar {
-    enabled = false
+build {
     dependsOn(shadowJar)
 }
 
+
 tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
+    options.encoding = 'UTF-8'
 }
 
 tasks.withType(Jar) {
     destinationDirectory = file("$rootDir/run/plugins/")
 }
 
+
 processResources {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
     from(sourceSets.main.resources.srcDirs) {
         include 'plugin.yml' expand 'version': project.version
+    }
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            artifact sourceJar {
+                classifier 'sources'
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = project.properties.repo_address
+            credentials {
+                username project.properties.repo_username as String
+                password project.properties.repo_password as String
+            }
+        }
     }
 }
