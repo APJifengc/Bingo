@@ -24,7 +24,7 @@ dependencies {
     compileOnly 'com.mojang:authlib:2.3.31'
     compileOnly 'com.sk89q.worldedit:worldedit-core:7.2.7'
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.7'
-    shadow 'io.github.bananapuncher714:nbteditor:7.17.0'
+    shadow 'de.tr7zw:item-nbt-api:2.9.0-SNAPSHOT'
 
     implementation 'org.jetbrains:annotations:22.0.0'
 }
@@ -32,6 +32,8 @@ dependencies {
 shadowJar {
     configurations = [project.configurations.shadow]
     archiveClassifier = ''
+
+    relocate 'de.tr7zw.changeme.nbtapi','io.apjifengc.bingo.internal.nbtapi'
 }
 
 build {

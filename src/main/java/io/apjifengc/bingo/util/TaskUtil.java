@@ -1,7 +1,7 @@
 package io.apjifengc.bingo.util;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import io.apjifengc.bingo.api.game.task.BingoTask;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.hover.content.Item;
 import org.bukkit.Material;
@@ -32,10 +32,11 @@ public class TaskUtil {
 
     public static BaseComponent[] getTaskComponent(BingoTask task) {
         var item = task.getShownItem();
+        var nbtItem = NBTItem.convertItemtoNBT(item);
         var event = new HoverEvent(HoverEvent.Action.SHOW_ITEM,
                 new Item(item.getType().getKey().toString(),
                         item.getAmount(),
-                        ItemTag.ofNbt(NBTEditor.getNBTCompound(item, "tag").toString())));
+                        ItemTag.ofNbt(nbtItem.getCompound("tag").toString())));
 
         var component = task.getShownName().clone();
         for (BaseComponent it : component) {
@@ -45,11 +46,18 @@ public class TaskUtil {
     }
 
     public static ItemStack setRawDisplay(ItemStack item, String rawName, List<String> rawLore) {
-        item = NBTEditor.set(item, rawName, "display", "Name");
-        for (String lore : rawLore) {
-            item = NBTEditor.set(item, lore, "display", "Lore", null);
-        }
-        return item;
+        var nbtItem = NBTItem.convertItemtoNBT(item);
+        var tag = nbtItem.getCompound("tag");
+        if (!tag.hasKey("display")) tag.addCompound("display");
+        var display = tag.getCompound("display");
+
+        display.setString("Name", rawName);
+
+        var lore = display.getStringList("Lore");
+        lore.clear();
+        lore.addAll(rawLore);
+
+        return NBTItem.convertNBTtoItem(nbtItem);
     }
 
     public static void setAllHideFlags(ItemStack item) {

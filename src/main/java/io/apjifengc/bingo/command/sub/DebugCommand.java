@@ -1,11 +1,11 @@
 package io.apjifengc.bingo.command.sub;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.command.SubCommand;
 import io.apjifengc.bingo.api.game.BingoPlayer;
 import io.apjifengc.bingo.world.SchematicManager;
 import io.apjifengc.bingo.world.WorldManager;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -42,7 +42,9 @@ public class DebugCommand extends SubCommand {
                 SchematicManager.undo();
             } else if ("unbreakable".equalsIgnoreCase(args[1])) {
                 var item = ((Player) sender).getInventory().getItemInMainHand();
-                ((Player) sender).getInventory().setItemInMainHand(NBTEditor.set(item, true, "Unbreakable"));
+                var nbtItem = NBTItem.convertItemtoNBT(item);
+                nbtItem.getCompound("tag").setBoolean("Unbreakable", true);
+                ((Player) sender).getInventory().setItemInMainHand(NBTItem.convertNBTtoItem(nbtItem));
             } else {
                 sender.sendMessage("?");
             }
