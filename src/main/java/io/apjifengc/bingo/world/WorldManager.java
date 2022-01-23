@@ -3,10 +3,10 @@ package io.apjifengc.bingo.world;
 import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Files;
+import io.apjifengc.bingo.watchdog.AntiWatchdogPopulator;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -28,21 +28,17 @@ public class WorldManager {
             Files.deleteDirectory(new File(Bukkit.getWorldContainer(), name));
         }
         World world = Bukkit.createWorld(new WorldCreator(name));
+        world.getPopulators().add(new AntiWatchdogPopulator());
         int chunks = Config.getMain().getInt("game.pre-generate-range", 20);
         if (chunks <= 1) return;
-        AtomicInteger count = new AtomicInteger(0);
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                Bingo.getInstance().getLogger().info(String.format("Generating world: %.2f%%", count.intValue() / ((double) (2 * chunks + 1) * (2 * chunks + 1)) * 100.0));
-                if (count.intValue() == (2 * chunks + 1) * (2 * chunks + 1)) {
-                    cancel();
-                }
-            }
-        }.runTaskTimer(Bingo.getInstance(), 0, 20);
+        int count = 0;
         for (int i = -chunks; i <= chunks; i++) {
             for (int j = -chunks; j <= chunks; j++) {
-                count.addAndGet(1);
+                if (count % 10 == 0)
+                    Bingo.getInstance().getLogger().info(String.format(
+                            "Generating world: %.2f%%", count / ((double) (2 * chunks + 1) * (2 * chunks + 1)) * 100.0)
+                    );
+                count++;
                 world.loadChunk(i, j);
             }
         }

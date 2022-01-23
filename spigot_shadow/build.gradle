@@ -1,0 +1,12 @@
+plugins {
+    id 'java'
+}
+
+group 'io.apjifengc.bingo'
+version '2.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+// This module is only a placeholder for some classes that aren't in the API. It doesn't contains any code.

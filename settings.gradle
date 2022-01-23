@@ -8,3 +8,4 @@
  */
 
 rootProject.name = 'Bingo'
+include 'spigot_shadow'
