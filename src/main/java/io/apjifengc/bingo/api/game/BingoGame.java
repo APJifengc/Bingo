@@ -8,6 +8,8 @@ import io.apjifengc.bingo.api.event.player.BingoPlayerLeaveEvent;
 import io.apjifengc.bingo.api.event.player.BingoPlayerPreJoinEvent;
 import io.apjifengc.bingo.api.exception.BadTaskException;
 import io.apjifengc.bingo.api.game.task.BingoTask;
+import io.apjifengc.bingo.api.timer.BingoTimerManager;
+import io.apjifengc.bingo.api.timer.BingoTimerTask;
 import io.apjifengc.bingo.api.util.BingoUtil;
 import io.apjifengc.bingo.map.TaskMapRenderer;
 import io.apjifengc.bingo.util.Config;
@@ -56,11 +58,8 @@ public class BingoGame {
     @Getter private final ArrayList<BingoPlayer> players = new ArrayList<>();
     @Getter private final ArrayList<BingoPlayer> winners = new ArrayList<>();
 
-    // TODO
-    private final Map<Integer, BukkitTask> eventTasks = new HashMap<>();
-    private final Map<Integer, Integer> timeMap = new HashMap<>();
+    private final TreeMap<Integer, Integer> timeMap = new TreeMap<>();
     private final List<Listener> taskListeners = new ArrayList<>();
-    private int timer, pvpTimer, endTimer;
 
     @Getter private final Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
     @Getter private final BossBar bossbar = Bukkit.createBossBar(Message.get("bossbar.normal"), BarColor.YELLOW, BarStyle.SEGMENTED_10);
@@ -84,7 +83,6 @@ public class BingoGame {
         scoreboard.registerNewObjective("bingo-end", "dummy", Message.get("scoreboard.end.title"));
         List<String> TimeList = Config.getMain().getStringList("room.start-time");
         changeState(State.WAITING);
-        timer = -1;
         for (String str : TimeList) {
             String[] strings;
             strings = str.split("\\|");
@@ -94,19 +92,17 @@ public class BingoGame {
                 e.printStackTrace();
             }
         }
-        eventTasks.put(1, new BukkitRunnable() {
+        BingoTimerManager.startTimer();
+        new BingoTimerTask() {
             @Override
             public void run() {
-                if (timer != -1) {
-                    timer--;
-                }
-                updateScoreboard();
-                if (timer == 0) {
-                    this.cancel();
-                    start();
-                }
+                start();
             }
-        }.runTaskTimer(plugin, 0L, 20L));
+            @Override
+            public void tick() {
+                updateScoreboard();
+            }
+        }.id("start-timer").tickInterval(20L).add();
     }
 
     /**
@@ -235,16 +231,17 @@ public class BingoGame {
             Objective obj = scoreboard.getObjective("bingo");
             scoreboard.getEntries().forEach(scoreboard::resetScores);
             String timeString;
-            if (timer == -1) {
+            long timer = BingoTimerManager.getTask("start-timer").getRelativeTime();
+            if (!BingoTimerManager.getTask("start-timer").isRunning()) {
                 timeString = Message.get("scoreboard.start-timer.wait-for-people");
             } else if (state == State.LOADING) {
                 timeString = Message.get("chat.wait-for-world");
             } else {
                 timeString = Message.get("scoreboard.start-timer.starting-in", timer);
             }
-            String[] strs = Message.get("scoreboard.start-timer.main", players.size(),
+            String[] strings = Message.get("scoreboard.start-timer.main", players.size(),
                     Config.getMain().getInt("room.max-player"), timeString).split("\n");
-            for (String str : strs) {
+            for (String str : strings) {
                 i--;
                 if (stringList.contains(str)) {
                     stringList.add(str + "§1");
@@ -256,18 +253,24 @@ public class BingoGame {
                     score.setScore(i);
                 }
             }
-            if (timer > 1 && timer < 5) {
-                for (BingoPlayer bp : players) {
-                    Player p = bp.getPlayer();
-                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 2048.0f, 1.0f);
-                    p.sendTitle("§6" + timer, "", 0, 50, 10);
-                }
-            } else if (timer == 1) {
-                for (BingoPlayer bp : players) {
-                    Player p = bp.getPlayer();
-                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 2048.0f, 1.0f);
-                    p.sendTitle("§4" + timer, "", 0, 50, 10);
-                }
+            switch ((int) timer) {
+                case 40:
+                case 60:
+                case 80:
+                case 100:
+                    for (BingoPlayer bp : players) {
+                        Player p = bp.getPlayer();
+                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 2048.0f, 1.0f);
+                        p.sendTitle("§6" + timer, "", 0, 50, 10);
+                    }
+                    break;
+                case 20:
+                    for (BingoPlayer bp : players) {
+                        Player p = bp.getPlayer();
+                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 2048.0f, 1.0f);
+                        p.sendTitle("§4" + timer, "", 0, 50, 10);
+                    }
+                    break;
             }
         } else if (this.state == State.STOPPED) {
             players.forEach((p) -> p.getPlayer().setScoreboard(scoreboard));
@@ -291,20 +294,17 @@ public class BingoGame {
 
     /** Update the time last to start the game. */
     public void updateStartTime() {
-        for (int i = 1; i <= players.size(); i++) {
-            if (timeMap.containsKey(i)) {
-                if (timer > timeMap.get(i) || timer == -1) {
-                    timer = timeMap.get(i);
-                }
-            }
-        }
-        if (timer != -1 && players.size() < Config.getMain().getInt("room.min-player")) {
-            timer = -1;
+        var entry = timeMap.floorEntry(players.size());
+        if (entry == null || players.size() < Config.getMain().getInt("room.min-player")) {
+            BingoTimerManager.stopTask("start-timer");
             for (BingoPlayer bp : players) {
                 Player p = bp.getPlayer();
                 p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 2048.0f, 1.0f);
                 p.sendTitle("", Message.get("chat.not-enough-player"), 0, 55, 5);
             }
+        } else {
+            BingoTimerManager.setTime("start-timer", entry.getValue(), true);
+            BingoTimerManager.startTask("start-timer");
         }
         updateScoreboard();
     }
@@ -335,15 +335,13 @@ public class BingoGame {
             bingoWorld.getWorldBorder().setSize(Config.getMain().getInt("game.world-border"));
         }
         int pvpTime = Config.getMain().getInt("game.no-pvp");
+        BingoTimerManager.resetTimer();
         if (pvpTime > 0) {
-            timer = 0;
-            bossbar.setTitle(Message.get("bossbar.pvp-timer", timer));
+            bossbar.setTitle(Message.get("bossbar.pvp-timer", 0));
             bossbar.setProgress(0);
             bingoWorld.setPVP(false);
             BingoUtil.sendMessage(players, Message.get("chat.pvp-timer", pvpTime));
-            pvpTimer = pvpTime;
-            eventTasks.put(2, new BukkitRunnable() {
-
+            new BingoTimerTask() {
                 @Override
                 public void run() {
                     resetBossbar();
@@ -355,35 +353,14 @@ public class BingoGame {
                                 0, 55, 5);
                         player.playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 2048.0f, 1.0f);
                     }
-                    this.cancel();
                 }
-
-            }.runTaskLater(plugin, pvpTime * 20L));
-            eventTasks.put(5, new BukkitRunnable() {
 
                 @Override
-                public void run() {
-                    if (state == State.STOPPED) {
-                        endBossbar();
-                    } else if (pvpTimer > 0 || endTimer > 0) {
-                        if (pvpTimer > endTimer) {
-                            bossbar.setProgress(1 - (double) pvpTimer / (double) pvpTime);
-                            bossbar.setTitle(Message.get("bossbar.pvp-timer", pvpTimer));
-                        } else {
-                            bossbar.setProgress(
-                                    1 - (double) endTimer / (double) Config.getMain().getInt("room.end-time"));
-                            bossbar.setTitle(Message.get("bossbar.end-timer", endTimer));
-                        }
-                        if (pvpTimer > 0) {
-                            pvpTimer--;
-                        }
-                        if (endTimer > 0) {
-                            endTimer--;
-                        }
-                    }
+                public void tick() {
+                    bossbar.setProgress(1 - (double) this.getRelativeTime() / 20.0d / (double) pvpTime);
+                    bossbar.setTitle(Message.get("bossbar.pvp-timer", this.getRelativeTime() / 20L));
                 }
-
-            }.runTaskTimer(plugin, 0, 20));
+            }.id("pvp-timer").time(pvpTime * 20L).tickInterval(20L).start();
         }
         // ..
         for (BingoPlayer bingoPlayer : players) {
@@ -433,15 +410,20 @@ public class BingoGame {
                     endGame();
                 } else if (winners.size() == 1 && Config.getMain().getInt("room.end-time") > 0) {
                     // 启动游戏结束倒计时
-                    endTimer = Config.getMain().getInt("room.end-time");
-                    eventTasks.put(3, new BukkitRunnable() {
-
+                    new BingoTimerTask() {
                         @Override
                         public void run() {
                             endGame();
                         }
 
-                    }.runTaskLater(plugin, Config.getMain().getInt("room.end-time") * 20L));
+                        @Override
+                        public void tick() {
+                            bossbar.setProgress(
+                                    1 - (double) this.getRelativeTime() / 20.0d / (double) Config.getMain().getInt("room.end-time"));
+                            bossbar.setTitle(Message.get("bossbar.end-timer", this.getRelativeTime() / 20L));
+                        }
+                    }.id("end-game-timer").time(Config.getMain().getInt("room.end-time") * 20L)
+                            .tickInterval(20L).startFromNow();
                 }
             }
         }
@@ -454,6 +436,7 @@ public class BingoGame {
      * @see #stop()
      */
     public void endGame() {
+        endBossbar();
         changeState(State.STOPPED);
         updateScoreboard();
         if (winners.size() >= 1) {
@@ -465,16 +448,16 @@ public class BingoGame {
         }
         players.forEach((p) -> p.getPlayer().playSound(p.getPlayer().getLocation(), Sound.ENTITY_ENDER_DRAGON_AMBIENT,
                 2048.0f, 1.0f));
-        eventTasks.put(4, new BukkitRunnable() {
-
+        new BingoTimerTask() {
             @Override
             public void run() {
                 stop();
                 plugin.setCurrentGame(null);
-                this.cancel();
+                BingoTimerManager.stopTimer();
             }
 
-        }.runTaskLater(plugin, 200));
+            @Override public void tick() {}
+        }.id("stop-game-timer").time(200L).startFromNow();
     }
 
     /**
@@ -484,7 +467,6 @@ public class BingoGame {
      * @see #endGame()
      */
     public void stop() {
-        eventTasks.forEach((i, s) -> s.cancel());
         taskListeners.forEach(HandlerList::unregisterAll);
         for (BingoPlayer bingoPlayer : players) {
             TeleportUtil.safeTeleport(bingoPlayer.getPlayer(), mainWorld, 0, 0);
