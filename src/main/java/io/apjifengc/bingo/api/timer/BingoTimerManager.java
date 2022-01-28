@@ -82,6 +82,20 @@ public final class BingoTimerManager {
     }
 
     /**
+     * Get the task's time.
+     *
+     * @param id         The task id.
+     * @param isRelative Whether it is relative or absolute.
+     */
+    public static long getTime(String id, boolean isRelative) {
+        if (isRelative) {
+            return timer.getTime(id) - timer.timestamp;
+        } else {
+            return timer.getTime(id);
+        }
+    }
+
+    /**
      * Start the task. <br/>
      * The time is absolute time starts from 0. <br/>
      * For example, if you start the task at time 5, and the time for the task is 6, then the task will be invoked

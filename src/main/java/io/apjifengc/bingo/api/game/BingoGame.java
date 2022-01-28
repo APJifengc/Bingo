@@ -18,7 +18,6 @@ import io.apjifengc.bingo.util.TeleportUtil;
 import io.apjifengc.bingo.world.SchematicManager;
 import lombok.Getter;
 import org.bukkit.*;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -31,8 +30,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -96,7 +93,7 @@ public class BingoGame {
         new BingoTimerTask() {
             @Override
             public void run() {
-                start();
+                startGame();
             }
             @Override
             public void tick() {
@@ -117,7 +114,7 @@ public class BingoGame {
             players.add(p);
             Message.sendTo(players, "chat.join", player.getName(), players.size(),
                     Config.getMain().getInt("room.max-player"));
-            if (state == State.WAITING) {
+            if (state == State.WAITING || state == State.STARTING) {
                 updateStartTime();
                 player.setScoreboard(scoreboard);
                 player.setGameMode(GameMode.ADVENTURE);
@@ -151,7 +148,7 @@ public class BingoGame {
                 players.remove(bp);
                 Message.sendTo(players, "chat.leave", player.getName(), players.size(),
                         Config.getMain().getInt("room.max-player"));
-                if (state == State.WAITING) {
+                if (state == State.WAITING || state == State.STARTING) {
                     updateStartTime();
                 }
                 return true;
@@ -227,17 +224,17 @@ public class BingoGame {
         int i = 10;
         List<String> stringList = new ArrayList<>();
         // 如果游戏正在等待玩家加入
-        if (this.state == State.WAITING || state == State.LOADING) {
+        if (this.state == State.WAITING || state == State.LOADING || state == State.STARTING) {
             Objective obj = scoreboard.getObjective("bingo");
             scoreboard.getEntries().forEach(scoreboard::resetScores);
             String timeString;
-            long timer = BingoTimerManager.getTask("start-timer").getRelativeTime();
+            long timer = BingoTimerManager.getTime("start-timer", true);
             if (!BingoTimerManager.getTask("start-timer").isRunning()) {
                 timeString = Message.get("scoreboard.start-timer.wait-for-people");
             } else if (state == State.LOADING) {
                 timeString = Message.get("chat.wait-for-world");
             } else {
-                timeString = Message.get("scoreboard.start-timer.starting-in", timer);
+                timeString = Message.get("scoreboard.start-timer.starting-in", timer / 20L);
             }
             String[] strings = Message.get("scoreboard.start-timer.main", players.size(),
                     Config.getMain().getInt("room.max-player"), timeString).split("\n");
@@ -261,14 +258,14 @@ public class BingoGame {
                     for (BingoPlayer bp : players) {
                         Player p = bp.getPlayer();
                         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 2048.0f, 1.0f);
-                        p.sendTitle("§6" + timer, "", 0, 50, 10);
+                        p.sendTitle("§6" + timer / 20L, "", 0, 50, 10);
                     }
                     break;
                 case 20:
                     for (BingoPlayer bp : players) {
                         Player p = bp.getPlayer();
                         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 2048.0f, 1.0f);
-                        p.sendTitle("§4" + timer, "", 0, 50, 10);
+                        p.sendTitle("§4" + timer / 20L, "", 0, 50, 10);
                     }
                     break;
             }
@@ -292,20 +289,33 @@ public class BingoGame {
         }
     }
 
+    private Map.Entry<Integer, Integer> lastEntry;
+
     /** Update the time last to start the game. */
     public void updateStartTime() {
         var entry = timeMap.floorEntry(players.size());
         if (entry == null || players.size() < Config.getMain().getInt("room.min-player")) {
-            BingoTimerManager.stopTask("start-timer");
-            for (BingoPlayer bp : players) {
-                Player p = bp.getPlayer();
-                p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 2048.0f, 1.0f);
-                p.sendTitle("", Message.get("chat.not-enough-player"), 0, 55, 5);
+            if (state == State.STARTING) {
+                BingoTimerManager.stopTask("start-timer");
+                for (BingoPlayer bingoPlayer : players) {
+                    Player player = bingoPlayer.getPlayer();
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 2048.0f, 1.0f);
+                    player.sendTitle("", Message.get("chat.not-enough-player"), 0, 55, 5);
+                }
+                changeState(State.WAITING);
             }
-        } else {
-            BingoTimerManager.setTime("start-timer", entry.getValue(), true);
+        } else if (state == State.STARTING) {
+            if (entry.getValue() > lastEntry.getValue()) {
+                BingoTimerManager.setTime("start-timer", entry.getValue() * 20L, true);
+            } else if (entry.getValue() * 20L < BingoTimerManager.getTime("start-timer", true)) {
+                BingoTimerManager.setTime("start-timer", entry.getValue() * 20L, true);
+            }
+        } else if (state == State.WAITING) {
+            BingoTimerManager.setTime("start-timer", entry.getValue() * 20L, true);
             BingoTimerManager.startTask("start-timer");
+            changeState(State.STARTING);
         }
+        lastEntry = entry;
         updateScoreboard();
     }
 
@@ -315,8 +325,7 @@ public class BingoGame {
      * @see #endGame()
      * @see #stop()
      */
-    public void start() {
-        // Gener world.
+    public void startGame() {
         updateScoreboard();
         SchematicManager.undo();
         for (BingoPlayer bingoPlayer : players) {
@@ -432,7 +441,7 @@ public class BingoGame {
     /**
      * End the game.
      *
-     * @see #start()
+     * @see #startGame()
      * @see #stop()
      */
     public void endGame() {
@@ -452,8 +461,6 @@ public class BingoGame {
             @Override
             public void run() {
                 stop();
-                plugin.setCurrentGame(null);
-                BingoTimerManager.stopTimer();
             }
 
             @Override public void tick() {}
@@ -463,7 +470,7 @@ public class BingoGame {
     /**
      * Fully stop the game.
      *
-     * @see #start()
+     * @see #startGame()
      * @see #endGame()
      */
     public void stop() {
@@ -475,6 +482,10 @@ public class BingoGame {
             bingoPlayer.getPlayer().setGameMode(Bukkit.getServer().getDefaultGameMode());
             bossbar.removePlayer(bingoPlayer.getPlayer());
         }
+        plugin.setCurrentGame(null);
+        BingoTimerManager.stopTimer();
+        BingoTimerManager.clearTasks();
+        BingoTimerManager.resetTimer();
     }
 
     private void changeState(State after) {
@@ -493,7 +504,7 @@ public class BingoGame {
 
     /** The state of a game. */
     public enum State {
-        WAITING, LOADING, RUNNING, STOPPED
+        WAITING, LOADING, RUNNING, STOPPED, STARTING
     }
 
 }

@@ -39,20 +39,22 @@ public final class BingoTimer {
                 BingoTimerTask closestTask = null;
                 for (var entry : taskMap.entrySet()) {
                     var task = entry.getValue();
-                    if (task.isRunning() && task.getInterval() != 0) {
-                        task.nextTick++;
-                        if (task.nextTick == task.getInterval()) {
-                            task.nextTick = 0;
-                            task.tick();
+                    if (task.isRunning()) {
+                        if (task.getInterval() != 0) {
+                            task.nextTick++;
+                            if (task.nextTick == task.getInterval()) {
+                                task.nextTick = 0;
+                                task.tick();
+                            }
                         }
-                    }
-                    if (task.timestamp <= timestamp) {
-                        task.run();
-                        task.setRunning(false);
-                    } else {
-                        if (task.timestamp < closestTime) {
-                            closestTime = task.timestamp;
-                            closestTask = task;
+                        if (task.timestamp <= timestamp) {
+                            task.run();
+                            task.setRunning(false);
+                        } else {
+                            if (task.timestamp < closestTime) {
+                                closestTime = task.timestamp;
+                                closestTask = task;
+                            }
                         }
                     }
                 }
