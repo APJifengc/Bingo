@@ -210,6 +210,7 @@ public class BingoGame {
         } else {
             taskItem = new ItemStack(Material.PAPER);
         }
+        TaskMapRenderer.setDirty(true);
         ItemMeta itemMeta = taskItem.getItemMeta();
         itemMeta.setDisplayName(Message.get("item.goal.name"));
         itemMeta.setLore(Arrays.asList(Message.get("item.goal.lore").split("\n")));

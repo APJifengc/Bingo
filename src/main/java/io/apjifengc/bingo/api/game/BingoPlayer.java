@@ -4,6 +4,7 @@ import io.apjifengc.bingo.api.event.player.BingoPlayerFinishTaskEvent;
 import io.apjifengc.bingo.api.game.task.BingoTask;
 import io.apjifengc.bingo.api.inventory.BingoGuiInventory;
 import io.apjifengc.bingo.api.util.BingoUtil;
+import io.apjifengc.bingo.map.TaskMapRenderer;
 import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Message;
 import io.apjifengc.bingo.util.TaskUtil;
@@ -102,7 +103,7 @@ public class BingoPlayer {
 
         if (BingoUtil.callEvent(new BingoPlayerFinishTaskEvent(this, task, index))) {
             taskStatus[index] = true;
-
+            TaskMapRenderer.setDirty(true);
             if (Config.getMain().getBoolean("chat.complete-task-show")) {
                 Bukkit.spigot().broadcast(Message.getComponents("chat.task", this.getPlayer().getName(), TaskUtil.getTaskComponent(task)));
             }
