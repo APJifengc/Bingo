@@ -1,5 +1,6 @@
 package io.apjifengc.bingo.api.game.task.impl;
 
+import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.api.game.task.BingoTask;
 import io.apjifengc.bingo.util.Message;
 import io.apjifengc.bingo.util.TaskUtil;
@@ -18,6 +19,9 @@ import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.IOException;
 import java.util.Objects;
 
 import static org.apache.commons.lang.Validate.isTrue;
@@ -91,5 +95,10 @@ public class ItemTask extends BingoTask {
                 }
             }
         };
+    }
+
+    @Override
+    public @NotNull Image getIcon(boolean isFinished) throws IOException {
+        return ImageIO.read(Bingo.getInstance().getResource("icons/item/" + (isFinished ? "green" : "red") + "/" + target.getType().getKey().getKey() + ".png"));
     }
 }

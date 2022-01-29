@@ -1,5 +1,6 @@
 package io.apjifengc.bingo.api.game.task.impl;
 
+import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.api.game.task.BingoTask;
 import io.apjifengc.bingo.util.Message;
 import io.apjifengc.bingo.util.Skull;
@@ -19,6 +20,9 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -204,6 +208,11 @@ public class EntityTask extends BingoTask {
                 placedBlockPlayer = null;
             }
         };
+    }
+
+    @Override
+    public @NotNull Image getIcon(boolean isFinished) throws IOException {
+        return ImageIO.read(Bingo.getInstance().getResource("icons/entity/" + (isFinished ? "green" : "red") + "/" + entity.name() + ".png"));
     }
 
     public enum Type {

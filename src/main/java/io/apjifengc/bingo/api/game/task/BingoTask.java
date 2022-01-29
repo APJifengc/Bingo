@@ -10,6 +10,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
+import java.io.IOException;
+
 /**
  * Represents a bingo task. <p>
  * <p>
@@ -27,6 +30,9 @@ public abstract class BingoTask {
 
     /** Get the task listener for the task. */
     @NotNull public abstract Listener getTaskListener();
+
+    /** Get the icon shown on the map. (18px) */
+    @NotNull public abstract Image getIcon(boolean isFinished) throws IOException;
 
     /**
      * Make the player finish the task. <br/>

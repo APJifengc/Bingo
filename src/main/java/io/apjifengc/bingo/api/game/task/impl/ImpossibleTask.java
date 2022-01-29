@@ -1,5 +1,6 @@
 package io.apjifengc.bingo.api.game.task.impl;
 
+import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.api.game.task.BingoTask;
 import io.apjifengc.bingo.util.Message;
 import lombok.Getter;
@@ -11,6 +12,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,6 +44,11 @@ public class ImpossibleTask extends BingoTask {
         return new Listener() {
 
         };
+    }
+
+    @Override
+    public @NotNull Image getIcon(boolean isFinished) throws IOException {
+        return ImageIO.read(Bingo.getInstance().getResource("icons/item/" + (isFinished ? "green" : "red") + "/barrier.png"));
     }
 
     public static ImpossibleTask newInstance(String[] args) {

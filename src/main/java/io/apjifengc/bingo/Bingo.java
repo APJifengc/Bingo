@@ -30,7 +30,7 @@ public class Bingo extends JavaPlugin {
         instance = this;
     }
 
-    @Getter @Setter BingoGame currentGame;
+    @Getter @Setter @Nullable BingoGame currentGame;
 
     @Getter CommandMain commandMain;
 

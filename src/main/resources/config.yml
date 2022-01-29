@@ -71,5 +71,8 @@ game:
   # Available values: true / false
   access-to-others-gui: true
 
+display:
+  enable-map-display: true
+
 # Whether generate world when a game start, used for debugging only.
 debug: false
