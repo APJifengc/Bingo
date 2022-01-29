@@ -108,7 +108,7 @@ task:
       desc: |
         &e&l任务描述：
         &a - 建造 &f[&a{0}&f] &a来完成这项任务.
-        &7Bingo Creature Task
+        &7实体建造任务
 scoreboard:
   start-timer:
     title: "&c&lBingo"
@@ -166,7 +166,7 @@ title:
   gameover-nowinner-subtitle: "&7没有赢家."
 item:
   goal:
-    name: "&a任务列表"
+    name: "&a任务列表（右键）"
     lore: "&7右键以打开任务列表."
 chat:
   join: "&a{0} 加入了游戏！ &d({1}/{2})"

@@ -168,7 +168,7 @@ title:
   gameover-nowinner-subtitle: "&7Nobody win!"
 item:
   goal:
-    name: "&aTasks List"
+    name: "&aTasks List (Right Click)"
     lore: "&7Right click to open the list."
 chat:
   join: "&a{0} joined the game! &d({1}/{2})"
