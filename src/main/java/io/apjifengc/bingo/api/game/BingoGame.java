@@ -345,6 +345,7 @@ public class BingoGame {
         }
         int pvpTime = Config.getMain().getInt("game.no-pvp");
         BingoTimerManager.resetTimer();
+        bingoWorld.setPVP(true);
         if (pvpTime > 0) {
             bossbar.setTitle(Message.get("bossbar.pvp-timer", 0));
             bossbar.setProgress(0);

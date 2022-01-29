@@ -26,6 +26,7 @@ public class StartCommand extends SubCommand {
                 if (!(Config.getMain().getBoolean("debug") && Bukkit.getWorld(worldName) != null)) {
                     WorldManager.regenerateWorld(worldName);
                 }
+                Bukkit.getWorld(worldName).setPVP(false);
                 try {
                     SchematicManager.buildSchematic(new File(plugin.getDataFolder(), "lobby.schem"),
                             new Location(Bukkit.getWorld(worldName), 0, 200, 0));
