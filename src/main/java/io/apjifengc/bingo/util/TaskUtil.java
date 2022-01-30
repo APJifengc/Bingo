@@ -47,6 +47,7 @@ public class TaskUtil {
 
     public static ItemStack setRawDisplay(ItemStack item, String rawName, List<String> rawLore) {
         var nbtItem = NBTItem.convertItemtoNBT(item);
+        if (!nbtItem.hasKey("tag")) nbtItem.addCompound("tag");
         var tag = nbtItem.getCompound("tag");
         if (!tag.hasKey("display")) tag.addCompound("display");
         var display = tag.getCompound("display");
