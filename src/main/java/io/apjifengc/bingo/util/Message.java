@@ -126,6 +126,7 @@ public class Message {
     public static void extractLanguageFiles() {
         plugin.saveResource("language/en_US.yml");
         plugin.saveResource("language/zh_CN.yml");
+        plugin.saveResource("language/zh_TW.yml");
     }
 
     /** Convert a unicode to chinese characters. */

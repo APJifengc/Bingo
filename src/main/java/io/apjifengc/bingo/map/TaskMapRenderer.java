@@ -1,7 +1,6 @@
 package io.apjifengc.bingo.map;
 
 import io.apjifengc.bingo.api.game.BingoGame;
-import io.apjifengc.bingo.api.game.BingoPlayer;
 import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.bukkit.map.*;
@@ -9,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Random;
 
 @SuppressWarnings("deprecation")

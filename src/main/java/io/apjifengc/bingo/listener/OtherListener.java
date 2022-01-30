@@ -69,7 +69,7 @@ public final class OtherListener implements Listener {
                 BingoPlayer player = game.getPlayer(event.getPlayer());
                 if (player != null && (event.getAction() == Action.RIGHT_CLICK_AIR
                         || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
-                    if (event.getPlayer().getInventory().getHeldItemSlot() == 8) {
+                    if (game.getTaskItem().isSimilar(event.getItem())) {
                         player.openGui();
                     }
                 }
@@ -97,7 +97,7 @@ public final class OtherListener implements Listener {
             if (game.getState() == BingoGame.State.RUNNING) {
                 BingoPlayer player = game.getPlayer(event.getPlayer());
                 if (player != null) {
-                    if (event.getPlayer().getInventory().getHeldItemSlot() == 8) {
+                    if (game.getTaskItem().isSimilar(event.getItemDrop().getItemStack())) {
                         event.setCancelled(true);
                     }
                 }

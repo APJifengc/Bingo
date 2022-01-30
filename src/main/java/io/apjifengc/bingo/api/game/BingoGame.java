@@ -43,7 +43,6 @@ import java.util.*;
  *
  * @author Milkory
  */
-// TODO: clean up
 @SuppressWarnings("UnusedReturnValue")
 public class BingoGame {
 

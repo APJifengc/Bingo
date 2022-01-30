@@ -9,7 +9,6 @@ import org.bukkit.World;
 import org.bukkit.WorldCreator;
 
 import java.io.File;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 多世界管理器
