@@ -111,12 +111,13 @@ task:
         &e&lTask description:
         &a - Build {0} to complete this task.
         &7Bingo Creature Task
-  murder-task:
-    title: "&bMurder {0}"
+  hunt-task:
+    title: "&bHunt Player {0}"
     desc: |
       &e&lTask description:
       &a - Kill player {0} &ato complete this task.
-      &7Bingo Murder Player Task
+      &a - This compass points to their location.
+      &7Bingo Hunt Player Task
 scoreboard:
   start-timer:
     title: "&c&lBingo Game"

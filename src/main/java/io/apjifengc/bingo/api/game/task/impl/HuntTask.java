@@ -25,7 +25,7 @@ import java.util.Random;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-public class MurderTask extends BingoTask {
+public class HuntTask extends BingoTask {
 
     private static final Random rand = new Random();
 
@@ -60,9 +60,9 @@ public class MurderTask extends BingoTask {
                     var players = event.getGame().getPlayers();
                     var target = players.get(rand.nextInt(players.size())).getPlayer();
                     targetUniqueId = target.getUniqueId();
-                    shownName = Message.getComponents("task.murder-task.title", target.getName());
+                    shownName = Message.getComponents("task.hunt-task.title", target.getName());
                     var item = new ItemStack(Material.COMPASS);
-                    item = TaskUtil.setRawDisplay(item, ComponentSerializer.toString(shownName), Message.getWrapRaw("task.murder-task.desc", target.getName()));
+                    item = TaskUtil.setRawDisplay(item, ComponentSerializer.toString(shownName), Message.getWrapRaw("task.hunt-task.desc", target.getName()));
                     shownItem = item;
                 }
             }
@@ -70,11 +70,11 @@ public class MurderTask extends BingoTask {
     }
 
     @Override public @NotNull Image getIcon(boolean isFinished) throws IOException {
-        return ImageIO.read(Bingo.getInstance().getResource("icons/other/" + (isFinished ? "green" : "red") + "/murder.png"));
+        return ImageIO.read(Bingo.getInstance().getResource("icons/other/" + (isFinished ? "green" : "red") + "/hunt.png"));
     }
 
-    public static MurderTask newInstance(String[] args) {
-        return new MurderTask();
+    public static HuntTask newInstance(String[] args) {
+        return new HuntTask();
     }
 
 }

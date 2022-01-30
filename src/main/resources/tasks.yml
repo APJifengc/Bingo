@@ -19,7 +19,7 @@ repeatable: false
 
 tasks:
   - 'impossible'
-  - 'murder'
+  - 'hunt'
   - item:
     - 'acacia_trapdoor'
     - 'anvil'

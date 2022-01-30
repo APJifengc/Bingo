@@ -110,12 +110,13 @@ task:
         &e&l任务描述：
         &a - 建造 &f[&a{0}&f] &a以完成这项任务.
         &7实体建造任务
-  murder-task:
+  hunt-task:
     title: "&b杀死玩家 &f[&b{0}&f]"
     desc: |
       &e&l任务描述：
       &a - 杀死玩家 &f[&a{0}&f] &a以完成这项任务.
-      &7玩家谋杀任务
+      &a - 这个指南针图标指示了该玩家的位置.
+      &7玩家狩猎任务
 scoreboard:
   start-timer:
     title: "&c&lBingo"

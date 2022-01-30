@@ -29,7 +29,7 @@ public class BingoTaskManager {
     private final Map<String, Class<? extends BingoTask>> taskMap = new HashMap<>() {{
         put("item", ItemTask.class);
         put("entity", EntityTask.class);
-        put("murder", MurderTask.class);
+        put("hunt", HuntTask.class);
         put("impossible", ImpossibleTask.class);
     }};
 
