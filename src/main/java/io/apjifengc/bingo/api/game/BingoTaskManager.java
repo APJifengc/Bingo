@@ -2,9 +2,7 @@ package io.apjifengc.bingo.api.game;
 
 import io.apjifengc.bingo.api.exception.BadTaskException;
 import io.apjifengc.bingo.api.game.task.BingoTask;
-import io.apjifengc.bingo.api.game.task.impl.EntityTask;
-import io.apjifengc.bingo.api.game.task.impl.ImpossibleTask;
-import io.apjifengc.bingo.api.game.task.impl.ItemTask;
+import io.apjifengc.bingo.api.game.task.impl.*;
 import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Message;
 import lombok.Getter;
@@ -31,6 +29,7 @@ public class BingoTaskManager {
     private final Map<String, Class<? extends BingoTask>> taskMap = new HashMap<>() {{
         put("item", ItemTask.class);
         put("entity", EntityTask.class);
+        put("hunt", HuntTask.class);
         put("impossible", ImpossibleTask.class);
     }};
 
