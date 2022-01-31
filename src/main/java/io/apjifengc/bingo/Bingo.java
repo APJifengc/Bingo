@@ -1,18 +1,25 @@
 package io.apjifengc.bingo;
 
+import io.apjifengc.bingo.api.exception.BadTaskException;
 import io.apjifengc.bingo.command.CommandMain;
 import io.apjifengc.bingo.api.game.BingoGame;
 import io.apjifengc.bingo.api.game.BingoPlayer;
 import io.apjifengc.bingo.listener.InventoryListener;
 import io.apjifengc.bingo.listener.OtherListener;
 import io.apjifengc.bingo.util.Config;
+import io.apjifengc.bingo.util.Message;
+import io.apjifengc.bingo.world.SchematicManager;
+import io.apjifengc.bingo.world.WorldManager;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
@@ -45,6 +52,15 @@ public class Bingo extends JavaPlugin {
         new InventoryListener(this);
         new OtherListener(this);
         loadPlugin();
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        if (Config.getMain().getBoolean("server.auto-start-end", false)) {
+            try {
+                startGame();
+            } catch (BadTaskException e) {
+                e.printStackTrace();
+                Bukkit.shutdown();
+            }
+        }
     }
 
     public void loadPlugin() {
@@ -55,6 +71,7 @@ public class Bingo extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("I'm out.");
+        this.getServer().getMessenger().unregisterOutgoingPluginChannel(this);
         if (hasBingoGame()) {
             currentGame.stop();
         }
@@ -89,4 +106,23 @@ public class Bingo extends JavaPlugin {
         return file;
     }
 
+    public void startGame() throws BadTaskException {
+        String worldName = Config.getMain().getString("room.world-name");
+        if (!(Config.getMain().getBoolean("debug") && Bukkit.getWorld(worldName) != null)) {
+            WorldManager.regenerateWorld(worldName);
+        }
+        Bukkit.getWorld(worldName).setPVP(false);
+        try {
+            SchematicManager.buildSchematic(new File(getDataFolder(), "lobby.schem"),
+                    new Location(Bukkit.getWorld(worldName), 0, 200, 0));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        BingoGame game = new BingoGame();
+        game.generateTasks();
+        setCurrentGame(game);
+        Bukkit.broadcastMessage(
+                Message.get("title-text") + Message.get("commands.start.success"));
+    }
 }

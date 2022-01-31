@@ -76,5 +76,20 @@ display:
   # If the value is FILLED_MAP, the map will show the tasks.
   item-list-material: FILLED_MAP
 
+server:
+  # If it is true, it will auto start the game when the server is opened and stop when the game is over.
+  # Available values: true / false
+  # NOTE: You will need to configure the start script to auto restart.
+  # See https://stackoverflow.com/questions/62143022/how-do-i-automatically-restart-a-minecraft-spigot-server-in-the-event-of-a-crash.
+  auto-start-end: false
+
+  # Enable bungee supports.
+  # Available values: true / false
+  bungee: false
+
+  # The server to send after the game ends.
+  # This is used only if auto-start-end is true and bungee is true.
+  lobby-server: lobby
+
 # Whether generate world when a game start, used for debugging only.
 debug: false

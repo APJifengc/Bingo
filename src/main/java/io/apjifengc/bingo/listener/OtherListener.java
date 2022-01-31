@@ -1,6 +1,7 @@
 package io.apjifengc.bingo.listener;
 
 import io.apjifengc.bingo.Bingo;
+import io.apjifengc.bingo.api.exception.BadTaskException;
 import io.apjifengc.bingo.api.game.BingoGame;
 import io.apjifengc.bingo.api.game.BingoPlayer;
 import io.apjifengc.bingo.util.Config;
@@ -42,6 +43,31 @@ public final class OtherListener implements Listener {
     }
 
     @EventHandler
+    public void onPlayerLogin(PlayerLoginEvent event) {
+        if (Config.getMain().getBoolean("server.auto-start-end", false)) {
+            var player = event.getPlayer();
+            if (plugin.getCurrentGame().getState() == BingoGame.State.RUNNING
+                    && !Config.getMain().getBoolean("room.join-while-game")) {
+                event.disallow(PlayerLoginEvent.Result.KICK_OTHER,
+                        Message.get("prefix") + Message.get("commands.join.disallow-join"));
+                return;
+            }
+            if (plugin.getCurrentGame().getPlayer(player) == null) {
+                if (plugin.getCurrentGame().getPlayers().size() < Config.getMain()
+                        .getInt("room.max-player")) {
+                    if (plugin.getCurrentGame().getState() == BingoGame.State.LOADING) {
+                        event.disallow(PlayerLoginEvent.Result.KICK_OTHER,
+                                Message.get("prefix") + Message.get("commands.leave.game-loading"));
+                    }
+                } else {
+                    event.disallow(PlayerLoginEvent.Result.KICK_OTHER,
+                            Message.get("prefix") + Message.get("commands.join.full-players"));
+                }
+            }
+        }
+    }
+
+    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (plugin.hasBingoGame()) {
             BingoGame game = plugin.getCurrentGame();
@@ -57,6 +83,24 @@ public final class OtherListener implements Listener {
                     TeleportUtil.safeTeleport(player, world, 0, 0);
                 }
                 player.sendMessage(Message.get("chat.back"));
+            }
+        }
+        if (Config.getMain().getBoolean("server.auto-start-end", false)) {
+            var player = event.getPlayer();
+            if (plugin.getCurrentGame().getState() == BingoGame.State.RUNNING
+                    && !Config.getMain().getBoolean("room.join-while-game")) {
+                return;
+            }
+            if (plugin.getCurrentGame().getPlayer(player) == null) {
+                if (plugin.getCurrentGame().getPlayers().size() < Config.getMain()
+                        .getInt("room.max-player")) {
+                    if (plugin.getCurrentGame().getState() != BingoGame.State.LOADING) {
+                        BingoGame game = plugin.getCurrentGame();
+                        game.addPlayer(player);
+                        player.sendMessage(Message.get("title-text") + "\n" + Message.get("commands.join.success",
+                                game.getPlayers().size(), Config.getMain().getInt("room.max-player")));
+                    }
+                }
             }
         }
     }

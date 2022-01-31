@@ -12,6 +12,7 @@ import io.apjifengc.bingo.api.timer.BingoTimerManager;
 import io.apjifengc.bingo.api.timer.BingoTimerTask;
 import io.apjifengc.bingo.api.util.BingoUtil;
 import io.apjifengc.bingo.map.TaskMapRenderer;
+import io.apjifengc.bingo.util.BungeecordUtil;
 import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Message;
 import io.apjifengc.bingo.util.TeleportUtil;
@@ -486,6 +487,13 @@ public class BingoGame {
         BingoTimerManager.stopTimer();
         BingoTimerManager.clearTasks();
         BingoTimerManager.resetTimer();
+        if (Config.getMain().getBoolean("server.auto-start-end", false)) {
+            if (Config.getMain().getBoolean("server.bungee", false)) {
+                Bukkit.getOnlinePlayers().forEach(player ->
+                        BungeecordUtil.sendPlayer(player, Config.getMain().getString("server.lobby-server")));
+            }
+            Bukkit.spigot().restart();
+        }
     }
 
     private void changeState(State after) {
