@@ -198,16 +198,15 @@ public class BingoGame {
             taskListeners.add(listener);
             Bukkit.getPluginManager().registerEvents(listener, plugin);
         });
-        if (Config.getMain().getBoolean("display.enable-map-display", false)) {
-            taskItem = new ItemStack(Material.FILLED_MAP);
+        Material material = Material.valueOf(Config.getMain().getString("display.item-list-material", "FILLED_MAP"));
+        taskItem = new ItemStack(material);
+        if (material == Material.FILLED_MAP) {
             MapMeta mapMeta = (MapMeta) taskItem.getItemMeta();
             MapView mapView = Bukkit.createMap(mainWorld);
             mapView.getRenderers().forEach(mapView::removeRenderer);
             mapView.addRenderer(new TaskMapRenderer(this));
             mapMeta.setMapView(mapView);
             taskItem.setItemMeta(mapMeta);
-        } else {
-            taskItem = new ItemStack(Material.PAPER);
         }
         TaskMapRenderer.setDirty(true);
         ItemMeta itemMeta = taskItem.getItemMeta();

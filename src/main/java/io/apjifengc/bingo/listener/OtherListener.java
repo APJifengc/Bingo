@@ -71,6 +71,7 @@ public final class OtherListener implements Listener {
                         || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
                     if (game.getTaskItem().isSimilar(event.getItem())) {
                         player.openGui();
+                        event.setCancelled(true);
                     }
                 }
             }

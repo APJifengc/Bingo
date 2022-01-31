@@ -72,7 +72,9 @@ game:
   access-to-others-gui: true
 
 display:
-  enable-map-display: true
+  # Change the item list's material.
+  # If the value is FILLED_MAP, the map will show the tasks.
+  item-list-material: FILLED_MAP
 
 # Whether generate world when a game start, used for debugging only.
 debug: false
