@@ -209,7 +209,6 @@ public class BingoGame {
             mapMeta.setMapView(mapView);
             taskItem.setItemMeta(mapMeta);
         }
-        players.forEach(p -> TaskMapRenderer.makeDirty(p.getPlayer()));
         ItemMeta itemMeta = taskItem.getItemMeta();
         itemMeta.setDisplayName(Message.get("item.goal.name"));
         itemMeta.setLore(Arrays.asList(Message.get("item.goal.lore").split("\n")));
@@ -338,6 +337,7 @@ public class BingoGame {
             player.sendMessage(Message.get("chat.world-gened"));
             bingoPlayer.clearPlayer();
             Config.getStartkits().forEach(item -> player.getInventory().addItem(item));
+            TaskMapRenderer.makeDirty(player);
         }
         players.forEach((s) -> bossbar.addPlayer(s.getPlayer()));
         if (Config.getMain().getInt("game.world-border") > 0) {
