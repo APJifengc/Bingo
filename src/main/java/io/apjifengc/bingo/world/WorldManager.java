@@ -17,12 +17,16 @@ import java.io.File;
  */
 public class WorldManager {
 
+    public static boolean exists(String name) {
+        return new File(Bukkit.getWorldContainer(), name).exists();
+    }
+
     public static void regenerateWorld(World world) {
         regenerateWorld(world.getName());
     }
 
     public static void regenerateWorld(String name) {
-        if (Bukkit.getWorld(name) != null) {
+        if (exists(name)) {
             Bukkit.unloadWorld(name, false);
             Files.deleteDirectory(new File(Bukkit.getWorldContainer(), name));
         }
