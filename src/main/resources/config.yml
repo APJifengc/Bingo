@@ -74,7 +74,7 @@ game:
   # The start kits player will get.
   # If you are not familiar with this, you could use in-game commands to config this one.
   # Use "/bingo config startkits" to get help.
-  startkits:
+  startkits: []
 
 
 display:

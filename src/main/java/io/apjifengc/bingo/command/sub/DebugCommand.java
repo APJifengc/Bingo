@@ -45,8 +45,10 @@ public class DebugCommand extends SubCommand {
                 var nbtItem = NBTItem.convertItemtoNBT(item);
                 nbtItem.getCompound("tag").setBoolean("Unbreakable", true);
                 ((Player) sender).getInventory().setItemInMainHand(NBTItem.convertNBTtoItem(nbtItem));
-            } else {
-                sender.sendMessage("?");
+            } else if (args[1].equalsIgnoreCase("blockdata")) {
+                var block = ((Player) sender).getTargetBlockExact(10);
+                var data = Bukkit.getServer().createBlockData(args[2]);
+                block.setBlockData(data);
             }
         }
     }
