@@ -20,6 +20,7 @@ commands:
     start: "&7/bingo start &e- &6Start a Bingo game."
     stop: "&7/bingo stop &e- &6Stop the Bingo game."
     reload: "&7/bingo reload &e- &6Reload the Bingo game config files."
+    config: "&7/bingo config &e- &6Change some of the configs."
     no-permission: "  &cYou don't have any permission for commands."
   join:
     success: "  &eYou have joined the Bingo game.\n  There is current &a{0}/{1} &eplayers in the game."
@@ -45,6 +46,20 @@ commands:
     other-not-in: "&cThe player isn't in the Bingo game!"
     no-game: "&cThere is no game running!"
     not-start: "&cThe game hasn't started yet!"
+  config:
+    available-configs: |
+      &7/bingo config startkits &e- &6Changes the startkits.
+    startkits:
+      usage: |
+        &7/bingo config startkits list &e- &6List the items in the startkits.
+        &7/bingo config startkits add &e- &6Add the item in hand to startkits.
+        &7/bingo config startkits remove &e- &6Remove the item in startkits.
+      add: "&aSuccessfully added the item {0}. (ID {1})"
+      remove:
+        success: "&aSuccessfully removed the item."
+        not-exist: "&cThe item doesn't exists!"
+      list: "{0}: {1}"
+game-restart: "The game is going to restart!"
 errors:
   task-not-enough: "There are not enough tasks to generate non-repetitive game board"
 gui:

@@ -57,7 +57,7 @@ game:
 
   # This is how long the world border is. (Blocks)
   # lower than 1 to disable it.
-  world-border: 800
+  world-border: 3500
 
   # This is how many chunks will be pre-generated.
   # lower than 1 to disable it.
@@ -70,6 +70,12 @@ game:
   # Allows players to open other players' GUI. (bingo.use.gui.others)
   # Available values: true / false
   access-to-others-gui: true
+
+  # The start kits player will get.
+  # If you are not familiar with this, you could use in-game commands to config this one.
+  # Use "/bingo config startkits" to get help.
+  startkits:
+
 
 display:
   # Change the item list's material.

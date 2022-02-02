@@ -16,6 +16,7 @@ permissions:
       bingo.admin.start: true
       bingo.admin.stop: true
       bingo.admin.reload: true
+      bingo.admin.config: true
     default: op
   bingo.use:
     description: Allows you to run all the player commands.

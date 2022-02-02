@@ -209,7 +209,7 @@ public class BingoGame {
             mapMeta.setMapView(mapView);
             taskItem.setItemMeta(mapMeta);
         }
-        TaskMapRenderer.setDirty(true);
+        players.forEach(p -> TaskMapRenderer.makeDirty(p.getPlayer()));
         ItemMeta itemMeta = taskItem.getItemMeta();
         itemMeta.setDisplayName(Message.get("item.goal.name"));
         itemMeta.setLore(Arrays.asList(Message.get("item.goal.lore").split("\n")));
@@ -337,6 +337,7 @@ public class BingoGame {
             player.spigot().respawn();
             player.sendMessage(Message.get("chat.world-gened"));
             bingoPlayer.clearPlayer();
+            Config.getStartkits().forEach(item -> player.getInventory().addItem(item));
         }
         players.forEach((s) -> bossbar.addPlayer(s.getPlayer()));
         if (Config.getMain().getInt("game.world-border") > 0) {
@@ -491,8 +492,15 @@ public class BingoGame {
             if (Config.getMain().getBoolean("server.bungee", false)) {
                 Bukkit.getOnlinePlayers().forEach(player ->
                         BungeecordUtil.sendPlayer(player, Config.getMain().getString("server.lobby-server")));
+            } else {
+                Bukkit.getOnlinePlayers().forEach(player ->
+                        player.kickPlayer(Message.get("game-restart")));
             }
-            Bukkit.spigot().restart();
+            try {
+                plugin.startGame();
+            } catch (BadTaskException e) {
+                e.printStackTrace();
+            }
         }
     }
 

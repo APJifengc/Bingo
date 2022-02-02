@@ -8,24 +8,25 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.Random;
+import java.util.*;
 
 @SuppressWarnings("deprecation")
 public class TaskMapRenderer extends MapRenderer {
     private final BingoGame game;
-    private final Random random;
-    @Setter
-    private static boolean dirty;
+    private static final Set<Player> dirty = new HashSet<>();
+
+    public static void makeDirty(Player player) {
+        dirty.add(player);
+    }
 
     public TaskMapRenderer(BingoGame game) {
         super(true);
         this.game = game;
-        random = new Random();
     }
 
     @Override
     public void render(@NotNull MapView map, @NotNull MapCanvas canvas, @NotNull Player player) {
-        if (dirty) {
+        if (dirty.contains(player)) {
             for (int i = 0; i <= 127; i++) {
                 for (int j = 0; j <= 127; j++) {
                     canvas.setPixel(i, j, MapPalette.TRANSPARENT);
@@ -48,7 +49,7 @@ public class TaskMapRenderer extends MapRenderer {
                     }
                 }
             }
-            dirty = false;
+            dirty.remove(player);
         }
     }
 }

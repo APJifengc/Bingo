@@ -103,7 +103,7 @@ public class BingoPlayer {
 
         if (BingoUtil.callEvent(new BingoPlayerFinishTaskEvent(this, task, index))) {
             taskStatus[index] = true;
-            TaskMapRenderer.setDirty(true);
+            TaskMapRenderer.makeDirty(player);
             if (Config.getMain().getBoolean("chat.complete-task-show")) {
                 Bukkit.spigot().broadcast(Message.getComponents("chat.task", this.getPlayer().getName(), TaskUtil.getTaskComponent(task)));
             }

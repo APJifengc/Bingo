@@ -8,6 +8,7 @@ package io.apjifengc.bingo.command;
 import io.apjifengc.bingo.Bingo;
 import io.apjifengc.bingo.command.sub.*;
 import io.apjifengc.bingo.api.game.BingoGame;
+import io.apjifengc.bingo.util.Config;
 import io.apjifengc.bingo.util.Message;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -18,10 +19,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CommandMain implements TabExecutor {
@@ -40,7 +38,8 @@ public class CommandMain implements TabExecutor {
             Map.entry("leave", new LeaveCommand()),
             Map.entry("reload", new ReloadCommand()),
             Map.entry("start", new StartCommand()),
-            Map.entry("stop", new StopCommand())
+            Map.entry("stop", new StopCommand()),
+            Map.entry("config", new ConfigCommand())
     );
 
     @Override
@@ -70,6 +69,33 @@ public class CommandMain implements TabExecutor {
                         }
                     }
                 }
+                if ("config".equals(args[0])) {
+                    return Arrays.asList(
+                            "startkits"
+                    );
+                }
+            } else if (args.length == 3) {
+                if ("config".equals(args[0])) {
+                    if ("startkits".equals(args[1])) {
+                        return Arrays.asList(
+                                "add",
+                                "remove",
+                                "list"
+                        );
+                    }
+                }
+            } else if (args.length == 4) {
+                if ("config".equals(args[0])) {
+                    if ("startkits".equals(args[1])) {
+                        if ("remove".equals(args[2])) {
+                            List<String> kits = new ArrayList<>();
+                            for (int i = 0; i < Config.getStartkits().size(); i++) {
+                                kits.add(String.valueOf(i));
+                            }
+                            return kits;
+                        }
+                    }
+                }
             }
         }
         return Collections.emptyList();
@@ -92,6 +118,8 @@ public class CommandMain implements TabExecutor {
             sub.add("stop");
         if (sender.hasPermission("bingo.admin.reload"))
             sub.add("reload");
+        if (sender.hasPermission("bingo.admin.config"))
+            sub.add("config");
         if (plugin.hasBingoGame()) {
             // 游戏正在运行，不允许开始游戏
             sub.remove("start");
@@ -113,6 +141,7 @@ public class CommandMain implements TabExecutor {
             sub.remove("leave");
             sub.remove("gui");
         }
+        sub.add("help");
         return sub;
     }
 }

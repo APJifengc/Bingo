@@ -21,6 +21,8 @@ public class HelpCommand extends SubCommand {
             sb.append("\n ").append(Message.get("commands.help.stop"));
         if (sender.hasPermission("bingo.admin.reload"))
             sb.append("\n ").append(Message.get("commands.help.reload"));
+        if (sender.hasPermission("bingo.admin.config"))
+            sb.append("\n ").append(Message.get("commands.help.config"));
         if (sb.toString().equals(Message.get("title-text")))
             sb.append("\n ").append(Message.get("commands.help.no-permission"));
         sender.sendMessage(sb.toString());

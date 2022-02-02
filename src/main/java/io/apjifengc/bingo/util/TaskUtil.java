@@ -31,18 +31,18 @@ public class TaskUtil {
     }
 
     public static BaseComponent[] getTaskComponent(BingoTask task) {
-        var item = task.getShownItem();
+        return getItemComponent(task.getShownItem(), task.getShownName().clone());
+    }
+
+    public static BaseComponent[] getItemComponent(ItemStack item, BaseComponent[] name) {
         var nbtItem = NBTItem.convertItemtoNBT(item);
         var event = new HoverEvent(HoverEvent.Action.SHOW_ITEM,
                 new Item(item.getType().getKey().toString(),
-                        item.getAmount(),
-                        ItemTag.ofNbt(nbtItem.getCompound("tag").toString())));
-
-        var component = task.getShownName().clone();
-        for (BaseComponent it : component) {
+                        item.getAmount(), nbtItem.hasKey("tag") ? ItemTag.ofNbt(nbtItem.getCompound("tag").toString()) : null));
+        for (BaseComponent it : name) {
             it.setHoverEvent(event);
         }
-        return component;
+        return name;
     }
 
     public static ItemStack setRawDisplay(ItemStack item, String rawName, List<String> rawLore) {
