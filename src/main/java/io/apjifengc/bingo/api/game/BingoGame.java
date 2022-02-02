@@ -121,12 +121,7 @@ public class BingoGame {
                 p.clearPlayer();
                 player.teleport(new Location(bingoWorld, 0, 200, 0));
             } else if (state == State.RUNNING) {
-                p.showScoreboard();
-                p.clearPlayer();
-                player.setGameMode(GameMode.SURVIVAL);
-                p.giveGuiItem();
-                bossbar.addPlayer(player);
-                teleportToBingoWorld(player);
+                initPlayer(p);
             }
             return p;
         } else return null;
@@ -319,6 +314,26 @@ public class BingoGame {
     }
 
     /**
+     * Init the new player.
+     *
+     * @param bingoPlayer The new player.
+     */
+    public void initPlayer(BingoPlayer bingoPlayer) {
+        Player player = bingoPlayer.getPlayer();
+        teleportToBingoWorld(player);
+        player.setGameMode(GameMode.SURVIVAL);
+        player.setBedSpawnLocation(player.getLocation(), true);
+        player.resetTitle();
+        player.spigot().respawn();
+        bingoPlayer.clearPlayer();
+        Config.getStartkits().forEach(item -> player.getInventory().addItem(item));
+        TaskMapRenderer.makeDirty(player);
+        bossbar.addPlayer(player);
+        bingoPlayer.giveGuiItem();
+        bingoPlayer.showScoreboard();
+    }
+
+    /**
      * Start the game.
      *
      * @see #endGame()
@@ -328,18 +343,12 @@ public class BingoGame {
         updateScoreboard();
         SchematicManager.undo();
         for (BingoPlayer bingoPlayer : players) {
+            initPlayer(bingoPlayer);
             Player player = bingoPlayer.getPlayer();
-            teleportToBingoWorld(player);
-            player.setGameMode(GameMode.SURVIVAL);
-            player.setBedSpawnLocation(player.getLocation(), true);
-            player.resetTitle();
-            player.spigot().respawn();
             player.sendMessage(Message.get("chat.world-gened"));
-            bingoPlayer.clearPlayer();
-            Config.getStartkits().forEach(item -> player.getInventory().addItem(item));
-            TaskMapRenderer.makeDirty(player);
+            player.sendTitle(Message.get("title.game-start-title"), Message.get("title.game-start-subtitle"), 0, 55, 5);
+            player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_AMBIENT, 2048.0f, 1.0f);
         }
-        players.forEach((s) -> bossbar.addPlayer(s.getPlayer()));
         if (Config.getMain().getInt("game.world-border") > 0) {
             bingoWorld.getWorldBorder().setCenter(0, 0);
             bingoWorld.getWorldBorder().setSize(Config.getMain().getInt("game.world-border"));
@@ -373,19 +382,8 @@ public class BingoGame {
                 }
             }.id("pvp-timer").time(pvpTime * 20L).tickInterval(20L).start();
         }
-        // ..
-        for (BingoPlayer bingoPlayer : players) {
-            Player player = bingoPlayer.getPlayer();
-            bingoPlayer.giveGuiItem();
-            player.sendTitle(Message.get("title.game-start-title"), Message.get("title.game-start-subtitle"), 0, 55, 5);
-            player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_AMBIENT, 2048.0f, 1.0f);
-        }
         changeState(State.RUNNING);
         scoreboard.getObjective("bingo").unregister();
-        for (BingoPlayer player : players) {
-            // 初始化
-            player.showScoreboard();
-        }
     }
 
     /** Reset the bossbar. */
