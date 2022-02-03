@@ -83,10 +83,8 @@ display:
   item-list-material: FILLED_MAP
 
 server:
-  # If it is true, it will auto start the game when the server is opened and stop when the game is over.
+  # If it is true, it will auto start the game when the server is opened and restart when the game is over.
   # Available values: true / false
-  # NOTE: You will need to configure the start script to auto restart.
-  # See https://stackoverflow.com/questions/62143022/how-do-i-automatically-restart-a-minecraft-spigot-server-in-the-event-of-a-crash.
   auto-start-end: false
 
   # Enable bungee supports.
