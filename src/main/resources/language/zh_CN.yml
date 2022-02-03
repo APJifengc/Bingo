@@ -20,6 +20,7 @@ commands:
     start: "&7/bingo start &e- &6启动一场游戏."
     stop: "&7/bingo stop &e- &6停止当前的游戏."
     reload: "&7/bingo reload &e- &6重载配置文件."
+    config: "&7/bingo config &e- &6改变一些设置."
     no-permission: "  &c没有任何可供展示的命令."
   join:
     success: "  &e您加入了 Bingo 游戏.\n  目前有 &a{0}/{1} &e玩家在游戏中."
@@ -45,6 +46,20 @@ commands:
     other-not-in: "&c对方当前不在游戏中."
     no-game: "&c没有正在运行的游戏."
     not-start: "&c当前游戏还未开始."
+  config:
+    available-configs: |
+      &7/bingo config startkits &e- &6改变初始装备.
+    startkits:
+      usage: |
+        &7/bingo config startkits list &e- &6列出初始装备中的物品.
+        &7/bingo config startkits add &e- &6将手中的物品加入到初始装备中.
+        &7/bingo config startkits remove &e- &6删除初始装备中的物品.
+      add: "&a成功添加了物品 {0}。 (ID {1})"
+      remove:
+        success: "&a成功删除了物品."
+        not-exist: "&c这个物品不存在！"
+      list: "{0}: {1}"
+game-restart: "游戏将要重启！"
 errors:
   task-not-enough: "任务列表数量不足以生成一个任务不重复的游戏板."
 gui:
