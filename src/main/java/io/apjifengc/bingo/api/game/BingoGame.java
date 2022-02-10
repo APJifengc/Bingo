@@ -468,13 +468,7 @@ public class BingoGame {
         }.id("stop-game-timer").time(200L).startFromNow();
     }
 
-    /**
-     * Fully stop the game.
-     *
-     * @see #startGame()
-     * @see #endGame()
-     */
-    public void stop() {
+    public void forceStop() {
         taskListeners.forEach(HandlerList::unregisterAll);
         for (BingoPlayer bingoPlayer : players) {
             TeleportUtil.safeTeleport(bingoPlayer.getPlayer(), mainWorld, 0, 0);
@@ -487,6 +481,16 @@ public class BingoGame {
         BingoTimerManager.stopTimer();
         BingoTimerManager.clearTasks();
         BingoTimerManager.resetTimer();
+    }
+
+    /**
+     * Fully stop the game.
+     *
+     * @see #startGame()
+     * @see #endGame()
+     */
+    public void stop() {
+        forceStop();
         if (Config.getMain().getBoolean("server.auto-start-end", false)) {
             if (Config.getMain().getBoolean("server.bungee", false)) {
                 Bukkit.getOnlinePlayers().forEach(player ->

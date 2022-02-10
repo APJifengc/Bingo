@@ -73,7 +73,7 @@ public class Bingo extends JavaPlugin {
         getLogger().info("I'm out.");
         this.getServer().getMessenger().unregisterOutgoingPluginChannel(this);
         if (hasBingoGame()) {
-            currentGame.stop();
+            currentGame.forceStop();
         }
     }
 
