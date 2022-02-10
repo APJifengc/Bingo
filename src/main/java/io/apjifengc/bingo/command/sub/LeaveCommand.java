@@ -25,11 +25,6 @@ public class LeaveCommand extends SubCommand {
                         if (plugin.getCurrentGame().getState() != BingoGame.State.LOADING) {
                             sender.sendMessage(Message.get("prefix") + Message.get("commands.leave.success"));
                             plugin.getCurrentGame().removePlayer((Player) sender);
-                            if (Config.getMain().getBoolean("server.bungee")) {
-                                BungeecordUtil.sendPlayer((Player) sender, Config.getMain().getString("server.lobby-server"));
-                            } else {
-                                TeleportUtil.safeTeleport((Player) sender, plugin.getCurrentGame().getMainWorld(), 0, 0);
-                            }
                         } else {
                             sender.sendMessage(Message.get("prefix") + Message.get("commands.leave.game-loading"));
                         }

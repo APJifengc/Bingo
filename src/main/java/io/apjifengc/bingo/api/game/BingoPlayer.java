@@ -5,14 +5,9 @@ import io.apjifengc.bingo.api.game.task.BingoTask;
 import io.apjifengc.bingo.api.inventory.BingoGuiInventory;
 import io.apjifengc.bingo.api.util.BingoUtil;
 import io.apjifengc.bingo.map.TaskMapRenderer;
-import io.apjifengc.bingo.util.Config;
-import io.apjifengc.bingo.util.Message;
-import io.apjifengc.bingo.util.TaskUtil;
+import io.apjifengc.bingo.util.*;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -46,9 +41,15 @@ public class BingoPlayer {
     /** Their task finishing status. */
     final boolean[] taskStatus = new boolean[25];
 
+    final Location preLocation;
+    final Location preSpawnLocation;
+
     public BingoPlayer(Player player, BingoGame game) {
         this.player = player;
         this.game = game;
+
+        this.preLocation = player.getLocation();
+        this.preSpawnLocation = player.getBedSpawnLocation();
     }
 
     /** Update the {@link #player} field. */
@@ -294,6 +295,15 @@ public class BingoPlayer {
         player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
         player.setFoodLevel(20);
         player.getActivePotionEffects().forEach((s) -> player.removePotionEffect(s.getType()));
+    }
+
+    void sendBackToLobby() {
+        if (Config.getMain().getBoolean("server.bungee")) {
+            BungeecordUtil.sendPlayer(player, Config.getMain().getString("server.lobby-server"));
+        } else {
+            player.teleport(preLocation);
+            player.setBedSpawnLocation(preSpawnLocation);
+        }
     }
 
 }

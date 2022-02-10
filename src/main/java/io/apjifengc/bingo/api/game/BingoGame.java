@@ -141,6 +141,7 @@ public class BingoGame {
                 bp.clearScoreboard();
                 bossbar.removePlayer(player);
                 players.remove(bp);
+                bp.sendBackToLobby();
                 Message.sendTo(players, "chat.leave", player.getName(), players.size(),
                         Config.getMain().getInt("room.max-player"));
                 if (state == State.WAITING || state == State.STARTING) {
