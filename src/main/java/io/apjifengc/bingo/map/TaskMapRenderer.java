@@ -1,14 +1,19 @@
 package io.apjifengc.bingo.map;
 
-import io.apjifengc.bingo.api.game.BingoGame;
-import lombok.Setter;
+import java.awt.Color;
+import java.awt.Image;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.entity.Player;
-import org.bukkit.map.*;
+import org.bukkit.map.MapCanvas;
+import org.bukkit.map.MapPalette;
+import org.bukkit.map.MapRenderer;
+import org.bukkit.map.MapView;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
-import java.io.IOException;
-import java.util.*;
+import io.apjifengc.bingo.api.game.BingoGame;
 
 @SuppressWarnings("deprecation")
 public class TaskMapRenderer extends MapRenderer {

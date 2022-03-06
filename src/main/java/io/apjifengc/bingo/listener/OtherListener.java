@@ -1,12 +1,5 @@
 package io.apjifengc.bingo.listener;
 
-import io.apjifengc.bingo.Bingo;
-import io.apjifengc.bingo.api.exception.BadTaskException;
-import io.apjifengc.bingo.api.game.BingoGame;
-import io.apjifengc.bingo.api.game.BingoPlayer;
-import io.apjifengc.bingo.util.Config;
-import io.apjifengc.bingo.util.Message;
-import io.apjifengc.bingo.util.TeleportUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -14,8 +7,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+
+import io.apjifengc.bingo.Bingo;
+import io.apjifengc.bingo.api.game.BingoGame;
+import io.apjifengc.bingo.api.game.BingoPlayer;
+import io.apjifengc.bingo.util.Config;
+import io.apjifengc.bingo.util.Message;
+import io.apjifengc.bingo.util.TeleportUtil;
 
 @SuppressWarnings("ClassCanBeRecord")
 public final class OtherListener implements Listener {

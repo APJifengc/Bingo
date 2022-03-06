@@ -36,7 +36,6 @@ public final class BingoTimer {
             public void run() {
                 timestamp++;
                 long closestTime = Long.MAX_VALUE;
-                BingoTimerTask closestTask = null;
                 for (var entry : taskMap.entrySet()) {
                     var task = entry.getValue();
                     if (task.isRunning()) {

@@ -1,19 +1,11 @@
 package io.apjifengc.bingo.command.sub;
 
-import io.apjifengc.bingo.Bingo;
-import io.apjifengc.bingo.command.SubCommand;
-import io.apjifengc.bingo.api.exception.BadTaskException;
-import io.apjifengc.bingo.api.game.BingoGame;
-import io.apjifengc.bingo.util.Config;
-import io.apjifengc.bingo.util.Message;
-import io.apjifengc.bingo.world.SchematicManager;
-import io.apjifengc.bingo.world.WorldManager;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 
-import java.io.File;
-import java.io.IOException;
+import io.apjifengc.bingo.Bingo;
+import io.apjifengc.bingo.api.exception.BadTaskException;
+import io.apjifengc.bingo.command.SubCommand;
+import io.apjifengc.bingo.util.Message;
 
 public class StartCommand extends SubCommand {
 

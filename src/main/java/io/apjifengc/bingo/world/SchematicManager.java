@@ -7,9 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.function.Consumer;
 
 /**
  * 一个处理 Schematic 的类

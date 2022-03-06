@@ -125,3 +125,7 @@ gradle.properties
 
 bin/
 gradlew
+
+.gitpod.yml
+
+.gitignore
