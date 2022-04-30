@@ -22,9 +22,9 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:2.3.31'
     compileOnly project(":spigot_shadow") // module for some classes that aren't in the bukkit API.
-    shadow 'de.tr7zw:item-nbt-api:2.9.0-SNAPSHOT'
+    shadow 'de.tr7zw:item-nbt-api:2.9.2'
 
-    implementation 'org.jetbrains:annotations:22.0.0'
+    implementation 'org.jetbrains:annotations:23.0.0'
 }
 
 shadowJar {
