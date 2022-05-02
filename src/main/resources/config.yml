@@ -51,6 +51,9 @@ chat:
   complete-game-show: true
 
 game:
+  # The time to be set when the game starts.
+  start-time: 6000
+
   # This is the no PVP time(second).
   # lower than 1 to disable it.
   no-pvp: 300
@@ -74,7 +77,7 @@ game:
   # The start kits player will get.
   # If you are not familiar with this, you could use in-game commands to config this one.
   # Use "/bingo config startkits" to get help.
-  startkits: []
+  startkits: [ ]
 
 
 display:

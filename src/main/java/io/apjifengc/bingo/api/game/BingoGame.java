@@ -95,6 +95,7 @@ public class BingoGame {
             public void run() {
                 startGame();
             }
+
             @Override
             public void tick() {
                 updateScoreboard();
@@ -357,6 +358,8 @@ public class BingoGame {
         int pvpTime = Config.getMain().getInt("game.no-pvp");
         BingoTimerManager.resetTimer();
         bingoWorld.setPVP(true);
+        bingoWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
+        bingoWorld.setTime(Config.getMain().getInt("game.start-time"));
         if (pvpTime > 0) {
             bossbar.setTitle(Message.get("bossbar.pvp-timer", 0));
             bossbar.setProgress(0);
@@ -464,7 +467,8 @@ public class BingoGame {
                 stop();
             }
 
-            @Override public void tick() {}
+            @Override public void tick() {
+            }
         }.id("stop-game-timer").time(200L).startFromNow();
     }
 

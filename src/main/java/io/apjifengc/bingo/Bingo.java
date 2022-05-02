@@ -13,6 +13,7 @@ import io.apjifengc.bingo.world.WorldManager;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -111,7 +112,9 @@ public class Bingo extends JavaPlugin {
         if (!(Config.getMain().getBoolean("debug") && WorldManager.exists(worldName))) {
             WorldManager.regenerateWorld(worldName);
         }
-        Bukkit.getWorld(worldName).setPVP(false);
+        var world = Bukkit.getWorld(worldName);
+        world.setPVP(false);
+        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         try {
             SchematicManager.buildSchematic(new File(getDataFolder(), "lobby.schem"),
                     new Location(Bukkit.getWorld(worldName), 0, 200, 0));
