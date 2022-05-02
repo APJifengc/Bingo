@@ -252,6 +252,12 @@ public class BingoPlayer {
         updateScoreboard();
     }
 
+    public void keepScoreboard(Scoreboard board) {
+        if (player.getScoreboard() != board) {
+            player.setScoreboard(board);
+        }
+    }
+
     public void clearScoreboard() {
         player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
     }

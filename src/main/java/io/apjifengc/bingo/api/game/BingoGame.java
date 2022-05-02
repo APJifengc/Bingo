@@ -101,6 +101,23 @@ public class BingoGame {
                 updateScoreboard();
             }
         }.id("start-timer").tickInterval(20L).add();
+        new BingoTimerTask() {
+            @Override public void run() {
+                // TODO: I just want to tick it!
+            }
+
+            @Override
+            public void tick() {
+                for (BingoPlayer player : players) {
+                    if (state == State.RUNNING) {
+                        player.keepScoreboard(player.getScoreboard());
+                    } else {
+                        player.keepScoreboard(scoreboard);
+                    }
+                }
+            }
+        }.id("scoreboard-keeper").tickInterval(2L).add();
+        BingoTimerManager.setTime("scoreboard-keeper", Long.MAX_VALUE, false);
     }
 
     /**
