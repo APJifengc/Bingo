@@ -24,6 +24,10 @@ public class TaskMapRenderer extends MapRenderer {
         dirty.add(player);
     }
 
+    public static void makeClean(Player player) {
+        dirty.remove(player);
+    }
+
     public TaskMapRenderer(BingoGame game) {
         super(true);
         this.game = game;

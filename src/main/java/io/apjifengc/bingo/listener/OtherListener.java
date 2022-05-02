@@ -1,5 +1,6 @@
 package io.apjifengc.bingo.listener;
 
+import io.apjifengc.bingo.map.TaskMapRenderer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -41,6 +42,7 @@ public final class OtherListener implements Listener {
                 game.removePlayer(player);
             } else if (game.getState() == BingoGame.State.RUNNING) {
                 player.getInventory().setItem(8, new ItemStack(Material.AIR));
+                TaskMapRenderer.makeClean(player);
             }
             player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
             game.getBossbar().removePlayer(player);
@@ -80,6 +82,7 @@ public final class OtherListener implements Listener {
             BingoPlayer gamePlayer = game.getPlayer(player);
             if (game.getState() == BingoGame.State.RUNNING && gamePlayer != null) {
                 gamePlayer.updatePlayer();
+                TaskMapRenderer.makeDirty(player);
                 gamePlayer.giveGuiItem();
                 player.setScoreboard(gamePlayer.getScoreboard());
                 game.getBossbar().addPlayer(player);
