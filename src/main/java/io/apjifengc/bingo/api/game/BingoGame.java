@@ -8,6 +8,7 @@ import io.apjifengc.bingo.api.event.player.BingoPlayerLeaveEvent;
 import io.apjifengc.bingo.api.event.player.BingoPlayerPreJoinEvent;
 import io.apjifengc.bingo.api.exception.BadTaskException;
 import io.apjifengc.bingo.api.game.task.BingoTask;
+import io.apjifengc.bingo.api.timer.BingoTimer;
 import io.apjifengc.bingo.api.timer.BingoTimerManager;
 import io.apjifengc.bingo.api.timer.BingoTimerTask;
 import io.apjifengc.bingo.api.util.BingoUtil;
@@ -116,8 +117,8 @@ public class BingoGame {
                     }
                 }
             }
-        }.id("scoreboard-keeper").tickInterval(2L).add();
-        BingoTimerManager.setTime("scoreboard-keeper", Long.MAX_VALUE, false);
+        }.id("scoreboard-keeper").tickInterval(2L).time(Long.MAX_VALUE).add();
+        BingoTimerManager.startTask("scoreboard-keeper");
     }
 
     /**
