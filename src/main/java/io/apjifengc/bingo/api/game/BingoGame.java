@@ -129,20 +129,20 @@ public class BingoGame {
      */
     public BingoPlayer addPlayer(Player player) {
         if (BingoUtil.callEvent(new BingoPlayerPreJoinEvent(player, this))) {
-            BingoPlayer p = new BingoPlayer(player, this);
-            players.add(p);
+            BingoPlayer bingoPlayer = new BingoPlayer(player, this);
+            players.add(bingoPlayer);
             Message.sendTo(players, "chat.join", player.getName(), players.size(),
                     Config.getMain().getInt("room.max-player"));
             if (state == State.WAITING || state == State.STARTING) {
                 updateStartTime();
                 player.setScoreboard(scoreboard);
                 player.setGameMode(GameMode.ADVENTURE);
-                p.clearPlayer();
+                bingoPlayer.clearPlayer();
                 player.teleport(new Location(bingoWorld, 0, 200, 0));
             } else if (state == State.RUNNING) {
-                initPlayer(p);
+                initPlayer(bingoPlayer);
             }
-            return p;
+            return bingoPlayer;
         } else return null;
     }
 
@@ -153,16 +153,18 @@ public class BingoGame {
      * @return Succeed or fail.
      */
     public boolean removePlayer(Player player) {
-        BingoPlayer bp = getPlayer(player);
-        if (bp != null) {
-            if (BingoUtil.callEvent(new BingoPlayerLeaveEvent(bp))) {
-                bp.getGui().clear();
-                bp.clearScoreboard();
+        BingoPlayer bingoPlayer = getPlayer(player);
+        if (bingoPlayer != null) {
+            if (BingoUtil.callEvent(new BingoPlayerLeaveEvent(bingoPlayer))) {
+                bingoPlayer.getGui().clear();
+                bingoPlayer.clearScoreboard();
+                bingoPlayer.clearPlayer();
+                bingoPlayer.getPlayer().setGameMode(Bukkit.getServer().getDefaultGameMode());
                 bossbar.removePlayer(player);
-                players.remove(bp);
-                bp.sendBackToLobby();
+                players.remove(bingoPlayer);
                 Message.sendTo(players, "chat.leave", player.getName(), players.size(),
                         Config.getMain().getInt("room.max-player"));
+                bingoPlayer.sendBackToLobby();
                 if (state == State.WAITING || state == State.STARTING) {
                     updateStartTime();
                 }
@@ -181,9 +183,9 @@ public class BingoGame {
     @Nullable
     public BingoPlayer getPlayer(Player player) {
         if (player == null) return null;
-        for (BingoPlayer bp : players) {
-            if (bp.getPlayer().getUniqueId().equals(player.getUniqueId())) {
-                return bp;
+        for (BingoPlayer bingoPlayer : players) {
+            if (bingoPlayer.getPlayer().getUniqueId().equals(player.getUniqueId())) {
+                return bingoPlayer;
             }
         }
         return null;
@@ -493,11 +495,11 @@ public class BingoGame {
     public void forceStop() {
         taskListeners.forEach(HandlerList::unregisterAll);
         for (BingoPlayer bingoPlayer : players) {
-            TeleportUtil.safeTeleport(bingoPlayer.getPlayer(), mainWorld, 0, 0);
             bingoPlayer.clearPlayer();
             bingoPlayer.clearScoreboard();
             bingoPlayer.getPlayer().setGameMode(Bukkit.getServer().getDefaultGameMode());
             bossbar.removePlayer(bingoPlayer.getPlayer());
+            bingoPlayer.sendBackToLobby();
         }
         plugin.setCurrentGame(null);
         BingoTimerManager.stopTimer();
